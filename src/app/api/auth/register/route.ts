@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ZodError } from "zod";
+import { z, ZodError } from "zod";
 
 import { registerUser } from "@/features/auth/server/register-user";
 import { registerSchema } from "@/features/auth/validation/register.schema";
@@ -12,59 +12,32 @@ export async function POST(request: Request) {
 
     const validatedData = registerSchema.parse(body);
 
-    const result = await registerUser({
-      fullName: validatedData.fullName,
-      email: validatedData.email,
-      password: validatedData.password,
-    });
+    const result = await registerUser(validatedData);
 
     if (!result.success) {
       if (result.code === "EMAIL_EXISTS") {
         return NextResponse.json(
-          {
-            success: false,
-            message: "An account with this email already exists.",
-          },
-          {
-            status: 409,
-          },
-        );
-      }
-
-      if (result.code === "CANDIDATE_ROLE_MISSING") {
-        console.error("Registration failed because the CANDIDATE role is missing.");
-
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Registration is temporarily unavailable.",
-          },
-          {
-            status: 500,
-          },
+          { success: false, message: "An account with this email already exists." },
+          { status: 409 },
         );
       }
 
       return NextResponse.json(
-        {
-          success: false,
-          message: "Registration is temporarily unavailable.",
-        },
-        {
-          status: 500,
-        },
+        { success: false, message: "Registration is temporarily unavailable." },
+        { status: 500 },
       );
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: "Account created successfully.",
+        requiresApproval: result.requiresApproval,
+        message: result.requiresApproval
+          ? "Your company account has been submitted for review. We will email you once it is approved."
+          : "Account created successfully.",
         user: result.user,
       },
-      {
-        status: 201,
-      },
+      { status: 201 },
     );
   } catch (error) {
     if (error instanceof ZodError) {
@@ -72,24 +45,17 @@ export async function POST(request: Request) {
         {
           success: false,
           message: "Please correct the highlighted fields.",
-          errors: error.flatten().fieldErrors,
+          errors: z.flattenError(error).fieldErrors,
         },
-        {
-          status: 400,
-        },
+        { status: 400 },
       );
     }
 
     console.error("Registration error:", error);
 
     return NextResponse.json(
-      {
-        success: false,
-        message: "Unable to create your account. Please try again.",
-      },
-      {
-        status: 500,
-      },
+      { success: false, message: "Unable to create your account. Please try again." },
+      { status: 500 },
     );
   }
 }

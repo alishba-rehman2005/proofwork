@@ -14,7 +14,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx src/db/seed.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "admin:create": "tsx scripts/create-admin.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

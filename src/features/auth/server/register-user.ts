@@ -4,62 +4,64 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { candidateProfiles, roles, userRoles, users } from "@/db/schema";
+import { candidateProfiles, companies, companyMembers, roles, userRoles, users } from "@/db/schema";
 import { buildProfileSlug } from "@/features/profiles/utils/slug";
+import type { RegisterInput } from "@/features/auth/validation/register.schema";
 
-type RegisterUserInput = {
-  fullName: string;
-  email: string;
-  password: string;
-};
+const BCRYPT_COST = 12;
 
 export type RegisterUserResult =
   | {
       success: true;
-      user: {
-        id: string;
-        email: string;
-      };
+      /** Companies land in review, so the caller must not invite them to sign in. */
+      requiresApproval: boolean;
+      user: { id: string; email: string };
     }
-  | {
-      success: false;
-      code: "EMAIL_EXISTS" | "CANDIDATE_ROLE_MISSING";
-    };
+  | { success: false; code: "EMAIL_EXISTS" | "ROLE_MISSING" };
 
-export async function registerUser(input: RegisterUserInput): Promise<RegisterUserResult> {
-  const email = input.email.trim().toLowerCase();
+async function findRoleId(name: string): Promise<string | null> {
+  const [role] = await db.select({ id: roles.id }).from(roles).where(eq(roles.name, name)).limit(1);
 
-  const [existingUser] = await db
-    .select({
-      id: users.id,
-    })
+  return role?.id ?? null;
+}
+
+async function emailTaken(email: string): Promise<boolean> {
+  const [existing] = await db
+    .select({ id: users.id })
     .from(users)
     .where(eq(users.email, email))
     .limit(1);
 
-  if (existingUser) {
-    return {
-      success: false,
-      code: "EMAIL_EXISTS",
-    };
+  return Boolean(existing);
+}
+
+/**
+ * Creates an account for one of the two self-service account types.
+ *
+ * Candidates are active immediately. Company recruiters are created PENDING
+ * along with their company, because a recruiter account can read candidate
+ * data and anyone can claim to represent a company; an admin approves both
+ * before the account can sign in.
+ */
+export async function registerUser(input: RegisterInput): Promise<RegisterUserResult> {
+  const email = input.email.trim().toLowerCase();
+
+  if (await emailTaken(email)) {
+    return { success: false, code: "EMAIL_EXISTS" };
   }
 
-  const [candidateRole] = await db
-    .select({
-      id: roles.id,
-    })
-    .from(roles)
-    .where(eq(roles.name, "CANDIDATE"))
-    .limit(1);
+  const roleName = input.accountType === "CANDIDATE" ? "CANDIDATE" : "RECRUITER";
+  const roleId = await findRoleId(roleName);
 
-  if (!candidateRole) {
-    return {
-      success: false,
-      code: "CANDIDATE_ROLE_MISSING",
-    };
+  if (!roleId) {
+    console.error(`Registration failed because the ${roleName} role is missing.`);
+
+    return { success: false, code: "ROLE_MISSING" };
   }
 
-  const passwordHash = await bcrypt.hash(input.password, 12);
+  const passwordHash = await bcrypt.hash(input.password, BCRYPT_COST);
+  const fullName = input.fullName.trim();
+  const isCandidate = input.accountType === "CANDIDATE";
 
   return db.transaction(async (tx) => {
     const [newUser] = await tx
@@ -67,43 +69,52 @@ export async function registerUser(input: RegisterUserInput): Promise<RegisterUs
       .values({
         email,
         passwordHash,
-        accountStatus: "ACTIVE",
+        accountStatus: isCandidate ? "ACTIVE" : "PENDING",
+        primaryRoleId: roleId,
       })
-      .returning({
-        id: users.id,
-        email: users.email,
-      });
+      .returning({ id: users.id, email: users.email });
 
     if (!newUser) {
       throw new Error("Failed to create user.");
     }
 
-    await tx.insert(userRoles).values({
-      userId: newUser.id,
-      roleId: candidateRole.id,
-    });
+    await tx.insert(userRoles).values({ userId: newUser.id, roleId });
 
-    await tx
-      .update(users)
-      .set({
-        primaryRoleId: candidateRole.id,
-      })
-      .where(eq(users.id, newUser.id));
+    if (input.accountType === "CANDIDATE") {
+      // The id is generated here rather than by the database so the public
+      // slug can be derived from it within the same insert.
+      const profileId = randomUUID();
 
-    // The id is generated here rather than by the database so the public slug
-    // can be derived from it within the same insert.
-    const profileId = randomUUID();
-    const fullName = input.fullName.trim();
+      await tx.insert(candidateProfiles).values({
+        id: profileId,
+        userId: newUser.id,
+        fullName,
+        slug: buildProfileSlug(fullName, profileId),
+      });
+    } else {
+      const companyId = randomUUID();
+      const companyName = input.companyName.trim();
 
-    await tx.insert(candidateProfiles).values({
-      id: profileId,
-      userId: newUser.id,
-      fullName,
-      slug: buildProfileSlug(fullName, profileId),
-    });
+      await tx.insert(companies).values({
+        id: companyId,
+        name: companyName,
+        slug: buildProfileSlug(companyName, companyId),
+        website: input.companyWebsite,
+        status: "PENDING",
+        createdById: newUser.id,
+      });
+
+      await tx.insert(companyMembers).values({
+        companyId,
+        userId: newUser.id,
+        jobTitle: input.jobTitle,
+        membershipRole: "OWNER",
+      });
+    }
 
     return {
       success: true as const,
+      requiresApproval: !isCandidate,
       user: newUser,
     };
   });

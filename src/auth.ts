@@ -1,11 +1,31 @@
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { db } from "@/db";
 import { roles, userRoles, users } from "@/db/schema";
 import { loginSchema } from "@/features/auth/validation/login.schema";
+
+/**
+ * Signals that the password was correct but the account cannot sign in yet.
+ *
+ * Only thrown after the password has been verified: telling an unauthenticated
+ * visitor that an account is pending would confirm the address is registered.
+ */
+export class AccountNotActiveError extends CredentialsSignin {
+  code = "account_not_active";
+
+  constructor(readonly status: string) {
+    super();
+  }
+}
+
+export const ACCOUNT_STATUS_MESSAGES: Record<string, string> = {
+  PENDING: "Your account is awaiting approval. We will email you once it is reviewed.",
+  SUSPENDED: "This account has been suspended. Contact support if you think this is a mistake.",
+  DISABLED: "This account has been disabled. Contact support if you think this is a mistake.",
+};
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
@@ -50,14 +70,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        if (user.accountStatus !== "ACTIVE") {
-          return null;
-        }
-
         const passwordMatches = await bcrypt.compare(password, user.passwordHash);
 
         if (!passwordMatches) {
           return null;
+        }
+
+        // Checked after the password so the status is only revealed to someone
+        // who already proved they own the account.
+        if (user.accountStatus !== "ACTIVE") {
+          throw new AccountNotActiveError(user.accountStatus);
         }
 
         const assignedRoles = await db
