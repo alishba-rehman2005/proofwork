@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
+import { ButtonLink, Card, CardTitle, EmptyState, PageHeader, ProgressBar } from "@/components/ui";
 import { getCandidateProfileByUserId } from "@/features/profiles/server/profile.queries";
 import { calculateProfileCompleteness } from "@/features/profiles/utils/profile-completeness";
 import { APP_ROLES } from "@/lib/auth/permissions";
@@ -25,66 +25,46 @@ export default async function DashboardPage() {
   const completeness = profile ? calculateProfileCompleteness(profile) : null;
 
   return (
-    <main className="mx-auto max-w-5xl space-y-8 p-6">
-      <header>
-        <h1 className="text-3xl font-semibold">
-          Welcome back{profile ? `, ${profile.fullName}` : ""}
-        </h1>
-
-        <p className="mt-2 text-slate-600">
-          Signed in as {user.email} &middot; {user.primaryRole ?? "No primary role"}
-        </p>
-      </header>
+    <div className="mx-auto max-w-5xl space-y-6">
+      <PageHeader
+        title={profile ? `Welcome back, ${profile.fullName}` : "Welcome back"}
+        description={`Signed in as ${user.email} · ${user.primaryRole ?? "No primary role"}`}
+      />
 
       {profile && completeness !== null && (
-        <section className="rounded-xl border border-slate-200 p-5">
-          <h2 className="text-xl font-semibold">Your profile</h2>
+        <Card className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <CardTitle>Your profile</CardTitle>
 
-          <p className="mt-2 text-slate-600">
+            <span className="text-sm text-muted">{completeness}% complete</span>
+          </div>
+
+          <p className="text-muted">
             {completeness === 100
               ? "Your profile is complete."
-              : `Your profile is ${completeness}% complete. Adding more detail helps recruiters find you.`}
+              : "Adding more detail helps recruiters find you."}
           </p>
 
-          <div
-            className="mt-4 h-2 w-full overflow-hidden rounded-full bg-slate-100"
-            role="progressbar"
-            aria-valuenow={completeness}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label="Profile completeness"
-          >
-            <div
-              className="h-full rounded-full bg-blue-600 transition-all"
-              style={{ width: `${completeness}%` }}
-            />
-          </div>
+          <ProgressBar value={completeness} label="Profile completeness" />
 
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link
-              href="/profile"
-              className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
-            >
-              View profile
-            </Link>
+          <div className="flex flex-wrap gap-3">
+            <ButtonLink href="/profile">View profile</ButtonLink>
 
-            <Link
-              href="/profile/edit"
-              className="rounded-lg border border-slate-300 px-4 py-2 transition-colors hover:bg-slate-50"
-            >
+            <ButtonLink href="/profile/edit" variant="secondary">
               Edit profile
-            </Link>
+            </ButtonLink>
           </div>
-        </section>
+        </Card>
       )}
 
-      <section className="rounded-xl border border-slate-200 p-5">
-        <h2 className="text-xl font-semibold">Skills &amp; assessments</h2>
+      <Card className="space-y-4">
+        <CardTitle>Skills &amp; assessments</CardTitle>
 
-        <p className="mt-2 text-slate-600">
-          Skill verification and assessments arrive in a later phase.
-        </p>
-      </section>
-    </main>
+        <EmptyState
+          title="No skills added yet"
+          description="Skill management, assessments and verification arrive in the next phase."
+        />
+      </Card>
+    </div>
   );
 }
