@@ -1,5 +1,6 @@
 import {
   boolean,
+  date,
   decimal,
   index,
   integer,
@@ -136,10 +137,12 @@ export const teamMemberStatusEnum = pgEnum("team_member_status", [
   "REMOVED",
 ]);
 
-export const contributionVerificationStatusEnum = pgEnum(
-  "contribution_verification_status",
-  ["UNVERIFIED", "UNDER_REVIEW", "VERIFIED", "REJECTED"],
-);
+export const contributionVerificationStatusEnum = pgEnum("contribution_verification_status", [
+  "UNVERIFIED",
+  "UNDER_REVIEW",
+  "VERIFIED",
+  "REJECTED",
+]);
 
 export const skillRequestStatusEnum = pgEnum("skill_request_status", [
   "PENDING",
@@ -147,17 +150,14 @@ export const skillRequestStatusEnum = pgEnum("skill_request_status", [
   "REJECTED",
 ]);
 
-export const verificationRequestStatusEnum = pgEnum(
-  "verification_request_status",
-  [
-    "PENDING",
-    "ASSESSMENT_ASSIGNED",
-    "IN_PROGRESS",
-    "COMPLETED",
-    "REJECTED",
-    "CANCELLED",
-  ],
-);
+export const verificationRequestStatusEnum = pgEnum("verification_request_status", [
+  "PENDING",
+  "ASSESSMENT_ASSIGNED",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "REJECTED",
+  "CANCELLED",
+]);
 
 export const notificationTypeEnum = pgEnum("notification_type", [
   "ASSESSMENT_ASSIGNED",
@@ -183,6 +183,16 @@ export const activityTypeEnum = pgEnum("activity_type", [
   "PROJECT_VERIFIED",
   "TEAM_JOINED",
   "TEAM_CONTRIBUTION_ADDED",
+]);
+
+export const socialPlatformEnum = pgEnum("social_platform", [
+  "LINKEDIN",
+  "GITHUB",
+  "PORTFOLIO",
+  "BEHANCE",
+  "DRIBBBLE",
+  "WEBSITE",
+  "OTHER",
 ]);
 
 /*
@@ -299,6 +309,9 @@ export const candidateProfiles = pgTable(
 
     fullName: text("full_name").notNull(),
 
+    /** Stable public identifier used by the shareable profile URL. */
+    slug: text("slug").notNull().unique(),
+
     headline: text("headline"),
 
     bio: text("bio"),
@@ -320,6 +333,10 @@ export const candidateProfiles = pgTable(
     githubUrl: text("github_url"),
 
     portfolioUrl: text("portfolio_url"),
+
+    websiteUrl: text("website_url"),
+
+    profileImageStoragePath: text("profile_image_storage_path"),
 
     createdAt: timestamp("created_at", {
       withTimezone: true,
@@ -454,20 +471,11 @@ export const candidateSkills = pgTable(
       .defaultNow(),
   },
   (table) => [
-    uniqueIndex("candidate_skills_candidate_skill_unique").on(
-      table.candidateId,
-      table.skillId,
-    ),
+    uniqueIndex("candidate_skills_candidate_skill_unique").on(table.candidateId, table.skillId),
 
-    index("candidate_skills_skill_status_idx").on(
-      table.skillId,
-      table.verificationStatus,
-    ),
+    index("candidate_skills_skill_status_idx").on(table.skillId, table.verificationStatus),
 
-    index("candidate_skills_candidate_status_idx").on(
-      table.candidateId,
-      table.verificationStatus,
-    ),
+    index("candidate_skills_candidate_status_idx").on(table.candidateId, table.verificationStatus),
 
     index("candidate_skills_current_score_idx").on(table.currentScore),
   ],
@@ -562,10 +570,7 @@ export const assessmentSkills = pgTable(
       }),
   },
   (table) => [
-    uniqueIndex("assessment_skills_assessment_skill_unique").on(
-      table.assessmentId,
-      table.skillId,
-    ),
+    uniqueIndex("assessment_skills_assessment_skill_unique").on(table.assessmentId, table.skillId),
 
     index("assessment_skills_skill_id_idx").on(table.skillId),
   ],
@@ -602,11 +607,7 @@ export const assessmentResources = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (table) => [
-    index("assessment_resources_assessment_id_idx").on(
-      table.assessmentId,
-    ),
-  ],
+  (table) => [index("assessment_resources_assessment_id_idx").on(table.assessmentId)],
 );
 
 /*
@@ -654,9 +655,7 @@ export const rubricCriteria = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (table) => [
-    index("rubric_criteria_assessment_id_idx").on(table.assessmentId),
-  ],
+  (table) => [index("rubric_criteria_assessment_id_idx").on(table.assessmentId)],
 );
 
 /*
@@ -725,23 +724,13 @@ export const assessmentAssignments = pgTable(
       .defaultNow(),
   },
   (table) => [
-    index("assessment_assignments_candidate_skill_idx").on(
-      table.candidateSkillId,
-    ),
+    index("assessment_assignments_candidate_skill_idx").on(table.candidateSkillId),
 
-    index("assessment_assignments_assessment_idx").on(
-      table.assessmentId,
-    ),
+    index("assessment_assignments_assessment_idx").on(table.assessmentId),
 
-    index("assessment_assignments_reviewer_status_idx").on(
-      table.reviewerId,
-      table.status,
-    ),
+    index("assessment_assignments_reviewer_status_idx").on(table.reviewerId, table.status),
 
-    index("assessment_assignments_status_deadline_idx").on(
-      table.status,
-      table.deadline,
-    ),
+    index("assessment_assignments_status_deadline_idx").on(table.status, table.deadline),
   ],
 );
 
@@ -766,9 +755,7 @@ export const submissions = pgTable(
 
     notes: text("notes"),
 
-    status: submissionStatusEnum("status")
-      .notNull()
-      .default("SUBMITTED"),
+    status: submissionStatusEnum("status").notNull().default("SUBMITTED"),
 
     submittedAt: timestamp("submitted_at", {
       withTimezone: true,
@@ -794,10 +781,7 @@ export const submissions = pgTable(
       table.attemptNumber,
     ),
 
-    index("submissions_assignment_status_idx").on(
-      table.assignmentId,
-      table.status,
-    ),
+    index("submissions_assignment_status_idx").on(table.assignmentId, table.status),
 
     index("submissions_submitted_at_idx").on(table.submittedAt),
   ],
@@ -838,11 +822,7 @@ export const submissionEvidence = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (table) => [
-    index("submission_evidence_submission_id_idx").on(
-      table.submissionId,
-    ),
-  ],
+  (table) => [index("submission_evidence_submission_id_idx").on(table.submissionId)],
 );
 
 /*
@@ -953,9 +933,7 @@ export const reviewCriterionScores = pgTable(
       table.rubricCriterionId,
     ),
 
-    index("review_criterion_scores_criterion_idx").on(
-      table.rubricCriterionId,
-    ),
+    index("review_criterion_scores_criterion_idx").on(table.rubricCriterionId),
   ],
 );
 /*
@@ -993,9 +971,7 @@ export const projects = pgTable(
 
     figmaUrl: text("figma_url"),
 
-    verificationStatus: projectVerificationStatusEnum(
-      "verification_status",
-    )
+    verificationStatus: projectVerificationStatusEnum("verification_status")
       .notNull()
       .default("UNVERIFIED"),
 
@@ -1012,16 +988,11 @@ export const projects = pgTable(
       .defaultNow(),
   },
   (table) => [
-    uniqueIndex("projects_creator_slug_unique").on(
-      table.createdById,
-      table.slug,
-    ),
+    uniqueIndex("projects_creator_slug_unique").on(table.createdById, table.slug),
 
     index("projects_candidate_id_idx").on(table.candidateId),
 
-    index("projects_verification_status_idx").on(
-      table.verificationStatus,
-    ),
+    index("projects_verification_status_idx").on(table.verificationStatus),
   ],
 );
 
@@ -1043,10 +1014,7 @@ export const projectSkills = pgTable(
       }),
   },
   (table) => [
-    uniqueIndex("project_skills_project_skill_unique").on(
-      table.projectId,
-      table.skillId,
-    ),
+    uniqueIndex("project_skills_project_skill_unique").on(table.projectId, table.skillId),
 
     index("project_skills_skill_id_idx").on(table.skillId),
   ],
@@ -1077,9 +1045,7 @@ export const projectMedia = pgTable(
       .notNull()
       .defaultNow(),
   },
-  (table) => [
-    index("project_media_project_id_idx").on(table.projectId),
-  ],
+  (table) => [index("project_media_project_id_idx").on(table.projectId)],
 );
 
 /*
@@ -1152,9 +1118,7 @@ export const companyMembers = pgTable(
 
     jobTitle: text("job_title"),
 
-    membershipRole: companyMemberRoleEnum("membership_role")
-      .notNull()
-      .default("RECRUITER"),
+    membershipRole: companyMemberRoleEnum("membership_role").notNull().default("RECRUITER"),
 
     createdAt: timestamp("created_at", {
       withTimezone: true,
@@ -1169,10 +1133,7 @@ export const companyMembers = pgTable(
       .defaultNow(),
   },
   (table) => [
-    uniqueIndex("company_members_company_user_unique").on(
-      table.companyId,
-      table.userId,
-    ),
+    uniqueIndex("company_members_company_user_unique").on(table.companyId, table.userId),
 
     index("company_members_user_id_idx").on(table.userId),
   ],
@@ -1184,39 +1145,36 @@ export const companyMembers = pgTable(
 |--------------------------------------------------------------------------
 */
 
-export const teams = pgTable(
-  "teams",
-  {
-    id: uuid("id").defaultRandom().primaryKey(),
+export const teams = pgTable("teams", {
+  id: uuid("id").defaultRandom().primaryKey(),
 
-    projectId: uuid("project_id")
-      .notNull()
-      .unique()
-      .references(() => projects.id, {
-        onDelete: "cascade",
-      }),
+  projectId: uuid("project_id")
+    .notNull()
+    .unique()
+    .references(() => projects.id, {
+      onDelete: "cascade",
+    }),
 
-    name: text("name").notNull(),
+  name: text("name").notNull(),
 
-    createdById: uuid("created_by_id")
-      .notNull()
-      .references(() => users.id, {
-        onDelete: "restrict",
-      }),
+  createdById: uuid("created_by_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "restrict",
+    }),
 
-    createdAt: timestamp("created_at", {
-      withTimezone: true,
-    })
-      .notNull()
-      .defaultNow(),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
 
-    updatedAt: timestamp("updated_at", {
-      withTimezone: true,
-    })
-      .notNull()
-      .defaultNow(),
-  },
-);
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+});
 
 export const teamMembers = pgTable(
   "team_members",
@@ -1256,10 +1214,7 @@ export const teamMembers = pgTable(
       .defaultNow(),
   },
   (table) => [
-    uniqueIndex("team_members_team_user_unique").on(
-      table.teamId,
-      table.userId,
-    ),
+    uniqueIndex("team_members_team_user_unique").on(table.teamId, table.userId),
 
     index("team_members_user_id_idx").on(table.userId),
   ],
@@ -1282,9 +1237,7 @@ export const teamContributions = pgTable(
 
     evidenceUrl: text("evidence_url"),
 
-    verificationStatus: contributionVerificationStatusEnum(
-      "verification_status",
-    )
+    verificationStatus: contributionVerificationStatusEnum("verification_status")
       .notNull()
       .default("UNVERIFIED"),
 
@@ -1303,9 +1256,7 @@ export const teamContributions = pgTable(
   (table) => [
     index("team_contributions_team_member_idx").on(table.teamMemberId),
 
-    index("team_contributions_verification_status_idx").on(
-      table.verificationStatus,
-    ),
+    index("team_contributions_verification_status_idx").on(table.verificationStatus),
   ],
 );
 /*
@@ -1344,10 +1295,7 @@ export const reviewerSkills = pgTable(
       .defaultNow(),
   },
   (table) => [
-    uniqueIndex("reviewer_skills_reviewer_skill_unique").on(
-      table.reviewerId,
-      table.skillId,
-    ),
+    uniqueIndex("reviewer_skills_reviewer_skill_unique").on(table.reviewerId, table.skillId),
 
     index("reviewer_skills_skill_id_idx").on(table.skillId),
   ],
@@ -1423,9 +1371,7 @@ export const verificationRequests = pgTable(
         onDelete: "cascade",
       }),
 
-    status: verificationRequestStatusEnum("status")
-      .notNull()
-      .default("PENDING"),
+    status: verificationRequestStatusEnum("status").notNull().default("PENDING"),
 
     requestedAt: timestamp("requested_at", {
       withTimezone: true,
@@ -1458,9 +1404,7 @@ export const verificationRequests = pgTable(
   (table) => [
     index("verification_requests_status_idx").on(table.status),
     index("verification_requests_candidate_idx").on(table.candidateId),
-    index("verification_requests_candidate_skill_idx").on(
-      table.candidateSkillId,
-    ),
+    index("verification_requests_candidate_skill_idx").on(table.candidateSkillId),
   ],
 );
 
@@ -1504,10 +1448,7 @@ export const notifications = pgTable(
       .defaultNow(),
   },
   (table) => [
-    index("notifications_user_read_idx").on(
-      table.userId,
-      table.isRead,
-    ),
+    index("notifications_user_read_idx").on(table.userId, table.isRead),
 
     index("notifications_created_at_idx").on(table.createdAt),
   ],
@@ -1545,10 +1486,7 @@ export const activityEvents = pgTable(
       .defaultNow(),
   },
   (table) => [
-    index("activity_events_candidate_created_idx").on(
-      table.candidateId,
-      table.createdAt,
-    ),
+    index("activity_events_candidate_created_idx").on(table.candidateId, table.createdAt),
 
     index("activity_events_type_idx").on(table.type),
   ],
@@ -1592,11 +1530,152 @@ export const auditLogs = pgTable(
   (table) => [
     index("audit_logs_actor_user_idx").on(table.actorUserId),
 
-    index("audit_logs_entity_idx").on(
-      table.entityType,
-      table.entityId,
-    ),
+    index("audit_logs_entity_idx").on(table.entityType, table.entityId),
 
     index("audit_logs_created_at_idx").on(table.createdAt),
+  ],
+);
+
+/*
+|--------------------------------------------------------------------------
+| EDUCATION
+|--------------------------------------------------------------------------
+*/
+
+export const education = pgTable(
+  "education",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    candidateId: uuid("candidate_id")
+      .notNull()
+      .references(() => candidateProfiles.id, {
+        onDelete: "cascade",
+      }),
+
+    institution: text("institution").notNull(),
+
+    degree: text("degree"),
+
+    fieldOfStudy: text("field_of_study"),
+
+    startDate: date("start_date", {
+      mode: "string",
+    }),
+
+    endDate: date("end_date", {
+      mode: "string",
+    }),
+
+    currentlyStudying: boolean("currently_studying").notNull().default(false),
+
+    description: text("description"),
+
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [index("education_candidate_id_idx").on(table.candidateId)],
+);
+
+/*
+|--------------------------------------------------------------------------
+| EXPERIENCE
+|--------------------------------------------------------------------------
+*/
+
+export const experience = pgTable(
+  "experience",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    candidateId: uuid("candidate_id")
+      .notNull()
+      .references(() => candidateProfiles.id, {
+        onDelete: "cascade",
+      }),
+
+    company: text("company").notNull(),
+
+    jobTitle: text("job_title").notNull(),
+
+    employmentType: text("employment_type"),
+
+    location: text("location"),
+
+    startDate: date("start_date", {
+      mode: "string",
+    }),
+
+    endDate: date("end_date", {
+      mode: "string",
+    }),
+
+    currentlyWorking: boolean("currently_working").notNull().default(false),
+
+    description: text("description"),
+
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [index("experience_candidate_id_idx").on(table.candidateId)],
+);
+
+/*
+|--------------------------------------------------------------------------
+| SOCIAL LINKS
+|--------------------------------------------------------------------------
+*/
+
+export const socialLinks = pgTable(
+  "social_links",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    candidateId: uuid("candidate_id")
+      .notNull()
+      .references(() => candidateProfiles.id, {
+        onDelete: "cascade",
+      }),
+
+    platform: socialPlatformEnum("platform").notNull(),
+
+    label: text("label"),
+
+    url: text("url").notNull(),
+
+    createdAt: timestamp("created_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+
+    updatedAt: timestamp("updated_at", {
+      withTimezone: true,
+    })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("social_links_candidate_platform_unique").on(table.candidateId, table.platform),
+
+    index("social_links_candidate_id_idx").on(table.candidateId),
   ],
 );

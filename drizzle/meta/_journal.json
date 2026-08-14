@@ -29,6 +29,20 @@
       "when": 1786686477594,
       "tag": "0003_verification_notifications_and_audit",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1786697835671,
+      "tag": "0004_candidate_profile",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1786730341118,
+      "tag": "0005_candidate_profile_slug",
+      "breakpoints": true
     }
   ]
 }
