@@ -1,20 +1,114 @@
 @import "tailwindcss";
 
 /*
-  The UI is currently styled for a light surface throughout (slate borders,
-  white form controls). The create-next-app starter flipped the background to
-  near-black under `prefers-color-scheme: dark`, which left every page as an
-  unreadable hybrid. Committing to light until a real dark theme is designed.
+|--------------------------------------------------------------------------
+| THEME STRATEGY
+|--------------------------------------------------------------------------
+| Dark mode is driven by a `dark` class on <html> rather than the media query
+| alone, so the user's explicit choice can override their OS setting. The class
+| is applied before first paint by the inline script in the root layout.
+|
+| Components should use the semantic tokens below (bg-surface, text-muted,
+| border-line...) instead of raw palette colours, so a component written once
+| renders correctly in both themes.
 */
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-muted: #f1f5f9;
+
+  /* Text */
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --faint: #94a3b8;
+
+  /* Lines */
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+
+  /* Brand */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-foreground: #ffffff;
+  --primary-soft: #eff6ff;
+
+  /* Status */
+  --success: #15803d;
+  --success-soft: #dcfce7;
+  --warning: #b45309;
+  --warning-soft: #fef3c7;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+  --info: #0369a1;
+  --info-soft: #e0f2fe;
+
+  --ring: #93c5fd;
+}
+
+.dark {
+  --background: #0b1120;
+  --surface: #111827;
+  --surface-raised: #172033;
+  --surface-muted: #1e293b;
+
+  --foreground: #e2e8f0;
+  --muted: #94a3b8;
+  --faint: #64748b;
+
+  --line: #1e293b;
+  --line-strong: #334155;
+
+  --primary: #3b82f6;
+  --primary-hover: #60a5fa;
+  --primary-foreground: #0b1120;
+  --primary-soft: #172554;
+
+  --success: #4ade80;
+  --success-soft: #052e16;
+  --warning: #fbbf24;
+  --warning-soft: #451a03;
+  --danger: #f87171;
+  --danger-soft: #450a0a;
+  --info: #38bdf8;
+  --info-soft: #082f49;
+
+  --ring: #1d4ed8;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-muted: var(--surface-muted);
+
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  --color-ring: var(--ring);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -23,4 +117,10 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Consistent focus treatment for keyboard users across every control. */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
