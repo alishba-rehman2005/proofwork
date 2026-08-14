@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1786684339866,
+      "tag": "0000_core_identity_and_skills",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1786685688214,
+      "tag": "0001_assessment_verification_flow",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1786686073438,
+      "tag": "0002_projects_companies_and_teams",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1786686477594,
+      "tag": "0003_verification_notifications_and_audit",
+      "breakpoints": true
+    }
+  ]
+}
