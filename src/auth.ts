@@ -1,10 +1,11 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 
 import { db } from "@/db";
-import { roles, userRoles, users } from "@/db/schema";
+import { users } from "@/db/schema";
+import { loginSchema } from "@/features/auth/validation/login.schema";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
@@ -14,19 +15,24 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        email: {
+          label: "Email",
+          type: "email",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+        },
       },
 
       async authorize(credentials) {
-        const email =
-          typeof credentials?.email === "string" ? credentials.email.trim().toLowerCase() : "";
+        const parsed = loginSchema.safeParse(credentials);
 
-        const password = typeof credentials?.password === "string" ? credentials.password : "";
-
-        if (!email || !password) {
+        if (!parsed.success) {
           return null;
         }
+
+        const { email, password } = parsed.data;
 
         const [user] = await db
           .select({
@@ -34,7 +40,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             email: users.email,
             passwordHash: users.passwordHash,
             accountStatus: users.accountStatus,
-            primaryRoleId: users.primaryRoleId,
           })
           .from(users)
           .where(eq(users.email, email))
@@ -54,45 +59,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           return null;
         }
 
-        const assignedRoles = await db
-          .select({
-            name: roles.name,
-          })
-          .from(userRoles)
-          .innerJoin(roles, eq(userRoles.roleId, roles.id))
-          .where(eq(userRoles.userId, user.id));
-
         return {
           id: user.id,
           email: user.email,
-          roles: assignedRoles.map((role) => role.name),
-          primaryRoleId: user.primaryRoleId,
         };
       },
     }),
   ],
-
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.userId = user.id;
-        token.roles = user.roles;
-        token.primaryRoleId = user.primaryRoleId;
-      }
-
-      return token;
-    },
-
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.userId as string;
-        session.user.roles = token.roles as string[];
-        session.user.primaryRoleId = (token.primaryRoleId as string | null) ?? null;
-      }
-
-      return session;
-    },
-  },
 
   pages: {
     signIn: "/login",
