@@ -20,9 +20,7 @@ export function WorkspaceSwitcher({ workspaces, currentRole }: WorkspaceSwitcher
     <select
       value={currentRole ?? ""}
       onChange={(event) => {
-        const selected = workspaces.find(
-          (workspace) => workspace.role === event.target.value,
-        );
+        const selected = workspaces.find((workspace) => workspace.role === event.target.value);
 
         if (selected) {
           router.push(selected.href);
@@ -31,10 +29,7 @@ export function WorkspaceSwitcher({ workspaces, currentRole }: WorkspaceSwitcher
       className="rounded-lg border px-3 py-2"
     >
       {workspaces.map((workspace) => (
-        <option
-          key={workspace.role}
-          value={workspace.role}
-        >
+        <option key={workspace.role} value={workspace.role}>
           {workspace.label}
         </option>
       ))}

@@ -8,10 +8,7 @@ export default function UnauthorizedPage() {
 
         <p className="mt-3 text-slate-600">You do not have permission to access this page.</p>
 
-        <Link
-          href="/dashboard"
-          className="mt-6 inline-block rounded-lg border px-4 py-2"
-        >
+        <Link href="/dashboard" className="mt-6 inline-block rounded-lg border px-4 py-2">
           Return to dashboard
         </Link>
       </div>

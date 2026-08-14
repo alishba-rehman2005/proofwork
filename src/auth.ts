@@ -99,8 +99,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.userId as string;
         session.user.roles = (token.roles as string[] | undefined) ?? [];
-        session.user.primaryRole =
-          (token.primaryRole as string | null | undefined) ?? null;
+        session.user.primaryRole = (token.primaryRole as string | null | undefined) ?? null;
       }
 
       return session;

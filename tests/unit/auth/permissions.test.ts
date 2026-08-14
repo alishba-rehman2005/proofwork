@@ -12,18 +12,13 @@ describe("auth permissions", () => {
   });
 
   it("supports multiple roles", () => {
-    expect(
-      hasAnyRole(["CANDIDATE", "REVIEWER"], [APP_ROLES.REVIEWER, APP_ROLES.ADMIN]),
-    ).toBe(true);
+    expect(hasAnyRole(["CANDIDATE", "REVIEWER"], [APP_ROLES.REVIEWER, APP_ROLES.ADMIN])).toBe(true);
   });
 
   it("checks all required roles", () => {
-    expect(
-      hasAllRoles(
-        ["CANDIDATE", "REVIEWER"],
-        [APP_ROLES.CANDIDATE, APP_ROLES.REVIEWER],
-      ),
-    ).toBe(true);
+    expect(hasAllRoles(["CANDIDATE", "REVIEWER"], [APP_ROLES.CANDIDATE, APP_ROLES.REVIEWER])).toBe(
+      true,
+    );
   });
 
   it("detects admin users", () => {

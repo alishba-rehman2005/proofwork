@@ -69,13 +69,9 @@ async function seed() {
     .returning();
 
   const categoryRows =
-    insertedCategories.length > 0
-      ? insertedCategories
-      : await db.select().from(skillCategories);
+    insertedCategories.length > 0 ? insertedCategories : await db.select().from(skillCategories);
 
-  const categoryMap = new Map(
-    categoryRows.map((category) => [category.slug, category.id]),
-  );
+  const categoryMap = new Map(categoryRows.map((category) => [category.slug, category.id]));
 
   const skillData = [
     {

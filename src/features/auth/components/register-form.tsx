@@ -63,16 +63,9 @@ export function RegisterForm() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-5"
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <div className="space-y-2">
-        <label
-          htmlFor="fullName"
-          className="text-sm font-medium"
-        >
+        <label htmlFor="fullName" className="text-sm font-medium">
           Full name
         </label>
 
@@ -92,10 +85,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <label
-          htmlFor="email"
-          className="text-sm font-medium"
-        >
+        <label htmlFor="email" className="text-sm font-medium">
           Email address
         </label>
 
@@ -115,10 +105,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <label
-          htmlFor="password"
-          className="text-sm font-medium"
-        >
+        <label htmlFor="password" className="text-sm font-medium">
           Password
         </label>
 
@@ -138,10 +125,7 @@ export function RegisterForm() {
       </div>
 
       <div className="space-y-2">
-        <label
-          htmlFor="confirmPassword"
-          className="text-sm font-medium"
-        >
+        <label htmlFor="confirmPassword" className="text-sm font-medium">
           Confirm password
         </label>
 

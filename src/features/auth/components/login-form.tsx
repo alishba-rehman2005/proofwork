@@ -10,15 +10,9 @@ export function LoginForm() {
   const [state, action, pending] = useActionState(loginAction, initialState);
 
   return (
-    <form
-      action={action}
-      className="space-y-5"
-    >
+    <form action={action} className="space-y-5">
       <div className="space-y-2">
-        <label
-          htmlFor="email"
-          className="text-sm font-medium"
-        >
+        <label htmlFor="email" className="text-sm font-medium">
           Email address
         </label>
 
@@ -35,10 +29,7 @@ export function LoginForm() {
       </div>
 
       <div className="space-y-2">
-        <label
-          htmlFor="password"
-          className="text-sm font-medium"
-        >
+        <label htmlFor="password" className="text-sm font-medium">
           Password
         </label>
 
