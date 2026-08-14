@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
  */
 
 const controlClassName =
-  "mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:bg-slate-50";
+  "mt-2 w-full rounded-lg border border-line px-3 py-2 outline-none focus:border-primary focus:ring-2 focus:ring-ring disabled:bg-surface-muted";
 
 type FieldShellProps = {
   label: string;
@@ -22,13 +22,13 @@ type FieldShellProps = {
 function FieldShell({ label, htmlFor, error, children }: FieldShellProps) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="text-sm font-medium text-slate-700">
+      <label htmlFor={htmlFor} className="text-sm font-medium text-foreground">
         {label}
       </label>
 
       {children}
 
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-1 text-sm text-danger">{error}</p>}
     </div>
   );
 }
@@ -160,14 +160,14 @@ type CheckboxFieldProps = {
 
 export function CheckboxField({ label, name, defaultChecked, disabled }: CheckboxFieldProps) {
   return (
-    <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+    <label className="flex items-center gap-2 text-sm font-medium text-foreground">
       <input
         id={name}
         name={name}
         type="checkbox"
         disabled={disabled}
         defaultChecked={defaultChecked}
-        className="h-4 w-4 rounded border-slate-300"
+        className="h-4 w-4 rounded border-line"
       />
 
       {label}
@@ -186,7 +186,7 @@ export function FormStatus({ success, message }: FormStatusProps) {
   }
 
   return (
-    <p role="status" className={success ? "text-sm text-green-600" : "text-sm text-red-600"}>
+    <p role="status" className={success ? "text-sm text-success" : "text-sm text-danger"}>
       {message}
     </p>
   );
@@ -203,7 +203,7 @@ export function SubmitButton({ pending, idleLabel, pendingLabel }: SubmitButtonP
     <button
       type="submit"
       disabled={pending}
-      className="rounded-lg bg-blue-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+      className="rounded-lg bg-primary px-5 py-2.5 font-medium text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? pendingLabel : idleLabel}
     </button>

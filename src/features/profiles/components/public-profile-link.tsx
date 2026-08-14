@@ -28,14 +28,14 @@ export function PublicProfileLink({ path, description, isShareable }: PublicProf
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 p-4">
+    <div className="rounded-xl border border-line p-4">
       <div className="flex flex-wrap items-center gap-3">
-        <code className="rounded bg-slate-100 px-2 py-1 text-sm break-all">{path}</code>
+        <code className="rounded bg-surface-muted px-2 py-1 text-sm break-all">{path}</code>
 
         <button
           type="button"
           onClick={handleCopy}
-          className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm transition-colors hover:bg-slate-50"
+          className="rounded-lg border border-line px-3 py-1.5 text-sm transition-colors hover:bg-surface-muted"
         >
           {copied ? "Copied" : "Copy link"}
         </button>
@@ -44,16 +44,16 @@ export function PublicProfileLink({ path, description, isShareable }: PublicProf
           href={path}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-sm text-blue-600 underline"
+          className="text-sm text-primary underline"
         >
           Preview
         </a>
       </div>
 
-      <p className="mt-3 text-sm text-slate-600">{description}</p>
+      <p className="mt-3 text-sm text-muted">{description}</p>
 
       {!isShareable && (
-        <p className="mt-1 text-sm text-amber-700">
+        <p className="mt-1 text-sm text-warning">
           Set visibility to Public if you want to share this link openly.
         </p>
       )}

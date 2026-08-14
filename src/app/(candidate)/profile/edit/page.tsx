@@ -30,7 +30,7 @@ export default async function EditProfilePage() {
       <header>
         <h1 className="text-3xl font-semibold">Edit profile</h1>
 
-        <p className="mt-2 text-slate-600">
+        <p className="mt-2 text-muted">
           Manage the professional information recruiters and reviewers can see.
         </p>
       </header>
@@ -64,7 +64,7 @@ export default async function EditProfilePage() {
           <EducationForm key={item.id} item={item} />
         ))}
 
-        <h3 className="pt-2 font-medium text-slate-700">Add education</h3>
+        <h3 className="pt-2 font-medium text-foreground">Add education</h3>
 
         <EducationForm />
       </section>
@@ -76,7 +76,7 @@ export default async function EditProfilePage() {
           <ExperienceForm key={item.id} item={item} />
         ))}
 
-        <h3 className="pt-2 font-medium text-slate-700">Add experience</h3>
+        <h3 className="pt-2 font-medium text-foreground">Add experience</h3>
 
         <ExperienceForm />
       </section>
@@ -88,7 +88,7 @@ export default async function EditProfilePage() {
           <SocialLinkForm key={item.id} item={item} />
         ))}
 
-        <h3 className="pt-2 font-medium text-slate-700">Add social link</h3>
+        <h3 className="pt-2 font-medium text-foreground">Add social link</h3>
 
         <SocialLinkForm />
       </section>

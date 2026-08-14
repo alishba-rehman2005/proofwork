@@ -84,12 +84,12 @@ export function AvatarUpload({ currentImageUrl }: AvatarUploadProps) {
 
   return (
     <div className="space-y-3">
-      <div className="h-24 w-24 overflow-hidden rounded-full border border-slate-200 bg-slate-100">
+      <div className="h-24 w-24 overflow-hidden rounded-full border border-line bg-surface-muted">
         {preview ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={preview} alt="Profile" className="h-full w-full object-cover" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm text-slate-500">
+          <div className="flex h-full w-full items-center justify-center text-sm text-muted">
             No image
           </div>
         )}
@@ -109,19 +109,19 @@ export function AvatarUpload({ currentImageUrl }: AvatarUploadProps) {
             type="button"
             onClick={handleRemove}
             disabled={busy}
-            className="rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+            className="rounded-lg border border-danger/40 px-3 py-1.5 text-sm font-medium text-danger transition-colors hover:bg-danger-soft disabled:opacity-60"
           >
             Remove photo
           </button>
         )}
       </div>
 
-      <p className="text-xs text-slate-500">JPG, PNG or WebP. Maximum 2MB.</p>
+      <p className="text-xs text-muted">JPG, PNG or WebP. Maximum 2MB.</p>
 
-      {busy && <p className="text-sm text-slate-600">Working...</p>}
+      {busy && <p className="text-sm text-muted">Working...</p>}
 
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-danger">
           {error}
         </p>
       )}

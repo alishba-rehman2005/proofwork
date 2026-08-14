@@ -28,11 +28,11 @@ export default async function ProfilePage() {
   return (
     <main className="mx-auto max-w-5xl space-y-8 p-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-sm text-slate-500">Profile completeness: {completeness}%</p>
+        <p className="text-sm text-muted">Profile completeness: {completeness}%</p>
 
         <Link
           href="/profile/edit"
-          className="rounded-lg border border-slate-300 px-4 py-2 transition-colors hover:bg-slate-50"
+          className="rounded-lg border border-line px-4 py-2 transition-colors hover:bg-surface-muted"
         >
           Edit profile
         </Link>

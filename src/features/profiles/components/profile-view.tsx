@@ -34,15 +34,15 @@ export function ProfileView({ profile }: ProfileViewProps) {
             className="h-24 w-24 rounded-full object-cover"
           />
         ) : (
-          <div className="h-24 w-24 rounded-full bg-slate-200" />
+          <div className="h-24 w-24 rounded-full bg-surface-muted" />
         )}
 
         <div>
           <h1 className="text-3xl font-semibold">{profile.fullName}</h1>
 
-          {profile.headline && <p className="mt-1 text-slate-600">{profile.headline}</p>}
+          {profile.headline && <p className="mt-1 text-muted">{profile.headline}</p>}
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-muted">
             {[profile.city, profile.country].filter(Boolean).join(", ") || "Location not specified"}
             {profile.availability && ` · ${formatEnumLabel(profile.availability)}`}
           </p>
@@ -52,7 +52,7 @@ export function ProfileView({ profile }: ProfileViewProps) {
       <section>
         <h2 className="text-xl font-semibold">About</h2>
 
-        <p className="mt-3 whitespace-pre-wrap text-slate-700">
+        <p className="mt-3 whitespace-pre-wrap text-foreground">
           {profile.bio || "No bio added yet."}
         </p>
       </section>
@@ -62,22 +62,22 @@ export function ProfileView({ profile }: ProfileViewProps) {
 
         <div className="mt-4 space-y-4">
           {profile.experience.length === 0 ? (
-            <p className="text-slate-600">No experience added.</p>
+            <p className="text-muted">No experience added.</p>
           ) : (
             profile.experience.map((item) => (
-              <article key={item.id} className="rounded-xl border border-slate-200 p-4">
+              <article key={item.id} className="rounded-xl border border-line p-4">
                 <h3 className="font-medium">{item.jobTitle}</h3>
 
-                <p className="text-slate-700">
+                <p className="text-foreground">
                   {[item.company, item.location].filter(Boolean).join(" — ")}
                 </p>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-muted">
                   {formatDateRange(item.startDate, item.endDate, item.currentlyWorking)}
                 </p>
 
                 {item.description && (
-                  <p className="mt-2 whitespace-pre-wrap text-slate-700">{item.description}</p>
+                  <p className="mt-2 whitespace-pre-wrap text-foreground">{item.description}</p>
                 )}
               </article>
             ))
@@ -90,22 +90,22 @@ export function ProfileView({ profile }: ProfileViewProps) {
 
         <div className="mt-4 space-y-4">
           {profile.education.length === 0 ? (
-            <p className="text-slate-600">No education added.</p>
+            <p className="text-muted">No education added.</p>
           ) : (
             profile.education.map((item) => (
-              <article key={item.id} className="rounded-xl border border-slate-200 p-4">
+              <article key={item.id} className="rounded-xl border border-line p-4">
                 <h3 className="font-medium">{item.institution}</h3>
 
-                <p className="text-slate-700">
+                <p className="text-foreground">
                   {[item.degree, item.fieldOfStudy].filter(Boolean).join(" — ")}
                 </p>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-1 text-sm text-muted">
                   {formatDateRange(item.startDate, item.endDate, item.currentlyStudying)}
                 </p>
 
                 {item.description && (
-                  <p className="mt-2 whitespace-pre-wrap text-slate-700">{item.description}</p>
+                  <p className="mt-2 whitespace-pre-wrap text-foreground">{item.description}</p>
                 )}
               </article>
             ))
@@ -118,7 +118,7 @@ export function ProfileView({ profile }: ProfileViewProps) {
 
         <div className="mt-4 space-y-2">
           {links.length === 0 ? (
-            <p className="text-slate-600">No links added.</p>
+            <p className="text-muted">No links added.</p>
           ) : (
             links.map((link) => (
               <a
@@ -126,7 +126,7 @@ export function ProfileView({ profile }: ProfileViewProps) {
                 href={link.url}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="block text-blue-600 underline"
+                className="block text-primary underline"
               >
                 {link.label}
               </a>
@@ -138,7 +138,7 @@ export function ProfileView({ profile }: ProfileViewProps) {
       <section>
         <h2 className="text-xl font-semibold">Skills</h2>
 
-        <p className="mt-3 text-slate-600">Skill verification arrives in a later phase.</p>
+        <p className="mt-3 text-muted">Skill verification arrives in a later phase.</p>
       </section>
     </div>
   );

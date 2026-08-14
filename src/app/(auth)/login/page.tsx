@@ -17,20 +17,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
 
-          <p className="text-sm text-slate-600">Sign in to continue to ProofWork.</p>
+          <p className="text-sm text-muted">Sign in to continue to ProofWork.</p>
         </div>
 
         {params.registered === "true" && (
-          <div className="rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">
+          <div className="rounded-lg border border-success/40 bg-success-soft p-3 text-sm text-success">
             Account created successfully. You can now sign in.
           </div>
         )}
 
         <LoginForm />
 
-        <p className="text-center text-sm text-slate-600">
+        <p className="text-center text-sm text-muted">
           Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-blue-600 hover:underline">
+          <Link href="/register" className="font-medium text-primary hover:underline">
             Create account
           </Link>
         </p>

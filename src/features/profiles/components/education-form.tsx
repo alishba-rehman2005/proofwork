@@ -22,7 +22,7 @@ export function EducationForm({ item }: EducationFormProps) {
   const isEditing = Boolean(item);
 
   return (
-    <form action={action} className="space-y-4 rounded-xl border border-slate-200 p-5">
+    <form action={action} className="space-y-4 rounded-xl border border-line p-5">
       {item && <input type="hidden" name="id" value={item.id} />}
 
       <TextField
@@ -106,7 +106,7 @@ export function EducationForm({ item }: EducationFormProps) {
             formAction={deleteEducationAction}
             formNoValidate
             disabled={pending}
-            className="rounded-lg border border-red-200 px-4 py-2.5 font-medium text-red-600 transition-colors hover:bg-red-50 disabled:opacity-60"
+            className="rounded-lg border border-danger/40 px-4 py-2.5 font-medium text-danger transition-colors hover:bg-danger-soft disabled:opacity-60"
           >
             Delete
           </button>
