@@ -1,5 +1,5 @@
 import { APP_ROLES } from "@/lib/auth/permissions";
-import { requireRole } from "@/server/auth/authorization";
+import { requireRole } from "@/lib/auth/session";
 
 export default async function AdminPage() {
   const user = await requireRole([APP_ROLES.ADMIN]);

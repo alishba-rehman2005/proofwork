@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-import { registerUser } from "@/features/auth/services/register-user";
+import { registerUser } from "@/features/auth/server/register-user";
 import { registerSchema } from "@/features/auth/validation/register.schema";
 
 export const runtime = "nodejs";

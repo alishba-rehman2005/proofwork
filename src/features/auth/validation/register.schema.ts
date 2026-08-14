@@ -8,11 +8,9 @@ export const registerSchema = z
       .min(2, "Full name must be at least 2 characters.")
       .max(100, "Full name must not exceed 100 characters."),
 
-    email: z
-      .string()
-      .trim()
-      .toLowerCase()
-      .email("Please enter a valid email address."),
+    // Normalise before validating so surrounding whitespace and casing are not
+    // treated as a malformed address.
+    email: z.string().trim().toLowerCase().pipe(z.email("Please enter a valid email address.")),
 
     password: z
       .string()

@@ -1,11 +1,9 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z
-    .string()
-    .trim()
-    .toLowerCase()
-    .email("Please enter a valid email address."),
+  // Normalise before validating so surrounding whitespace and casing are not
+  // treated as a malformed address.
+  email: z.string().trim().toLowerCase().pipe(z.email("Please enter a valid email address.")),
 
   password: z.string().min(1, "Password is required.").max(128, "Password is too long."),
 });
