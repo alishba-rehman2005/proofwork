@@ -1,8 +1,11 @@
+import { randomUUID } from "node:crypto";
+
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 
 import { db } from "@/db";
 import { candidateProfiles, roles, userRoles, users } from "@/db/schema";
+import { buildProfileSlug } from "@/features/profiles/utils/slug";
 
 type RegisterUserInput = {
   fullName: string;
@@ -87,9 +90,16 @@ export async function registerUser(input: RegisterUserInput): Promise<RegisterUs
       })
       .where(eq(users.id, newUser.id));
 
+    // The id is generated here rather than by the database so the public slug
+    // can be derived from it within the same insert.
+    const profileId = randomUUID();
+    const fullName = input.fullName.trim();
+
     await tx.insert(candidateProfiles).values({
+      id: profileId,
       userId: newUser.id,
-      fullName: input.fullName.trim(),
+      fullName,
+      slug: buildProfileSlug(fullName, profileId),
     });
 
     return {
