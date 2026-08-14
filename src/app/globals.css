@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/*
+  The UI is currently styled for a light surface throughout (slate borders,
+  white form controls). The create-next-app starter flipped the background to
+  near-black under `prefers-color-scheme: dark`, which left every page as an
+  unreadable hybrid. Committing to light until a real dark theme is designed.
+*/
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -12,15 +19,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
