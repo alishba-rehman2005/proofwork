@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import type { CandidateProfile } from "../types";
 import { AVAILABILITY_OPTIONS, PROFILE_VISIBILITY_OPTIONS } from "../constants";
 import { type ProfileActionState, updateProfileAction } from "../actions/profile.actions";
-import { FormStatus, SelectField, SubmitButton, TextAreaField, TextField } from "./form-fields";
+import { FormStatus, SelectField, SubmitButton, TextAreaField, TextField } from "@/components/ui";
 
 type ProfileFormProps = {
   profile: CandidateProfile;

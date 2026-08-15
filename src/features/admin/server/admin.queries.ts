@@ -1,7 +1,18 @@
 import { asc, eq, inArray } from "drizzle-orm";
 
 import { db } from "@/db";
-import { companies, companyMembers, roles, userRoles, users } from "@/db/schema";
+import {
+  assessmentAssignments,
+  candidateSkills,
+  companies,
+  companyMembers,
+  projects,
+  roles,
+  skillRequests,
+  skills,
+  userRoles,
+  users,
+} from "@/db/schema";
 
 export type PendingCompany = {
   companyId: string;
@@ -60,6 +71,10 @@ export type PlatformStats = {
   activeCandidates: number;
   pendingCompanies: number;
   reviewers: number;
+  skillsVerified: number;
+  assessmentsCompleted: number;
+  projectsSubmitted: number;
+  companiesRegistered: number;
 };
 
 /**
@@ -69,7 +84,16 @@ export type PlatformStats = {
  * and submissions, which do not exist yet.
  */
 export async function getPlatformStats(): Promise<PlatformStats> {
-  const [allUsers, candidateRows, pending, reviewerRows] = await Promise.all([
+  const [
+    allUsers,
+    candidateRows,
+    pending,
+    reviewerRows,
+    verifiedSkillRows,
+    completedRows,
+    projectRows,
+    companyRows,
+  ] = await Promise.all([
     db.select({ id: users.id }).from(users),
 
     db
@@ -86,6 +110,20 @@ export async function getPlatformStats(): Promise<PlatformStats> {
       .from(userRoles)
       .innerJoin(roles, eq(userRoles.roleId, roles.id))
       .where(eq(roles.name, "REVIEWER")),
+
+    db
+      .select({ id: candidateSkills.id })
+      .from(candidateSkills)
+      .where(eq(candidateSkills.verificationStatus, "VERIFIED")),
+
+    db
+      .select({ id: assessmentAssignments.id })
+      .from(assessmentAssignments)
+      .where(eq(assessmentAssignments.status, "APPROVED")),
+
+    db.select({ id: projects.id }).from(projects),
+
+    db.select({ id: companies.id }).from(companies),
   ]);
 
   return {
@@ -93,7 +131,83 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     activeCandidates: candidateRows.length,
     pendingCompanies: pending.length,
     reviewers: reviewerRows.length,
+    skillsVerified: verifiedSkillRows.length,
+    assessmentsCompleted: completedRows.length,
+    projectsSubmitted: projectRows.length,
+    companiesRegistered: companyRows.length,
   };
+}
+
+export type SkillRequestRow = {
+  id: string;
+  proposedName: string;
+  description: string | null;
+  requestedBy: string;
+  createdAt: Date;
+};
+
+/** Candidate suggestions for skills missing from the catalogue. */
+export async function getPendingSkillRequests(): Promise<SkillRequestRow[]> {
+  return db
+    .select({
+      id: skillRequests.id,
+      proposedName: skillRequests.proposedName,
+      description: skillRequests.description,
+      requestedBy: users.email,
+      createdAt: skillRequests.createdAt,
+    })
+    .from(skillRequests)
+    .innerJoin(users, eq(skillRequests.requestedById, users.id))
+    .where(eq(skillRequests.status, "PENDING"))
+    .orderBy(asc(skillRequests.createdAt));
+}
+
+export type ManagedUser = {
+  id: string;
+  email: string;
+  accountStatus: string;
+  roleNames: string[];
+  createdAt: Date;
+};
+
+/** Every account, for the admin user table. */
+export async function getManagedUsers(): Promise<ManagedUser[]> {
+  const rows = await db
+    .select({
+      id: users.id,
+      email: users.email,
+      accountStatus: users.accountStatus,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .orderBy(asc(users.createdAt));
+
+  const roleRows = await db
+    .select({ userId: userRoles.userId, name: roles.name })
+    .from(userRoles)
+    .innerJoin(roles, eq(userRoles.roleId, roles.id));
+
+  return rows.map((row) => ({
+    ...row,
+    roleNames: roleRows.filter((role) => role.userId === row.id).map((role) => role.name),
+  }));
+}
+
+/** Catalogue skills with how many candidates claim each one. */
+export async function getSkillsWithUsage() {
+  const catalogue = await db
+    .select({ id: skills.id, name: skills.name, isActive: skills.isActive })
+    .from(skills)
+    .orderBy(asc(skills.name));
+
+  const usage = await db
+    .select({ skillId: candidateSkills.skillId, id: candidateSkills.id })
+    .from(candidateSkills);
+
+  return catalogue.map((skill) => ({
+    ...skill,
+    claimedBy: usage.filter((row) => row.skillId === skill.id).length,
+  }));
 }
 
 /** Resolves a role id by name, used when granting or revoking a role. */

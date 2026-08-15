@@ -15,7 +15,9 @@
     "db:seed": "tsx src/db/seed.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "admin:create": "tsx scripts/create-admin.ts"
+    "admin:create": "tsx scripts/create-admin.ts",
+    "db:seed:demo": "tsx scripts/seed-demo.ts",
+    "db:seed:demo:clean": "tsx scripts/seed-demo.ts --clean"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",

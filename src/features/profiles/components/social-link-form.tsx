@@ -9,7 +9,7 @@ import {
   saveSocialLinkAction,
   type ProfileActionState,
 } from "../actions/profile.actions";
-import { FormStatus, SelectField, SubmitButton, TextField } from "./form-fields";
+import { FormStatus, SelectField, SubmitButton, TextField } from "@/components/ui";
 
 type SocialLinkFormProps = {
   item?: SocialLinkItem;

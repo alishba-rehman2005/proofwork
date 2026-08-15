@@ -2,82 +2,87 @@
 
 /*
 |--------------------------------------------------------------------------
-| THEME STRATEGY
+| THEME
 |--------------------------------------------------------------------------
-| Dark mode is driven by a `dark` class on <html> rather than the media query
-| alone, so the user's explicit choice can override their OS setting. The class
-| is applied before first paint by the inline script in the root layout.
+| Monochrome by design. Personality comes from contrast, hairline borders,
+| typographic hierarchy and spacing rhythm rather than from hue.
 |
-| Components should use the semantic tokens below (bg-surface, text-muted,
-| border-line...) instead of raw palette colours, so a component written once
-| renders correctly in both themes.
+| Colour is spent in exactly one place: status. A candidate scanning a list of
+| skills has to see verified / in progress / rejected instantly, and encoding
+| that in icons alone would fail the one thing this product exists to say.
+|
+| Light and dark are the same ramp inverted, so both themes share one design.
+| Components must use the semantic tokens (bg-surface, text-muted, border-line)
+| and never raw palette values.
 */
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   /* Surfaces */
-  --background: #f8fafc;
+  --background: #ffffff;
   --surface: #ffffff;
-  --surface-raised: #ffffff;
-  --surface-muted: #f1f5f9;
+  --surface-raised: #fafafa;
+  --surface-muted: #f4f4f5;
 
   /* Text */
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --faint: #94a3b8;
+  --foreground: #09090b;
+  --muted: #52525b;
+  --faint: #a1a1aa;
 
-  /* Lines */
-  --line: #e2e8f0;
-  --line-strong: #cbd5e1;
+  /* Hairlines */
+  --line: #e4e4e7;
+  --line-strong: #d4d4d8;
 
-  /* Brand */
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
+  /* Emphasis: solid ink. Buttons, verified badges, active states. */
+  --primary: #09090b;
+  --primary-hover: #27272a;
   --primary-foreground: #ffffff;
-  --primary-soft: #eff6ff;
+  --primary-soft: #f4f4f5;
 
-  /* Status */
+  /* Status - used sparingly */
   --success: #15803d;
-  --success-soft: #dcfce7;
-  --warning: #b45309;
-  --warning-soft: #fef3c7;
-  --danger: #dc2626;
-  --danger-soft: #fee2e2;
-  --info: #0369a1;
-  --info-soft: #e0f2fe;
+  --success-soft: #f0fdf4;
+  --warning: #a16207;
+  --warning-soft: #fefce8;
+  --danger: #b91c1c;
+  --danger-soft: #fef2f2;
+  --info: #1d4ed8;
+  --info-soft: #eff6ff;
 
-  --ring: #93c5fd;
+  --ring: #09090b;
+  --overlay: rgb(9 9 11 / 0.5);
 }
 
 .dark {
-  --background: #0b1120;
-  --surface: #111827;
-  --surface-raised: #172033;
-  --surface-muted: #1e293b;
+  --background: #09090b;
+  --surface: #09090b;
+  --surface-raised: #131316;
+  --surface-muted: #18181b;
 
-  --foreground: #e2e8f0;
-  --muted: #94a3b8;
-  --faint: #64748b;
+  --foreground: #fafafa;
+  --muted: #a1a1aa;
+  --faint: #52525b;
 
-  --line: #1e293b;
-  --line-strong: #334155;
+  --line: #27272a;
+  --line-strong: #3f3f46;
 
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-  --primary-foreground: #0b1120;
-  --primary-soft: #172554;
+  --primary: #fafafa;
+  --primary-hover: #e4e4e7;
+  --primary-foreground: #09090b;
+  --primary-soft: #18181b;
 
   --success: #4ade80;
-  --success-soft: #052e16;
+  --success-soft: #0a2a15;
   --warning: #fbbf24;
-  --warning-soft: #451a03;
+  --warning-soft: #2a1f05;
   --danger: #f87171;
-  --danger-soft: #450a0a;
-  --info: #38bdf8;
-  --info-soft: #082f49;
+  --danger-soft: #2d0d0d;
+  --info: #60a5fa;
+  --info-soft: #0c1c33;
 
-  --ring: #1d4ed8;
+  --ring: #fafafa;
+  --overlay: rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
@@ -117,10 +122,164 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Consistent focus treatment for keyboard users across every control. */
+/* Headings carry the hierarchy, so tighten tracking as they scale up. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.02em;
+}
+
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 2px solid var(--ring);
   outline-offset: 2px;
+}
+
+/* Numeric columns line up when figures share a width. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+|--------------------------------------------------------------------------
+| MOTION
+|--------------------------------------------------------------------------
+| Movement is small and fast on purpose: this is a professional tool, so
+| animation is there to explain what changed, not to decorate.
+|
+| Everything collapses to a plain fade under prefers-reduced-motion, and the
+| reveal-on-scroll utility starts visible so content is never trapped behind
+| an observer that failed to run.
+*/
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade {
+  animation: fade 0.4s ease-out both;
+}
+
+/* Staggered entrance for lists and grids. */
+.stagger > * {
+  animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger > *:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.16s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.2s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.24s;
+}
+.stagger > *:nth-child(n + 7) {
+  animation-delay: 0.28s;
+}
+
+/* Scroll reveal: visible by default, lifted only once observed. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Subtle lift for interactive cards. */
+.lift {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.lift:hover {
+  transform: translateY(-2px);
+  border-color: var(--line-strong);
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--surface-raised), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .animate-fade,
+  .stagger > * {
+    animation: fade 0.01s both;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .lift:hover {
+    transform: none;
+  }
+
+  .skeleton::after {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
 }

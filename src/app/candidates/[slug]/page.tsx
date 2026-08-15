@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { ProfileView } from "@/features/profiles/components/profile-view";
 import { getCandidateProfileBySlug } from "@/features/profiles/server/profile.queries";
+import { getProjectsForCandidate } from "@/features/projects/projects";
+import { getCandidateSkills } from "@/features/skills/server/skills.queries";
 import { ANONYMOUS_VIEWER, canViewProfile } from "@/features/profiles/utils/visibility";
 
 type PublicProfilePageProps = {
@@ -58,9 +60,20 @@ export default async function PublicProfilePage({ params }: PublicProfilePagePro
     notFound();
   }
 
+  const [skills, projects] = await Promise.all([
+    getCandidateSkills(profile.id),
+    getProjectsForCandidate(profile.id),
+  ]);
+
   return (
     <main className="mx-auto max-w-5xl p-6">
-      <ProfileView profile={profile} />
+      <ProfileView
+        profile={profile}
+        // Only proven work is shown publicly; skills still in flight are the
+        // candidate's own business until a reviewer has approved them.
+        skills={skills.filter((skill) => skill.verificationStatus === "VERIFIED")}
+        projects={projects}
+      />
     </main>
   );
 }

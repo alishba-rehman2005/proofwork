@@ -21,21 +21,35 @@ export type NavSection = {
 const NAV_SECTIONS: NavSection[] = [
   {
     heading: "Overview",
-    items: [{ label: "Dashboard", href: "/dashboard", roles: [] }],
+    items: [
+      { label: "Dashboard", href: "/dashboard", roles: [] },
+      { label: "Activity", href: "/activity", roles: [APP_ROLES.CANDIDATE] },
+      { label: "Leaderboard", href: "/leaderboard", roles: [] },
+      { label: "Notifications", href: "/notifications", roles: [] },
+    ],
   },
   {
     heading: "Candidate",
     items: [
       { label: "My profile", href: "/profile", roles: [APP_ROLES.CANDIDATE] },
+      { label: "Skills", href: "/skills", roles: [APP_ROLES.CANDIDATE] },
+      { label: "Assessments", href: "/assessments", roles: [APP_ROLES.CANDIDATE] },
+      { label: "Projects", href: "/projects", roles: [APP_ROLES.CANDIDATE] },
+      { label: "Teams", href: "/teams", roles: [APP_ROLES.CANDIDATE] },
       { label: "Edit profile", href: "/profile/edit", roles: [APP_ROLES.CANDIDATE] },
     ],
   },
   {
     heading: "Workspace",
     items: [
-      { label: "Reviewer", href: "/reviewer", roles: [APP_ROLES.REVIEWER] },
-      { label: "Recruiter", href: "/recruiter", roles: [APP_ROLES.RECRUITER] },
+      { label: "Review queue", href: "/reviewer", roles: [APP_ROLES.REVIEWER] },
+      { label: "Find candidates", href: "/recruiter", roles: [APP_ROLES.RECRUITER] },
       { label: "Admin", href: "/admin", roles: [APP_ROLES.ADMIN] },
+      {
+        label: "Assessment library",
+        href: "/admin/assessments",
+        roles: [APP_ROLES.ADMIN, APP_ROLES.REVIEWER],
+      },
     ],
   },
 ];

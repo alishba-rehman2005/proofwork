@@ -8,7 +8,7 @@ import {
   saveExperienceAction,
   type ProfileActionState,
 } from "../actions/profile.actions";
-import { CheckboxField, FormStatus, SubmitButton, TextAreaField, TextField } from "./form-fields";
+import { CheckboxField, FormStatus, SubmitButton, TextAreaField, TextField } from "@/components/ui";
 
 type ExperienceFormProps = {
   item?: ExperienceItem;

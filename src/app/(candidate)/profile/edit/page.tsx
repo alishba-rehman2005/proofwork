@@ -26,7 +26,7 @@ export default async function EditProfilePage() {
   }
 
   return (
-    <main className="mx-auto max-w-4xl space-y-12 p-6">
+    <div className="mx-auto max-w-4xl space-y-12 p-6">
       <header>
         <h1 className="text-3xl font-semibold">Edit profile</h1>
 
@@ -92,6 +92,6 @@ export default async function EditProfilePage() {
 
         <SocialLinkForm />
       </section>
-    </main>
+    </div>
   );
 }
