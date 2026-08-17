@@ -68,6 +68,9 @@ export async function registerUser(input: RegisterInput): Promise<RegisterUserRe
       .insert(users)
       .values({
         email,
+        // Set for every role, not just candidates: reviewers, recruiters and
+        // admins are rendered by name across the app.
+        name: fullName,
         passwordHash,
         accountStatus: isCandidate ? "ACTIVE" : "PENDING",
         primaryRoleId: roleId,
