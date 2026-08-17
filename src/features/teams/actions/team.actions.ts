@@ -6,14 +6,7 @@ import { z } from "zod";
 
 import { db } from "@/db";
 import { isUniqueViolation } from "@/db/errors";
-import {
-  candidateProfiles,
-  projects,
-  teamContributions,
-  teamMembers,
-  teams,
-  users,
-} from "@/db/schema";
+import { projects, teamContributions, teamMembers, teams, users } from "@/db/schema";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole, requireUser } from "@/lib/auth/session";
 import { notify, recordActivity } from "@/lib/notifications";
@@ -401,20 +394,4 @@ export async function decideContributionAction(formData: FormData): Promise<void
   });
 
   revalidateTeams();
-}
-
-/** Used by the teams page to resolve the viewer's candidate profile. */
-export async function resolveCandidateProfileId(userId: string) {
-  return getCandidateIdForUser(userId);
-}
-
-/** Resolves a candidate display name, used in team listings. */
-export async function getDisplayName(userId: string) {
-  const [row] = await db
-    .select({ fullName: candidateProfiles.fullName })
-    .from(candidateProfiles)
-    .where(eq(candidateProfiles.userId, userId))
-    .limit(1);
-
-  return row?.fullName ?? null;
 }

@@ -234,6 +234,18 @@ body {
   left: 125%;
 }
 
+.dark .landing-glass-card {
+  border-color: rgb(255 255 255 / 0.1);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.075), rgb(255 255 255 / 0.025));
+  box-shadow:
+    0 16px 45px rgb(0 0 0 / 0.16),
+    inset 0 1px 0 rgb(255 255 255 / 0.06);
+}
+
+.dark .landing-glass-card p {
+  color: #aebbd0;
+}
+
 .landing-glass-dark {
   border: 1px solid rgb(255 255 255 / 0.11);
   background: linear-gradient(145deg, rgb(255 255 255 / 0.085), rgb(255 255 255 / 0.025));

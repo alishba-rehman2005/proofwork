@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { auth } from "@/auth";
 import { Reveal } from "@/components/motion/reveal";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export const metadata: Metadata = {
   title: "ProofWork — skills backed by evidence",
@@ -54,15 +54,13 @@ const features = [
   ["Complete audit trail", "Appointments, submissions, scores, and decisions remain attributable."],
 ] as const;
 
-export default async function LandingPage() {
-  const session = await auth();
-
+export default function LandingPage() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-[#0b1729]">
-      <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl">
+    <div className="min-h-screen overflow-x-hidden bg-white text-[#0b1729] dark:bg-[#07111f] dark:text-white">
+      <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#07152b]/85">
         <nav className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-4 sm:px-6">
           <Brand />
-          <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#f7f9fb]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner md:flex">
+          <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#f7f9fb]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
             <Link
               href="/how-it-works"
               className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#07152b]"
@@ -82,21 +80,7 @@ export default async function LandingPage() {
               Verified talent
             </Link>
           </div>
-          {session?.user ? (
-            <PrimaryLink href="/dashboard">Open dashboard</PrimaryLink>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/login"
-                className="hidden rounded-md px-3 py-2 text-[13px] font-semibold text-[#26364d] transition hover:bg-[#f1f5f7] sm:block"
-              >
-                Sign in
-              </Link>
-              <PrimaryLink href="/register">
-                Get started <Arrow />
-              </PrimaryLink>
-            </div>
-          )}
+          <ThemeToggle />
         </nav>
       </header>
 
@@ -147,7 +131,7 @@ export default async function LandingPage() {
           className="scroll-mt-20 bg-[radial-gradient(circle_at_50%_20%,rgba(101,230,193,.08),transparent_35%)] px-5 py-16 sm:px-6"
         >
           <div className="mx-auto max-w-[1120px]">
-            <Reveal>
+            <Reveal className="lg:order-2">
               <Heading
                 eyebrow="THE VERIFICATION PROCESS"
                 title="From claimed skill to credible evidence"
@@ -208,13 +192,13 @@ export default async function LandingPage() {
                 Create recruiter account <Arrow />
               </Link>
             </Reveal>
-            <Reveal delay={80}>
+            <Reveal className="lg:order-1" delay={80}>
               <SearchPreview />
             </Reveal>
           </div>
         </section>
 
-        <section className="px-5 py-16 sm:px-6">
+        <section className="px-5 py-16 dark:bg-[#0a1728] sm:px-6">
           <div className="mx-auto max-w-[1120px]">
             <Reveal>
               <Heading
@@ -238,7 +222,7 @@ export default async function LandingPage() {
           </div>
         </section>
 
-        <section className="px-5 pb-16 sm:px-6">
+        <section className="px-5 pb-16 dark:bg-[#0a1728] sm:px-6">
           <Reveal>
             <div className="landing-cta-card relative mx-auto max-w-[1120px] overflow-hidden rounded-2xl px-6 py-12 text-center text-white sm:px-10">
               <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_50%_0%,#1c866e_0,transparent_42%)]" />
@@ -292,24 +276,6 @@ function Brand() {
     </Link>
   );
 }
-function PrimaryLink({
-  href,
-  children,
-  extra = "",
-}: {
-  href: string;
-  children: React.ReactNode;
-  extra?: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={`${extra} inline-flex h-9 items-center gap-2 rounded-lg bg-[#07152b] px-4 text-[13px] font-bold text-white shadow-sm transition hover:-translate-y-px hover:bg-[#102845] hover:shadow-md`}
-    >
-      {children}
-    </Link>
-  );
-}
 function Trust({ children }: { children: React.ReactNode }) {
   return (
     <span className="landing-glass-dark flex items-center gap-2 rounded-full px-3 py-1.5">
@@ -341,11 +307,13 @@ function Heading({
         {eyebrow}
       </p>
       <h2
-        className={`mt-3 text-3xl leading-tight font-bold tracking-[-.035em] sm:text-[34px] ${dark ? "text-white" : "text-[#07152b]"}`}
+        className={`mt-3 text-3xl leading-tight font-bold tracking-[-.035em] sm:text-[34px] ${dark ? "text-white" : "text-[#07152b] dark:text-white"}`}
       >
         {title}
       </h2>
-      <p className={`mt-4 text-[14px] leading-6 ${dark ? "text-[#adbbce]" : "text-[#617084]"}`}>
+      <p
+        className={`mt-4 text-[14px] leading-6 ${dark ? "text-[#adbbce]" : "text-[#617084] dark:text-[#aebbd0]"}`}
+      >
         {body}
       </p>
     </div>
@@ -405,26 +373,6 @@ function Footer() {
             Professional skill and work verification for candidates, reviewers, and recruiters.
           </p>
           <p className="mt-3 text-sm font-semibold text-[#68e3c1]">Evidence over claims.</p>
-          <div className="mt-6 flex gap-2">
-            <a
-              href="https://github.com/alishba-rehman2005/proofwork"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="ProofWork on GitHub"
-              className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 text-[#9cacc0] transition hover:border-[#68e3c1]/40 hover:text-[#68e3c1]"
-            >
-              <GitHubMark />
-            </a>
-            <a
-              href="https://github.com/alishba-rehman2005/proofwork/issues"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Contact ProofWork through GitHub"
-              className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 text-[#9cacc0] transition hover:border-[#68e3c1]/40 hover:text-[#68e3c1]"
-            >
-              <MailMark />
-            </a>
-          </div>
         </div>
         <Foot
           title="Platform"
@@ -447,7 +395,6 @@ function Footer() {
           title="Company"
           links={[
             ["About ProofWork", "#how-it-works"],
-            ["Contact", "https://github.com/alishba-rehman2005/proofwork/issues"],
             ["Privacy policy", "/privacy"],
             ["Terms of service", "/terms"],
             ["Security", "/security"],
@@ -456,7 +403,7 @@ function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-[1120px] px-5 py-4 text-center text-xs text-[#7f91a9] sm:px-6">
-          <span>© 2026 ProofWork. All rights reserved.</span>
+          <span>© 2026 ProofWork. All rights reserved. Developed by Alishba Rehman.</span>
         </div>
       </div>
     </footer>
@@ -476,30 +423,6 @@ function Foot({ title, links }: { title: string; links: string[][] }) {
         ))}
       </ul>
     </div>
-  );
-}
-
-function GitHubMark() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-      <path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.9c-2.8.6-3.4-1.2-3.4-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 0 1.6 1.1 1.6 1.1.9 1.6 2.4 1.1 2.9.8.1-.7.4-1.1.7-1.3-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7c-.1-.3-.4-1.3.1-2.7 0 0 .9-.3 2.8 1a9.7 9.7 0 0 1 5.1 0c2-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1.1 2.7c0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 2V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z" />
-    </svg>
-  );
-}
-
-function MailMark() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-4 w-4"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      aria-hidden="true"
-    >
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <path d="m4 7 8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }
 

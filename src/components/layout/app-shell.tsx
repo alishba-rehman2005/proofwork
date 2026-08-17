@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { WorkspaceSwitcher } from "@/components/layout/workspace-switcher";
 import { logoutAction } from "@/features/auth/actions/logout";
 import { isActivePath, type NavSection } from "@/lib/auth/navigation";
@@ -134,8 +133,6 @@ export function AppShell({
 
           <div className="ms-auto flex items-center gap-3">
             <WorkspaceSwitcher workspaces={workspaces} currentRole={currentRole} />
-
-            <ThemeToggle />
 
             <Link
               href="/account"
