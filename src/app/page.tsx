@@ -142,11 +142,10 @@ export default function LandingPage() {
               {steps.map(([number, title, body], index) => (
                 <Reveal key={number} delay={index * 70}>
                   <article className="landing-glass-card h-full rounded-xl p-5">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center">
                       <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#bde8dd] bg-[#edfaf6] text-[#13745f]">
                         <ProcessIcon step={index} />
                       </span>
-                      <span className="font-mono text-xs text-[#9ba8b8]">{number}</span>
                     </div>
                     <h3 className="mt-5 text-base font-bold">{title}</h3>
                     <p className="mt-3 text-sm leading-6 text-[#647286]">{body}</p>
@@ -162,7 +161,7 @@ export default function LandingPage() {
           className="scroll-mt-20 overflow-hidden bg-[#07152b] px-5 py-16 text-white sm:px-6"
         >
           <div className="mx-auto grid max-w-[1120px] items-center gap-12 lg:grid-cols-2">
-            <Reveal>
+            <Reveal className="lg:order-2">
               <Heading
                 dark
                 eyebrow="FOR RECRUITERS"
