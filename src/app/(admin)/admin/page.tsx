@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { Badge, Card, CardTitle, EmptyState, PageHeader, Stat } from "@/components/ui";
-import { getSkillCategories } from "@/features/admin/actions/catalogue.actions";
 import {
   ProjectVerificationQueue,
   SkillCatalogue,
@@ -10,12 +9,15 @@ import {
 } from "@/features/admin/components/catalogue-manager";
 import { PendingCompanies } from "@/features/admin/components/pending-companies";
 import { ReviewerManagement } from "@/features/admin/components/reviewer-management";
+import { ExpertiseManager } from "@/features/reviews/components/expertise-manager";
+import { getReviewersWithExpertise } from "@/features/reviews/expertise";
 import {
   getManagedUsers,
   getPendingCompanies,
   getPendingSkillRequests,
   getPlatformStats,
   getReviewers,
+  getSkillCategories,
   getSkillsWithUsage,
 } from "@/features/admin/server/admin.queries";
 import { AssignAssessmentForm } from "@/features/assessments/components/assessment-forms";
@@ -28,6 +30,7 @@ import { decideProjectVerificationAction } from "@/features/projects/actions/pro
 import { getProjectsAwaitingVerification } from "@/features/projects/projects";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -47,6 +50,7 @@ export default async function AdminPage() {
     catalogue,
     categories,
     pendingProjects,
+    reviewerExpertise,
   ] = await Promise.all([
     getPlatformStats(),
     getPendingCompanies(),
@@ -58,6 +62,7 @@ export default async function AdminPage() {
     getSkillsWithUsage(),
     getSkillCategories(),
     getProjectsAwaitingVerification(),
+    getReviewersWithExpertise(),
   ]);
 
   // Each request can only be satisfied by an assessment covering its skill, so
@@ -115,7 +120,7 @@ export default async function AdminPage() {
 
                   <span className="text-xs text-muted">
                     {request.experienceLevel.toLowerCase()} · requested{" "}
-                    {new Date(request.requestedAt).toLocaleDateString()}
+                    {formatDate(request.requestedAt)}
                   </span>
                 </div>
 
@@ -158,6 +163,22 @@ export default async function AdminPage() {
         <CardTitle>Reviewers</CardTitle>
 
         <ReviewerManagement reviewers={reviewers} />
+      </Card>
+
+      <Card className="space-y-4">
+        <div>
+          <CardTitle>Verification authority</CardTitle>
+
+          <p className="text-sm text-muted">
+            A reviewer only sees submissions for skills granted here. Without a grant their queue is
+            empty, so a Verified badge always means someone cleared for that skill approved it.
+          </p>
+        </div>
+
+        <ExpertiseManager
+          reviewers={reviewerExpertise}
+          skills={catalogue.filter((skill) => skill.isActive)}
+        />
       </Card>
 
       <Card className="space-y-4">

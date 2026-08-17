@@ -15,6 +15,7 @@ import { getProjectsForCandidate } from "@/features/projects/projects";
 import { getCandidateIdForUser, getCandidateSkills } from "@/features/skills/server/skills.queries";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { formatDateTime } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Activity",
@@ -108,9 +109,7 @@ export default async function ActivityPage() {
                     {typeof meta?.score === "number" && <Badge tone="solid">{meta.score}%</Badge>}
                   </div>
 
-                  <p className="mt-1 text-xs text-faint">
-                    {new Date(event.createdAt).toLocaleString()}
-                  </p>
+                  <p className="mt-1 text-xs text-faint">{formatDateTime(event.createdAt)}</p>
                 </li>
               );
             })}

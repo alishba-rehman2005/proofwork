@@ -26,6 +26,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "Activity", href: "/activity", roles: [APP_ROLES.CANDIDATE] },
       { label: "Leaderboard", href: "/leaderboard", roles: [] },
       { label: "Notifications", href: "/notifications", roles: [] },
+      { label: "Account", href: "/account", roles: [] },
     ],
   },
   {
@@ -44,7 +45,9 @@ const NAV_SECTIONS: NavSection[] = [
     items: [
       { label: "Review queue", href: "/reviewer", roles: [APP_ROLES.REVIEWER] },
       { label: "Find candidates", href: "/recruiter", roles: [APP_ROLES.RECRUITER] },
+      { label: "Company", href: "/company", roles: [APP_ROLES.RECRUITER] },
       { label: "Admin", href: "/admin", roles: [APP_ROLES.ADMIN] },
+      { label: "Reports", href: "/admin/reports", roles: [APP_ROLES.ADMIN] },
       {
         label: "Assessment library",
         href: "/admin/assessments",

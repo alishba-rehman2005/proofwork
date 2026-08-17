@@ -24,4 +24,17 @@ describe("auth permissions", () => {
   it("detects admin users", () => {
     expect(isAdmin(["ADMIN"])).toBe(true);
   });
+
+  it("denies users with no roles", () => {
+    expect(hasAnyRole([], [APP_ROLES.CANDIDATE])).toBe(false);
+    expect(hasAnyRole(undefined, [APP_ROLES.CANDIDATE])).toBe(false);
+  });
+
+  it("does not treat one matching role as satisfying an all-role requirement", () => {
+    expect(hasAllRoles(["REVIEWER"], [APP_ROLES.REVIEWER, APP_ROLES.ADMIN])).toBe(false);
+  });
+
+  it("does not grant administrator access to other roles", () => {
+    expect(isAdmin(["CANDIDATE", "RECRUITER", "REVIEWER"])).toBe(false);
+  });
 });

@@ -7,6 +7,7 @@ import {
 } from "@/features/activity/actions";
 import { getNotifications } from "@/features/activity/activity";
 import { requireUser } from "@/lib/auth/session";
+import { formatDateTime } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Notifications",
@@ -54,9 +55,7 @@ export default async function NotificationsPage() {
 
                     <p className="mt-1 text-sm text-muted">{item.message}</p>
 
-                    <p className="mt-1 text-xs text-faint">
-                      {new Date(item.createdAt).toLocaleString()}
-                    </p>
+                    <p className="mt-1 text-xs text-faint">{formatDateTime(item.createdAt)}</p>
                   </div>
 
                   {!item.isRead && (
