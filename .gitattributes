@@ -1,0 +1,21 @@
+# Normalise line endings.
+#
+# core.autocrlf=true was rewriting checked-out files to CRLF, which conflicts
+# with the "endOfLine": "lf" setting in .prettierrc and made format:check fail
+# on a clean tree. Pinning the working tree to LF keeps the repository
+# consistent regardless of each contributor's local git configuration.
+
+* text=auto eol=lf
+
+# Generated migration artefacts are managed by drizzle-kit.
+drizzle/**/*.sql text eol=lf
+drizzle/meta/*.json text eol=lf
+
+# Binary files must never be normalised.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
