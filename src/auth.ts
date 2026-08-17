@@ -36,6 +36,12 @@ const googleEnabled = Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOO
 const githubEnabled = Boolean(process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET);
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  /*
+    Auth.js infers this from the VERCEL env var, but stating it means a deploy
+    behind any other proxy or preview domain does not fail with UntrustedHost.
+  */
+  trustHost: true,
+
   session: {
     strategy: "jwt",
   },
