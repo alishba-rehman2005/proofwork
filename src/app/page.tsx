@@ -58,7 +58,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-white text-[#0b1729] dark:bg-[#07111f] dark:text-white">
       <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#07152b]/85">
-        <nav className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-4 sm:px-6">
+        <nav className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4 sm:h-[60px] sm:px-6">
           <Brand />
           <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#f7f9fb]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
             <Link
@@ -85,36 +85,36 @@ export default function LandingPage() {
       </header>
 
       <main>
-        <section className="relative flex min-h-[calc(100svh-60px)] items-center overflow-hidden bg-[#07152b] text-white">
+        <section className="relative flex items-center overflow-hidden bg-[#07152b] text-white lg:min-h-[calc(100svh-60px)]">
           <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(140,166,199,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(140,166,199,.06)_1px,transparent_1px)] [background-size:56px_56px]" />
           <div className="absolute -top-40 right-[-8%] h-[600px] w-[600px] rounded-full bg-[#19c99a]/10 blur-3xl" />
-          <div className="relative mx-auto grid w-full max-w-[1120px] items-center gap-10 px-5 py-10 sm:px-6 sm:py-12 lg:grid-cols-[1.05fr_.95fr]">
+          <div className="relative mx-auto grid w-full max-w-[1120px] items-center gap-8 px-4 py-9 sm:gap-10 sm:px-6 sm:py-12 lg:grid-cols-[1.05fr_.95fr]">
             <div className="animate-rise max-w-[650px]">
-              <h1 className="text-[38px] leading-[1.05] font-bold tracking-[-0.045em] sm:text-[50px]">
+              <h1 className="text-[32px] leading-[1.08] font-bold tracking-[-0.045em] sm:text-[50px]">
                 Your skills deserve
-                <br />
+                <br className="hidden sm:block" />{" "}
                 <span className="text-[#72e5c4]">credible proof.</span>
               </h1>
-              <p className="mt-5 max-w-[560px] text-[15px] leading-7 text-[#b7c4d7]">
+              <p className="mt-4 max-w-[560px] text-sm leading-6 text-[#b7c4d7] sm:mt-5 sm:text-[15px] sm:leading-7">
                 Complete real assessments, receive structured expert reviews, and build a
                 professional profile backed by evidence—not self-reported claims.
               </p>
-              <div className="mt-7 flex flex-wrap gap-2.5">
+              <div className="mt-6 grid gap-2.5 sm:mt-7 sm:flex sm:flex-wrap">
                 <Link
                   href="/register"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg bg-[#65e6c1] px-5 text-[13px] font-bold text-[#07152b] shadow-[0_10px_28px_rgba(101,230,193,.16)] transition hover:-translate-y-0.5 hover:bg-[#87edcf] hover:shadow-[0_14px_32px_rgba(101,230,193,.22)]"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#65e6c1] px-5 text-[13px] font-bold text-[#07152b] shadow-[0_10px_28px_rgba(101,230,193,.16)] transition hover:-translate-y-0.5 hover:bg-[#87edcf] hover:shadow-[0_14px_32px_rgba(101,230,193,.22)]"
                 >
                   Create your profile <Arrow />
                 </Link>
                 <Link
                   href="/leaderboard"
-                  className="inline-flex h-10 items-center gap-2 rounded-lg border border-white/20 bg-white/[.045] px-5 text-[13px] font-semibold text-[#e8eef6] transition hover:-translate-y-0.5 hover:border-white/35 hover:bg-white/[.09]"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/[.045] px-5 text-[13px] font-semibold text-[#e8eef6] transition hover:-translate-y-0.5 hover:border-white/35 hover:bg-white/[.09]"
                 >
                   <Search />
                   Explore verified talent
                 </Link>
               </div>
-              <div className="mt-6 flex flex-wrap gap-2 border-t border-white/10 pt-5 text-xs text-[#aebbd0]">
+              <div className="mt-6 grid gap-2 border-t border-white/10 pt-5 text-xs text-[#aebbd0] sm:flex sm:flex-wrap">
                 <Trust>Free candidate profiles</Trust>
                 <Trust>Transparent scoring</Trust>
                 <Trust>Human-reviewed work</Trust>
@@ -128,7 +128,7 @@ export default function LandingPage() {
 
         <section
           id="how-it-works"
-          className="scroll-mt-20 bg-[radial-gradient(circle_at_50%_20%,rgba(101,230,193,.08),transparent_35%)] px-5 py-16 sm:px-6"
+          className="scroll-mt-20 bg-[radial-gradient(circle_at_50%_20%,rgba(101,230,193,.08),transparent_35%)] px-4 py-12 sm:px-6 sm:py-16"
         >
           <div className="mx-auto max-w-[1120px]">
             <Reveal className="lg:order-2">
@@ -158,10 +158,13 @@ export default function LandingPage() {
 
         <section
           id="recruiters"
-          className="scroll-mt-20 overflow-hidden bg-[#07152b] px-5 py-16 text-white sm:px-6"
+          className="scroll-mt-20 overflow-hidden bg-[#07152b] px-4 py-12 text-white sm:px-6 sm:py-16"
         >
           <div className="mx-auto grid max-w-[1120px] items-center gap-12 lg:grid-cols-2">
-            <Reveal className="lg:order-2">
+            <Reveal delay={80}>
+              <SearchPreview />
+            </Reveal>
+            <Reveal>
               <Heading
                 dark
                 eyebrow="FOR RECRUITERS"
@@ -191,13 +194,10 @@ export default function LandingPage() {
                 Create recruiter account <Arrow />
               </Link>
             </Reveal>
-            <Reveal className="lg:order-1" delay={80}>
-              <SearchPreview />
-            </Reveal>
           </div>
         </section>
 
-        <section className="px-5 py-16 dark:bg-[#0a1728] sm:px-6">
+        <section className="px-4 py-12 dark:bg-[#0a1728] sm:px-6 sm:py-16">
           <div className="mx-auto max-w-[1120px]">
             <Reveal>
               <Heading
@@ -221,7 +221,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="px-5 pb-16 dark:bg-[#0a1728] sm:px-6">
+        <section className="px-4 pb-12 dark:bg-[#0a1728] sm:px-6 sm:pb-16">
           <Reveal>
             <div className="landing-cta-card relative mx-auto max-w-[1120px] overflow-hidden rounded-2xl px-6 py-12 text-center text-white sm:px-10">
               <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_50%_0%,#1c866e_0,transparent_42%)]" />
@@ -346,7 +346,7 @@ function SearchPreview() {
         width={1536}
         height={768}
         sizes="(max-width: 1024px) 90vw, 540px"
-        className="aspect-[4/3] w-full rounded-xl object-cover"
+        className="aspect-video w-full rounded-xl object-cover sm:aspect-[4/3]"
       />
     </div>
   );

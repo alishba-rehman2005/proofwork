@@ -378,6 +378,14 @@ h3 {
   transform: none;
 }
 
+@media (max-width: 767px) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Subtle lift for interactive cards. */
 .lift {
   transition:
