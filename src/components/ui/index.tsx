@@ -33,3 +33,14 @@ export {
 } from "./form";
 
 export { TBody, TD, TH, THead, TR, Table } from "./table";
+
+export {
+  ActivityGrid,
+  QuoteBlock,
+  ScoreMeter,
+  SegmentBar,
+  StatCard,
+  TimelineList,
+} from "./metrics";
+
+export { ImageUploadField } from "./image-upload";
