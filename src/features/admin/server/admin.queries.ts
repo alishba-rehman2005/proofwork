@@ -1,13 +1,15 @@
-import { asc, eq, inArray } from "drizzle-orm";
+import { asc, desc, eq, inArray, sql } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
   assessmentAssignments,
+  auditLogs,
   candidateSkills,
   companies,
   companyMembers,
   projects,
   roles,
+  skillCategories,
   skillRequests,
   skills,
   userRoles,
@@ -80,61 +82,45 @@ export type PlatformStats = {
 /**
  * Counts for the admin overview.
  *
- * Deliberately small: the fuller analytics in the brief depend on assessments
- * and submissions, which do not exist yet.
+ * One round trip using scalar subqueries. The previous version issued eight
+ * parallel queries that each selected every row just to read `.length`, which
+ * both scanned whole tables needlessly and held eight pooled connections at
+ * once - enough to starve the pool when the page ran its other queries
+ * alongside it.
  */
 export async function getPlatformStats(): Promise<PlatformStats> {
-  const [
-    allUsers,
-    candidateRows,
-    pending,
-    reviewerRows,
-    verifiedSkillRows,
-    completedRows,
-    projectRows,
-    companyRows,
-  ] = await Promise.all([
-    db.select({ id: users.id }).from(users),
+  const result = await db.execute(sql`
+    SELECT
+      (SELECT count(*) FROM ${users})::int AS total_users,
+      (SELECT count(DISTINCT ${userRoles.userId})
+         FROM ${userRoles}
+         JOIN ${roles} ON ${roles.id} = ${userRoles.roleId}
+        WHERE ${roles.name} = 'CANDIDATE')::int AS active_candidates,
+      (SELECT count(*) FROM ${companies} WHERE ${companies.status} = 'PENDING')::int
+        AS pending_companies,
+      (SELECT count(DISTINCT ${userRoles.userId})
+         FROM ${userRoles}
+         JOIN ${roles} ON ${roles.id} = ${userRoles.roleId}
+        WHERE ${roles.name} = 'REVIEWER')::int AS reviewers,
+      (SELECT count(*) FROM ${candidateSkills}
+        WHERE ${candidateSkills.verificationStatus} = 'VERIFIED')::int AS skills_verified,
+      (SELECT count(*) FROM ${assessmentAssignments}
+        WHERE ${assessmentAssignments.status} = 'APPROVED')::int AS assessments_completed,
+      (SELECT count(*) FROM ${projects})::int AS projects_submitted,
+      (SELECT count(*) FROM ${companies})::int AS companies_registered
+  `);
 
-    db
-      .select({ id: userRoles.userId })
-      .from(userRoles)
-      .innerJoin(roles, eq(userRoles.roleId, roles.id))
-      .innerJoin(users, eq(userRoles.userId, users.id))
-      .where(eq(roles.name, "CANDIDATE")),
-
-    db.select({ id: companies.id }).from(companies).where(eq(companies.status, "PENDING")),
-
-    db
-      .select({ id: userRoles.userId })
-      .from(userRoles)
-      .innerJoin(roles, eq(userRoles.roleId, roles.id))
-      .where(eq(roles.name, "REVIEWER")),
-
-    db
-      .select({ id: candidateSkills.id })
-      .from(candidateSkills)
-      .where(eq(candidateSkills.verificationStatus, "VERIFIED")),
-
-    db
-      .select({ id: assessmentAssignments.id })
-      .from(assessmentAssignments)
-      .where(eq(assessmentAssignments.status, "APPROVED")),
-
-    db.select({ id: projects.id }).from(projects),
-
-    db.select({ id: companies.id }).from(companies),
-  ]);
+  const row = (result as unknown as Record<string, number>[])[0] ?? {};
 
   return {
-    totalUsers: allUsers.length,
-    activeCandidates: candidateRows.length,
-    pendingCompanies: pending.length,
-    reviewers: reviewerRows.length,
-    skillsVerified: verifiedSkillRows.length,
-    assessmentsCompleted: completedRows.length,
-    projectsSubmitted: projectRows.length,
-    companiesRegistered: companyRows.length,
+    totalUsers: Number(row.total_users ?? 0),
+    activeCandidates: Number(row.active_candidates ?? 0),
+    pendingCompanies: Number(row.pending_companies ?? 0),
+    reviewers: Number(row.reviewers ?? 0),
+    skillsVerified: Number(row.skills_verified ?? 0),
+    assessmentsCompleted: Number(row.assessments_completed ?? 0),
+    projectsSubmitted: Number(row.projects_submitted ?? 0),
+    companiesRegistered: Number(row.companies_registered ?? 0),
   };
 }
 
@@ -251,4 +237,56 @@ export async function getCompanyOwnerIds(companyIds: string[]): Promise<string[]
     .where(inArray(companies.id, companyIds));
 
   return rows.map((row) => row.ownerId);
+}
+
+/** Active skill categories, for the create-skill form. */
+export async function getSkillCategories() {
+  return db
+    .select({ id: skillCategories.id, name: skillCategories.name })
+    .from(skillCategories)
+    .where(eq(skillCategories.isActive, true))
+    .orderBy(asc(skillCategories.name));
+}
+
+export type AuditEntry = {
+  id: string;
+  action: string;
+  entityType: string;
+  entityId: string | null;
+  actorEmail: string | null;
+  actorName: string | null;
+  newValues: unknown;
+  createdAt: Date;
+};
+
+/**
+ * The platform audit trail.
+ *
+ * Every approval, verification and role change already writes here; this is
+ * the read side that makes it reviewable rather than write-only.
+ */
+export async function getAuditTrail(limit = 60, action?: string): Promise<AuditEntry[]> {
+  return db
+    .select({
+      id: auditLogs.id,
+      action: auditLogs.action,
+      entityType: auditLogs.entityType,
+      entityId: auditLogs.entityId,
+      actorEmail: users.email,
+      actorName: users.name,
+      newValues: auditLogs.newValues,
+      createdAt: auditLogs.createdAt,
+    })
+    .from(auditLogs)
+    .leftJoin(users, eq(auditLogs.actorUserId, users.id))
+    .where(action ? eq(auditLogs.action, action) : undefined)
+    .orderBy(desc(auditLogs.createdAt))
+    .limit(limit);
+}
+
+/** Distinct action names present in the log, for the filter control. */
+export async function getAuditActions(): Promise<string[]> {
+  const rows = await db.selectDistinct({ action: auditLogs.action }).from(auditLogs);
+
+  return rows.map((row) => row.action).sort();
 }

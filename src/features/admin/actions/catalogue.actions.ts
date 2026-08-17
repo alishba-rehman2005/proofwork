@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { db } from "@/db";
 import { isUniqueViolation } from "@/db/errors";
-import { skillCategories, skillRequests, skills, users } from "@/db/schema";
+import { skillRequests, skills, users } from "@/db/schema";
 import { recordAuditLog } from "@/lib/audit";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
@@ -233,12 +233,4 @@ export async function setAccountStatusAction(formData: FormData): Promise<void> 
   });
 
   revalidatePath("/admin");
-}
-
-/** Skill categories, for the create-skill form. */
-export async function getSkillCategories() {
-  return db
-    .select({ id: skillCategories.id, name: skillCategories.name })
-    .from(skillCategories)
-    .where(eq(skillCategories.isActive, true));
 }

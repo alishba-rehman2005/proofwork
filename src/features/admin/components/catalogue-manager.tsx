@@ -27,6 +27,7 @@ import {
   type CatalogueActionState,
 } from "../actions/catalogue.actions";
 import type { ManagedUser, SkillRequestRow } from "../server/admin.queries";
+import { formatDate } from "@/lib/format";
 
 const initialState: CatalogueActionState = {};
 
@@ -138,8 +139,7 @@ export function SkillRequests({ requests }: { requests: SkillRequestRow[] }) {
             )}
 
             <p className="mt-1 text-xs text-faint">
-              Suggested by {request.requestedBy} ·{" "}
-              {new Date(request.createdAt).toLocaleDateString()}
+              Suggested by {request.requestedBy} · {formatDate(request.createdAt)}
             </p>
           </div>
 
@@ -195,9 +195,7 @@ export function UserTable({
               <TD>
                 <p className="font-medium">{user.email}</p>
 
-                <p className="text-xs text-faint">
-                  Joined {new Date(user.createdAt).toLocaleDateString()}
-                </p>
+                <p className="text-xs text-faint">Joined {formatDate(user.createdAt)}</p>
               </TD>
 
               <TD>
