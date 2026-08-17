@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { StatusBadge } from "@/components/status/status-badge";
 import {
@@ -13,9 +13,11 @@ import {
   Stat,
 } from "@/components/ui";
 import { ClaimReviewButton, ReviewForm } from "@/features/reviews/components/review-form";
+import { canReviewerVerify } from "@/features/reviews/expertise";
 import { getSubmissionForReview } from "@/features/reviews/server/review.queries";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { formatDateTime } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Review submission",
@@ -35,7 +37,14 @@ export default async function ReviewSubmissionPage({
     notFound();
   }
 
+  const isAdmin = user.roles.includes(APP_ROLES.ADMIN);
   const assignedElsewhere = Boolean(detail.reviewerId && detail.reviewerId !== user.id);
+  const hasExpertise = isAdmin || (await canReviewerVerify(user.id, detail.skillId));
+
+  if (assignedElsewhere || !hasExpertise) {
+    redirect("/unauthorized");
+  }
+
   const alreadyReviewed = Boolean(detail.review);
   const canScore =
     !alreadyReviewed && !assignedElsewhere && detail.submissionStatus === "UNDER_REVIEW";
@@ -111,9 +120,7 @@ export default async function ReviewSubmissionPage({
           </div>
         )}
 
-        <p className="text-xs text-muted">
-          Submitted {new Date(detail.submittedAt).toLocaleString()}
-        </p>
+        <p className="text-xs text-muted">Submitted {formatDateTime(detail.submittedAt)}</p>
       </Card>
 
       {alreadyReviewed && detail.review ? (

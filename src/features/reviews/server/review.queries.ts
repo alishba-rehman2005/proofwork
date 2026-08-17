@@ -1,6 +1,7 @@
 import { and, asc, desc, eq, inArray, isNull, or } from "drizzle-orm";
 
 import { db } from "@/db";
+import { getVerifiableSkillIds } from "../expertise";
 import {
   assessmentAssignments,
   assessments,
@@ -22,6 +23,7 @@ export type ReviewQueueRow = {
   status: string;
   assessmentTitle: string;
   skillName: string;
+  skillId: string;
   candidateName: string;
   candidateSlug: string;
   deadline: Date;
@@ -34,7 +36,11 @@ export type ReviewQueueRow = {
  * Includes unassigned work so nothing can sit in limbo when an assignment was
  * created without naming a reviewer.
  */
-export async function getReviewQueue(reviewerId: string): Promise<ReviewQueueRow[]> {
+export async function getReviewQueue(
+  reviewerId: string,
+  /** Admins see everything; reviewers see only their granted skills. */
+  options: { unrestricted?: boolean } = {},
+): Promise<ReviewQueueRow[]> {
   const rows = await db
     .select({
       submissionId: submissions.id,
@@ -44,6 +50,7 @@ export async function getReviewQueue(reviewerId: string): Promise<ReviewQueueRow
       status: submissions.status,
       assessmentTitle: assessments.title,
       skillName: skills.name,
+      skillId: candidateSkills.skillId,
       candidateName: candidateProfiles.fullName,
       candidateSlug: candidateProfiles.slug,
       deadline: assessmentAssignments.deadline,
@@ -66,7 +73,15 @@ export async function getReviewQueue(reviewerId: string): Promise<ReviewQueueRow
     )
     .orderBy(asc(assessmentAssignments.deadline));
 
-  return rows.map((row) => ({ ...row, isMine: row.reviewerId === reviewerId }));
+  const queue = rows.map((row) => ({ ...row, isMine: row.reviewerId === reviewerId }));
+
+  if (options.unrestricted) {
+    return queue;
+  }
+
+  const allowed = new Set(await getVerifiableSkillIds(reviewerId));
+
+  return queue.filter((row) => allowed.has(row.skillId));
 }
 
 /** Everything a reviewer needs on one screen to score a submission. */
@@ -92,6 +107,7 @@ export async function getSubmissionForReview(submissionId: string) {
       passingScore: assessments.passingScore,
 
       skillName: skills.name,
+      skillId: candidateSkills.skillId,
       candidateId: candidateProfiles.id,
       candidateName: candidateProfiles.fullName,
       candidateSlug: candidateProfiles.slug,

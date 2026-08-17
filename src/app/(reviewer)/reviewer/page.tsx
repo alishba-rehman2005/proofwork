@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { StatusBadge } from "@/components/status/status-badge";
 import {
+  Alert,
   Badge,
   Button,
   ButtonLink,
@@ -18,11 +19,13 @@ import {
   TR,
   Table,
 } from "@/components/ui";
+import { getReviewerExpertise } from "@/features/reviews/expertise";
 import { getCompletedReviews, getReviewQueue } from "@/features/reviews/server/review.queries";
 import { decideContributionAction } from "@/features/teams/actions/team.actions";
 import { getContributionsAwaitingVerification } from "@/features/teams/teams";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Review queue",
@@ -31,10 +34,11 @@ export const metadata: Metadata = {
 export default async function ReviewerPage() {
   const user = await requireRole([APP_ROLES.REVIEWER, APP_ROLES.ADMIN]);
 
-  const [queue, completed, contributions] = await Promise.all([
-    getReviewQueue(user.id),
+  const [queue, completed, contributions, expertise] = await Promise.all([
+    getReviewQueue(user.id, { unrestricted: user.roles.includes(APP_ROLES.ADMIN) }),
     getCompletedReviews(user.id),
     getContributionsAwaitingVerification(),
+    getReviewerExpertise(user.id),
   ]);
 
   const approved = completed.filter((row) => row.outcome === "APPROVED").length;
@@ -53,11 +57,38 @@ export default async function ReviewerPage() {
       </dl>
 
       <Card className="space-y-4">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <CardTitle>Your verification authority</CardTitle>
+
+            <CardDescription>You can only review submissions for these skills.</CardDescription>
+          </div>
+        </div>
+
+        {expertise.filter((grant) => grant.canVerify).length === 0 ? (
+          <Alert tone="warning" title="No skills granted yet">
+            An administrator has not cleared you to verify any skill, so your queue stays empty.
+          </Alert>
+        ) : (
+          <ul className="flex flex-wrap gap-2">
+            {expertise
+              .filter((grant) => grant.canVerify)
+              .map((grant) => (
+                <li key={grant.id}>
+                  <Badge tone="accent">{grant.skillName}</Badge>
+                </li>
+              ))}
+          </ul>
+        )}
+      </Card>
+
+      <Card className="space-y-4">
         <div>
           <CardTitle>Awaiting review</CardTitle>
 
           <CardDescription>
-            Unassigned submissions are shown too, so nothing sits in limbo.
+            Unassigned submissions are shown too, so nothing sits in limbo. Filtered to skills you
+            are cleared to verify.
           </CardDescription>
         </div>
 
@@ -100,9 +131,7 @@ export default async function ReviewerPage() {
                     </div>
                   </TD>
 
-                  <TD className="tabular text-sm text-muted">
-                    {new Date(row.deadline).toLocaleDateString()}
-                  </TD>
+                  <TD className="tabular text-sm text-muted">{formatDate(row.deadline)}</TD>
 
                   <TD>
                     <div className="flex justify-end">
@@ -223,9 +252,7 @@ export default async function ReviewerPage() {
 
                   <TD className="tabular text-right">{Number(row.totalScore)}</TD>
 
-                  <TD className="text-sm text-muted">
-                    {new Date(row.reviewedAt).toLocaleDateString()}
-                  </TD>
+                  <TD className="text-sm text-muted">{formatDate(row.reviewedAt)}</TD>
                 </TR>
               ))}
             </TBody>
