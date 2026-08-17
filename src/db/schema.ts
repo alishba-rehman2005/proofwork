@@ -230,6 +230,9 @@ export const users = pgTable(
 
     email: text("email").notNull().unique(),
 
+    /** Display name for every role. Candidates also keep fullName on their profile. */
+    name: text("name"),
+
     passwordHash: text("password_hash"),
 
     image: text("image"),
