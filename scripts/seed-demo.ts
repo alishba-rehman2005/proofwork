@@ -7,6 +7,8 @@ import { eq, inArray, like } from "drizzle-orm";
 
 import { db } from "@/db";
 import {
+  activityEvents,
+  reviewerSkills,
   assessmentAssignments,
   assessmentSkills,
   assessments,
@@ -269,6 +271,7 @@ async function createUser(
   email: string,
   roleName: string,
   status: "ACTIVE" | "PENDING" = "ACTIVE",
+  displayName?: string,
 ) {
   const id = randomUUID();
   const rid = await roleId(roleName);
@@ -276,6 +279,14 @@ async function createUser(
   await db.insert(users).values({
     id,
     email,
+    // Derived from the address when no name is supplied, so no screen has to
+    // fall back to showing an email as a person.
+    name:
+      displayName ??
+      email
+        .split("@")[0]
+        .replace(/[.\-_]+/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
     passwordHash: await bcrypt.hash(DEMO_PASSWORD, 10),
     accountStatus: status,
     primaryRoleId: rid,
@@ -284,6 +295,30 @@ async function createUser(
   await db.insert(userRoles).values({ userId: id, roleId: rid });
 
   return id;
+}
+
+/**
+ * Back-dated activity so the dashboard timeline and the contribution grid have
+ * something real to render. Without these the demo looks inert even though the
+ * underlying verification records exist.
+ */
+async function recordDemoActivity(
+  candidateId: string,
+  type:
+    | "SKILL_ADDED"
+    | "SKILL_VERIFIED"
+    | "ASSESSMENT_STARTED"
+    | "ASSESSMENT_SUBMITTED"
+    | "PROJECT_CREATED",
+  daysAgo: number,
+  metadata: Record<string, unknown> = {},
+) {
+  await db.insert(activityEvents).values({
+    candidateId,
+    type,
+    metadata,
+    createdAt: new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000),
+  });
 }
 
 async function clean() {
@@ -368,6 +403,20 @@ async function seed() {
   const reviewerId = await createUser(`${DEMO_PREFIX}reviewer${DEMO_DOMAIN}`, "REVIEWER");
   const recruiterId = await createUser(`${DEMO_PREFIX}recruiter${DEMO_DOMAIN}`, "RECRUITER");
 
+  // Reviewers may only verify skills an admin has granted them, so the demo
+  // reviewer is cleared across the catalogue. Without this their queue is
+  // empty and the whole review flow looks broken.
+  const catalogueSkills = await db.select({ id: skills.id }).from(skills);
+
+  for (const skill of catalogueSkills) {
+    await db
+      .insert(reviewerSkills)
+      .values({ reviewerId, skillId: skill.id, grantedById: adminId, canVerify: true })
+      .onConflictDoNothing();
+  }
+
+  console.log(`  Granted the reviewer ${catalogueSkills.length} verification rights.`);
+
   const companyId = randomUUID();
 
   await db.insert(companies).values({
@@ -435,7 +484,7 @@ async function seed() {
 
   for (const [index, spec] of CANDIDATES.entries()) {
     const email = `${DEMO_PREFIX}${spec.name.split(" ")[0].toLowerCase()}${index}${DEMO_DOMAIN}`;
-    const userId = await createUser(email, "CANDIDATE");
+    const userId = await createUser(email, "CANDIDATE", "ACTIVE", spec.name);
 
     const profileId = randomUUID();
 
@@ -470,6 +519,17 @@ async function seed() {
         .returning({ id: candidateSkills.id });
 
       const assessmentId = assessmentIds.get(item.skill);
+
+      // Spread the history so consecutive skills do not all land on one day.
+      const base = 8 + spec.verified.indexOf(item) * 11;
+
+      await recordDemoActivity(profileId, "SKILL_ADDED", base + 6, { skillName: item.skill });
+      await recordDemoActivity(profileId, "ASSESSMENT_STARTED", base + 4, { skill: item.skill });
+      await recordDemoActivity(profileId, "ASSESSMENT_SUBMITTED", base + 2, { skill: item.skill });
+      await recordDemoActivity(profileId, "SKILL_VERIFIED", base, {
+        skill: item.skill,
+        score: item.score,
+      });
 
       // Build the full chain so a verified badge is backed by a real reviewed
       // submission rather than a column set in isolation.
@@ -655,6 +715,8 @@ async function seed() {
       for (const tech of project.tech) {
         await db.insert(projectSkills).values({ projectId, skillId: await skillId(tech) });
       }
+
+      await recordDemoActivity(profileId, "PROJECT_CREATED", 5, { title: project.title });
     }
 
     console.log(`  ${spec.name} (${email})`);

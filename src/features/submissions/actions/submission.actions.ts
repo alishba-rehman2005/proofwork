@@ -8,7 +8,6 @@ import { db } from "@/db";
 import {
   assessmentAssignments,
   assessments,
-  candidateProfiles,
   candidateSkills,
   submissionEvidence,
   submissions,
@@ -126,6 +125,7 @@ export async function submitAssessmentAction(
     liveUrl: String(formData.get("liveUrl") ?? ""),
     figmaUrl: String(formData.get("figmaUrl") ?? ""),
     documentUrl: String(formData.get("documentUrl") ?? ""),
+    screenshotUrl: String(formData.get("screenshotUrl") ?? ""),
     notes: String(formData.get("notes") ?? ""),
   });
 
@@ -170,6 +170,7 @@ export async function submitAssessmentAction(
     { type: "LIVE_DEPLOYMENT" as const, url: parsed.data.liveUrl, title: "Live deployment" },
     { type: "FIGMA_URL" as const, url: parsed.data.figmaUrl, title: "Figma file" },
     { type: "DOCUMENT" as const, url: parsed.data.documentUrl, title: "Documentation" },
+    { type: "SCREENSHOT" as const, url: parsed.data.screenshotUrl, title: "Screenshot" },
   ].filter((row): row is { type: typeof row.type; url: string; title: string } => Boolean(row.url));
 
   await db.transaction(async (tx) => {
@@ -286,29 +287,4 @@ export async function withdrawSubmissionAction(formData: FormData): Promise<void
   });
 
   revalidateAssessment(row.assignmentId);
-}
-
-/** Candidate-facing helper used by pages to resolve their own profile id. */
-export async function resolveCandidateId(userId: string) {
-  return getCandidateIdForUser(userId);
-}
-
-export async function notifyDeadlineOwner(userId: string, message: string) {
-  await notify({
-    userId,
-    type: "DEADLINE_APPROACHING",
-    title: "Deadline approaching",
-    message,
-  });
-}
-
-/** Resolves the user id behind a candidate profile, for notifications. */
-export async function getCandidateUserId(candidateId: string) {
-  const [row] = await db
-    .select({ userId: candidateProfiles.userId })
-    .from(candidateProfiles)
-    .where(eq(candidateProfiles.id, candidateId))
-    .limit(1);
-
-  return row?.userId ?? null;
 }

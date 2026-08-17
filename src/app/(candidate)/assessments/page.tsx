@@ -15,6 +15,7 @@ import { getCandidateAssignments } from "@/features/assessments/server/assessmen
 import { getCandidateIdForUser } from "@/features/skills/server/skills.queries";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Assessments",
@@ -107,9 +108,7 @@ function AssignmentCard({
           {row.difficulty.toLowerCase()} · attempt {row.attemptsUsed}/{row.maxAttempts}
         </p>
 
-        <p className="mt-1 text-sm text-muted">
-          Deadline {new Date(row.deadline).toLocaleDateString()}
-        </p>
+        <p className="mt-1 text-sm text-muted">Deadline {formatDate(row.deadline)}</p>
       </div>
 
       <ButtonLink href={`/assessments/${row.assignmentId}`} variant="secondary" size="sm">

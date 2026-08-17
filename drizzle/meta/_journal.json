@@ -43,6 +43,13 @@
       "when": 1786730341118,
       "tag": "0005_candidate_profile_slug",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1786904738056,
+      "tag": "0006_user_display_name",
+      "breakpoints": true
     }
   ]
 }

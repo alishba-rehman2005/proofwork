@@ -26,6 +26,7 @@ import {
   assignAssessmentSchema,
   rubricCriterionSchema,
 } from "../validation/assessment.schema";
+import { formatDate } from "@/lib/format";
 
 export type AssessmentActionState = {
   success?: boolean;
@@ -383,7 +384,7 @@ export async function assignAssessmentAction(
       userId: candidate.userId,
       type: "ASSESSMENT_ASSIGNED",
       title: "Assessment assigned",
-      message: `${assessment.title} is ready to start. Deadline ${deadline.toLocaleDateString()}.`,
+      message: `${assessment.title} is ready to start. Deadline ${formatDate(deadline)}.`,
       entityType: "assessment",
       entityId: assessment.id,
     });

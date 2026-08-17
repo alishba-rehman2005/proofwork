@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq, isNull, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -21,6 +21,7 @@ import { notify, recordActivity } from "@/lib/notifications";
 
 import { reviewSchema } from "@/features/submissions/validation/submission.schema";
 
+import { canReviewerVerify } from "../expertise";
 import { getSubmissionForReview } from "../server/review.queries";
 import { calculateScore, clampScore } from "../scoring";
 
@@ -32,8 +33,15 @@ export type ReviewActionState = {
 
 const REVIEWERS = [APP_ROLES.REVIEWER, APP_ROLES.ADMIN];
 
-function revalidateReview(assignmentId: string) {
+function revalidateReview(assignmentId: string, submissionId?: string) {
   revalidatePath("/reviewer");
+
+  // The reviewer is standing on the detail page when they claim or score, so
+  // revalidating only the queue leaves their own screen stale.
+  if (submissionId) {
+    revalidatePath(`/reviewer/${submissionId}`);
+  }
+
   revalidatePath("/skills");
   revalidatePath("/assessments");
   revalidatePath(`/assessments/${assignmentId}`);
@@ -66,24 +74,48 @@ export async function claimReviewAction(formData: FormData): Promise<void> {
     return;
   }
 
-  await db.transaction(async (tx) => {
+  if (
+    !user.roles.includes(APP_ROLES.ADMIN) &&
+    !(await canReviewerVerify(user.id, detail.skillId))
+  ) {
+    return;
+  }
+
+  const claimed = await db.transaction(async (tx) => {
+    const rows = await tx
+      .update(assessmentAssignments)
+      .set({ status: "UNDER_REVIEW", reviewerId: user.id, updatedAt: new Date() })
+      .where(
+        and(
+          eq(assessmentAssignments.id, detail.assignmentId),
+          or(
+            isNull(assessmentAssignments.reviewerId),
+            eq(assessmentAssignments.reviewerId, user.id),
+          ),
+        ),
+      )
+      .returning({ id: assessmentAssignments.id });
+
+    if (rows.length === 0) {
+      return false;
+    }
+
     await tx
       .update(submissions)
       .set({ status: "UNDER_REVIEW", updatedAt: new Date() })
-      .where(eq(submissions.id, submissionId));
-
-    await tx
-      .update(assessmentAssignments)
-      .set({ status: "UNDER_REVIEW", reviewerId: user.id, updatedAt: new Date() })
-      .where(eq(assessmentAssignments.id, detail.assignmentId));
+      .where(and(eq(submissions.id, submissionId), eq(submissions.status, "SUBMITTED")));
 
     await tx
       .update(candidateSkills)
       .set({ verificationStatus: "UNDER_REVIEW", updatedAt: new Date() })
       .where(eq(candidateSkills.id, detail.candidateSkillId));
+
+    return true;
   });
 
-  revalidateReview(detail.assignmentId);
+  if (!claimed) return;
+
+  revalidateReview(detail.assignmentId, submissionId);
 }
 
 /**
@@ -126,6 +158,16 @@ export async function submitReviewAction(
 
   if (detail.reviewerId && detail.reviewerId !== user.id) {
     return { success: false, message: "This submission is assigned to another reviewer." };
+  }
+
+  // Expertise gate. Admins are exempt because they grant these rights.
+  const isAdmin = user.roles.includes(APP_ROLES.ADMIN);
+
+  if (!isAdmin && !(await canReviewerVerify(user.id, detail.skillId))) {
+    return {
+      success: false,
+      message: `You are not authorised to verify ${detail.skillName}. Ask an administrator to grant it.`,
+    };
   }
 
   if (detail.criteria.length === 0) {
@@ -278,7 +320,7 @@ export async function submitReviewAction(
     newValues: { totalScore: result.totalScore, percentage: result.percentage },
   });
 
-  revalidateReview(detail.assignmentId);
+  revalidateReview(detail.assignmentId, detail.submissionId);
 
   return {
     success: true,
