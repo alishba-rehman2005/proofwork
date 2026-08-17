@@ -11,6 +11,7 @@ import {
   FormStatus,
   SubmitButton,
   TextAreaField,
+  ImageUploadField,
   TextField,
 } from "@/components/ui";
 
@@ -91,12 +92,13 @@ export function ProjectForm({
           error={state.errors?.figmaUrl?.[0]}
         />
 
-        <TextField
-          label="Cover image URL"
+        <ImageUploadField
+          label="Cover image"
           name="coverImageUrl"
-          type="url"
+          purpose="project-image"
           disabled={pending}
           defaultValue={project?.coverImageUrl ?? ""}
+          hint="Paste a link, or upload an image if storage is enabled."
           error={state.errors?.coverImageUrl?.[0]}
         />
       </div>
