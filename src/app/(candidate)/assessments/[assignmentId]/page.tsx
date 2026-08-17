@@ -25,6 +25,7 @@ import {
 import { getCandidateIdForUser } from "@/features/skills/server/skills.queries";
 import { APP_ROLES } from "@/lib/auth/permissions";
 import { requireRole } from "@/lib/auth/session";
+import { formatDate, formatDateTime } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Assessment",
@@ -81,7 +82,7 @@ export default async function AssignmentPage({
         <Stat label="Pass mark" value={assessment.passingScore} />
         <Stat
           label="Deadline"
-          value={new Date(assignment.deadline).toLocaleDateString()}
+          value={formatDate(assignment.deadline)}
           hint={deadlinePassed ? "Passed" : undefined}
         />
       </dl>
@@ -197,7 +198,7 @@ export default async function AssignmentPage({
                     <StatusBadge kind="submission" status={submission.status} />
 
                     <span className="text-xs text-muted">
-                      {new Date(submission.submittedAt).toLocaleString()}
+                      {formatDateTime(submission.submittedAt)}
                     </span>
                   </div>
 

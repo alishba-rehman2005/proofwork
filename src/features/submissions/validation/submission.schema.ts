@@ -46,6 +46,7 @@ export const submissionSchema = z
     liveUrl: optionalEvidenceUrl,
     figmaUrl: optionalEvidenceUrl,
     documentUrl: optionalEvidenceUrl,
+    screenshotUrl: optionalEvidenceUrl,
 
     notes: z
       .string()

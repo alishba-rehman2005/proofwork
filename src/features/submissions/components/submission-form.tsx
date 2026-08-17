@@ -2,7 +2,15 @@
 
 import { useActionState } from "react";
 
-import { Alert, Button, FormStatus, SubmitButton, TextAreaField, TextField } from "@/components/ui";
+import {
+  Alert,
+  Button,
+  FormStatus,
+  ImageUploadField,
+  SubmitButton,
+  TextAreaField,
+  TextField,
+} from "@/components/ui";
 
 import {
   startAssessmentAction,
@@ -93,6 +101,15 @@ export function SubmissionForm({
           disabled={pending}
           placeholder="https://figma.com/file/..."
           error={state.errors?.figmaUrl?.[0]}
+        />
+
+        <ImageUploadField
+          label="Screenshot"
+          name="screenshotUrl"
+          purpose="submission-screenshot"
+          disabled={pending}
+          hint="Optional. Paste a link, or upload if storage is enabled."
+          error={state.errors?.screenshotUrl?.[0]}
         />
 
         <TextField

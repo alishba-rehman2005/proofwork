@@ -4,7 +4,6 @@ import { useActionState, useState } from "react";
 
 import { StatusBadge } from "@/components/status/status-badge";
 import {
-  Badge,
   Button,
   EmptyState,
   FormStatus,
@@ -16,6 +15,7 @@ import {
   THead,
   TR,
   Table,
+  SegmentBar,
   TextAreaField,
   TextField,
 } from "@/components/ui";
@@ -30,6 +30,7 @@ import {
 } from "../actions/skills.actions";
 import type { CandidateSkillRow, SkillOption } from "../server/skills.queries";
 import { EXPERIENCE_LEVEL_OPTIONS } from "../validation/skill.schema";
+import { formatDate } from "@/lib/format";
 
 const initialState: SkillActionState = {};
 
@@ -93,11 +94,11 @@ export function SkillTable({ rows }: { rows: CandidateSkillRow[] }) {
     <Table>
       <THead>
         <TR>
-          <TH>Skill</TH>
-          <TH>Level</TH>
+          <TH>Skill / technology</TH>
+          <TH>Category</TH>
           <TH>Status</TH>
+          <TH>Confidence level</TH>
           <TH className="text-right">Score</TH>
-          <TH className="text-right">Passed</TH>
           <TH className="text-right">Actions</TH>
         </TR>
       </THead>
@@ -127,24 +128,47 @@ function SkillRow({ row }: { row: CandidateSkillRow }) {
     <>
       <TR>
         <TD>
-          <div className="font-medium">{row.skillName}</div>
+          <div className="flex items-center gap-3">
+            <span
+              aria-hidden="true"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-line bg-surface-muted text-[11px] font-bold text-muted"
+            >
+              {row.skillName.slice(0, 2).toUpperCase()}
+            </span>
 
-          {row.categoryName && <div className="text-xs text-muted">{row.categoryName}</div>}
+            <span className="min-w-0">
+              <span className="block font-medium">{row.skillName}</span>
+
+              <span className="block text-xs text-faint">
+                {row.verifiedAt
+                  ? `Verified ${formatDate(row.verifiedAt)}`
+                  : row.projectsCompleted > 0
+                    ? `${row.projectsCompleted} assessment(s) passed`
+                    : "Self-reported"}
+              </span>
+            </span>
+          </div>
         </TD>
 
-        <TD>
-          <Badge tone="outline">{row.experienceLevel.toLowerCase()}</Badge>
-        </TD>
+        <TD className="text-sm font-medium text-info">{row.categoryName ?? "—"}</TD>
 
         <TD>
           <StatusBadge kind="skill" status={row.verificationStatus} />
         </TD>
 
+        <TD>
+          <div className="flex items-center gap-2">
+            <SegmentBar level={row.experienceLevel} muted={!row.currentScore} />
+
+            <span className="text-xs text-muted capitalize">
+              {row.experienceLevel.toLowerCase()}
+            </span>
+          </div>
+        </TD>
+
         <TD className="tabular text-right">
           {row.currentScore ? `${Number(row.currentScore).toFixed(0)}/100` : "—"}
         </TD>
-
-        <TD className="tabular text-right">{row.projectsCompleted}</TD>
 
         <TD>
           <div className="flex flex-wrap justify-end gap-2">
@@ -178,9 +202,7 @@ function SkillRow({ row }: { row: CandidateSkillRow }) {
               {row.deadline && (
                 <p className="text-sm text-muted">
                   Assessment deadline:{" "}
-                  <span className="text-foreground">
-                    {new Date(row.deadline).toLocaleDateString()}
-                  </span>
+                  <span className="text-foreground">{formatDate(row.deadline)}</span>
                 </p>
               )}
 
