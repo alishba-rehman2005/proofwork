@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
 
 import { ThemeScript } from "@/components/theme/theme-script";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+/*
+  Typography is a system font stack rather than next/font/google.
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  next/font fetches from fonts.gstatic.com at build and dev-compile time, so a
+  restricted or offline network stops the app booting at all - every route
+  returned 500, then hung. A system stack renders the same families the OS
+  already ships (SF on macOS, Segoe on Windows, Roboto on Android), costs no
+  network round trip, and eliminates font-swap flash entirely.
+*/
 
 export const metadata: Metadata = {
   title: {
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className="h-full antialiased"
       // The theme script mutates this element before React hydrates.
       suppressHydrationWarning
     >

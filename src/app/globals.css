@@ -4,12 +4,13 @@
 |--------------------------------------------------------------------------
 | THEME
 |--------------------------------------------------------------------------
-| Monochrome by design. Personality comes from contrast, hairline borders,
-| typographic hierarchy and spacing rhythm rather than from hue.
+| Neutral slate surfaces carry the layout; colour carries meaning. Each
+| verification state owns one hue - green verified, amber under review, violet
+| in flight, red rejected - so a candidate scanning a list of skills reads the
+| state before reading the words.
 |
-| Colour is spent in exactly one place: status. A candidate scanning a list of
-| skills has to see verified / in progress / rejected instantly, and encoding
-| that in icons alone would fail the one thing this product exists to say.
+| Deep navy stays the action colour, which keeps buttons from competing with
+| the status hues around them.
 |
 | Light and dark are the same ramp inverted, so both themes share one design.
 | Components must use the semantic tokens (bg-surface, text-muted, border-line)
@@ -20,68 +21,82 @@
 
 :root {
   /* Surfaces */
-  --background: #ffffff;
+  --background: #f8fafc;
   --surface: #ffffff;
-  --surface-raised: #fafafa;
-  --surface-muted: #f4f4f5;
+  --surface-raised: #ffffff;
+  --surface-muted: #f1f5f9;
 
   /* Text */
-  --foreground: #09090b;
-  --muted: #52525b;
-  --faint: #a1a1aa;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --faint: #94a3b8;
 
   /* Hairlines */
-  --line: #e4e4e7;
-  --line-strong: #d4d4d8;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
 
-  /* Emphasis: solid ink. Buttons, verified badges, active states. */
-  --primary: #09090b;
-  --primary-hover: #27272a;
+  /* Emphasis: deep navy. Buttons and the strongest UI actions. */
+  --primary: #0f172a;
+  --primary-hover: #1e293b;
   --primary-foreground: #ffffff;
-  --primary-soft: #f4f4f5;
+  --primary-soft: #f1f5f9;
 
-  /* Status - used sparingly */
+  /* Status - each state owns one hue so a list scans at a glance */
   --success: #15803d;
-  --success-soft: #f0fdf4;
-  --warning: #a16207;
-  --warning-soft: #fefce8;
+  --success-soft: #dcfce7;
+  --warning: #b45309;
+  --warning-soft: #fef3c7;
   --danger: #b91c1c;
-  --danger-soft: #fef2f2;
+  --danger-soft: #fee2e2;
   --info: #1d4ed8;
-  --info-soft: #eff6ff;
+  --info-soft: #dbeafe;
 
-  --ring: #09090b;
-  --overlay: rgb(9 9 11 / 0.5);
+  /* Accent: work in flight, and the assessment call to action */
+  --accent: #13745f;
+  --accent-soft: #d8f5ec;
+
+  /* Hero/auth panel navy. Constant in both themes: it is brand, not chrome. */
+  --brand: #07152b;
+  --brand-foreground: #69e5c1;
+
+  --ring: #13745f;
+  --overlay: rgb(15 23 42 / 0.5);
 }
 
 .dark {
-  --background: #09090b;
-  --surface: #09090b;
-  --surface-raised: #131316;
-  --surface-muted: #18181b;
+  --background: #0b1120;
+  --surface: #111827;
+  --surface-raised: #172033;
+  --surface-muted: #1e293b;
 
-  --foreground: #fafafa;
-  --muted: #a1a1aa;
-  --faint: #52525b;
+  --foreground: #e2e8f0;
+  --muted: #94a3b8;
+  --faint: #64748b;
 
-  --line: #27272a;
-  --line-strong: #3f3f46;
+  --line: #1e293b;
+  --line-strong: #334155;
 
-  --primary: #fafafa;
-  --primary-hover: #e4e4e7;
-  --primary-foreground: #09090b;
-  --primary-soft: #18181b;
+  --primary: #e2e8f0;
+  --primary-hover: #f8fafc;
+  --primary-foreground: #0b1120;
+  --primary-soft: #1e293b;
 
   --success: #4ade80;
-  --success-soft: #0a2a15;
+  --success-soft: #052e1a;
   --warning: #fbbf24;
-  --warning-soft: #2a1f05;
+  --warning-soft: #3b2708;
   --danger: #f87171;
-  --danger-soft: #2d0d0d;
+  --danger-soft: #45150f;
   --info: #60a5fa;
-  --info-soft: #0c1c33;
+  --info-soft: #0e2547;
 
-  --ring: #fafafa;
+  --accent: #69e5c1;
+  --accent-soft: #0c2b24;
+
+  --brand: #07152b;
+  --brand-foreground: #69e5c1;
+
+  --ring: #69e5c1;
   --overlay: rgb(0 0 0 / 0.7);
 }
 
@@ -112,17 +127,139 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
 
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+|--------------------------------------------------------------------------
+| REGISTRATION PAGE DENSITY
+|--------------------------------------------------------------------------
+| The registration form contains more fields than other auth pages. Its compact
+| desktop density is scoped to that route only; every other screen retains the
+| browser's native 100% sizing.
+*/
+
+@media (min-width: 1024px) {
+  html:has(.register-page-density) {
+    font-size: 13.6px;
+  }
+}
+
+.auth-form-scroll {
+  scrollbar-color: #98a2b3 transparent;
+  scrollbar-width: thin;
+}
+
+.auth-form-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.auth-form-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.auth-form-scroll::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: #98a2b3;
+  background-clip: padding-box;
+}
+
+/* Landing-page glass system: restrained depth, light sweep, and accessible motion. */
+.landing-glass-card,
+.landing-glass-dark,
+.landing-media-card,
+.landing-cta-card {
+  position: relative;
+  isolation: isolate;
+  transition:
+    transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background-color 220ms ease;
+}
+
+.landing-glass-card {
+  overflow: hidden;
+  border: 1px solid rgb(205 219 229 / 0.82);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.88), rgb(245 250 249 / 0.64));
+  box-shadow:
+    0 16px 45px rgb(16 42 68 / 0.07),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+  backdrop-filter: blur(18px);
+}
+
+.landing-glass-card::after {
+  position: absolute;
+  z-index: -1;
+  top: -120%;
+  left: -45%;
+  width: 38%;
+  height: 340%;
+  transform: rotate(20deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
+  content: "";
+  transition: left 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.landing-glass-card:hover {
+  transform: translateY(-7px);
+  border-color: rgb(85 200 169 / 0.55);
+  box-shadow:
+    0 24px 60px rgb(12 48 70 / 0.13),
+    0 0 0 1px rgb(101 230 193 / 0.1),
+    inset 0 1px 0 white;
+}
+
+.landing-glass-card:hover::after {
+  left: 125%;
+}
+
+.landing-glass-dark {
+  border: 1px solid rgb(255 255 255 / 0.11);
+  background: linear-gradient(145deg, rgb(255 255 255 / 0.085), rgb(255 255 255 / 0.025));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(18px);
+}
+
+.landing-glass-dark:hover {
+  transform: translateY(-3px);
+  border-color: rgb(101 230 193 / 0.35);
+  background: linear-gradient(145deg, rgb(101 230 193 / 0.1), rgb(255 255 255 / 0.035));
+}
+
+.landing-media-card:hover {
+  transform: translateY(-6px) rotate(-0.35deg);
+}
+
+.landing-cta-card {
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: linear-gradient(120deg, #08182e 0%, #0c2a3b 55%, #09243a 100%);
+  box-shadow: 0 28px 75px rgb(7 21 43 / 0.2);
+}
+
+.landing-cta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 34px 90px rgb(7 21 43 / 0.27);
 }
 
 /* Headings carry the hierarchy, so tighten tracking as they scale up. */
@@ -271,6 +408,24 @@ h3 {
 
   .lift:hover {
     transform: none;
+  }
+
+  .landing-glass-card,
+  .landing-glass-dark,
+  .landing-media-card,
+  .landing-cta-card {
+    transition: none;
+  }
+
+  .landing-glass-card:hover,
+  .landing-glass-dark:hover,
+  .landing-media-card:hover,
+  .landing-cta-card:hover {
+    transform: none;
+  }
+
+  .landing-glass-card::after {
+    display: none;
   }
 
   .skeleton::after {

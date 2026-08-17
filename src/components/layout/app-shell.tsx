@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,6 +15,7 @@ type AppShellProps = {
   workspaces: Workspace[];
   currentRole: string | null;
   email: string;
+  name?: string | null;
   children: ReactNode;
 };
 
@@ -24,7 +25,14 @@ type AppShellProps = {
  * The sidebar and the mobile trigger share open state, so they live in one
  * client component. Everything below it stays a server component.
  */
-export function AppShell({ sections, workspaces, currentRole, email, children }: AppShellProps) {
+export function AppShell({
+  sections,
+  workspaces,
+  currentRole,
+  email,
+  name,
+  children,
+}: AppShellProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -44,8 +52,25 @@ export function AppShell({ sections, workspaces, currentRole, email, children }:
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-line px-5">
-          <Link href="/dashboard" className="text-lg font-semibold tracking-tight">
-            ProofWork
+          <Link href="/dashboard" className="flex items-center gap-2.5">
+            <span
+              aria-hidden="true"
+              className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-brand-foreground"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </span>
+
+            <span className="text-lg font-semibold tracking-tight">ProofWork</span>
           </Link>
 
           <IconButton label="Close navigation" onClick={() => setOpen(false)} className="lg:hidden">
@@ -56,7 +81,7 @@ export function AppShell({ sections, workspaces, currentRole, email, children }:
         <nav className="space-y-6 p-4" aria-label="Main">
           {sections.map((section) => (
             <div key={section.heading}>
-              <p className="px-3 text-xs font-semibold tracking-wider text-faint uppercase">
+              <p className="px-3 text-xs font-semibold tracking-wider text-accent/70 uppercase">
                 {section.heading}
               </p>
 
@@ -72,12 +97,19 @@ export function AppShell({ sections, workspaces, currentRole, email, children }:
                         // the click is what should dismiss the drawer.
                         onClick={() => setOpen(false)}
                         aria-current={active ? "page" : undefined}
-                        className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
+                        className={`relative block rounded-lg py-2 ps-4 pe-3 text-sm transition-colors ${
                           active
-                            ? "bg-primary-soft font-medium text-primary"
+                            ? "bg-accent-soft font-semibold text-accent"
                             : "text-muted hover:bg-surface-muted hover:text-foreground"
                         }`}
                       >
+                        {active && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-y-1.5 start-0 w-1 rounded-full bg-accent"
+                          />
+                        )}
+
                         {item.label}
                       </Link>
                     </li>
@@ -105,14 +137,36 @@ export function AppShell({ sections, workspaces, currentRole, email, children }:
 
             <ThemeToggle />
 
-            <span className="hidden text-sm text-muted sm:inline">{email}</span>
+            <Link
+              href="/account"
+              className="hidden items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-muted sm:flex"
+              title="Account settings"
+            >
+              <span
+                aria-hidden="true"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-soft text-xs font-semibold text-accent"
+              >
+                {(name ?? email).slice(0, 1).toUpperCase()}
+              </span>
+
+              <span className="text-start leading-tight">
+                <span className="block text-sm font-medium">{name ?? "Account"}</span>
+                <span className="block text-xs text-muted">{email}</span>
+              </span>
+            </Link>
 
             <form action={logoutAction}>
+              {/*
+                Themed to the accent so it belongs to the shell, but kept as an
+                outline rather than a filled button: signing out should not look
+                like the primary thing to do on the page.
+              */}
               <button
                 type="submit"
-                className="rounded-lg border border-line px-3 py-1.5 text-sm transition-colors hover:bg-surface-muted"
+                className="inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent-soft/50 px-3 py-1.5 text-sm font-medium text-accent transition-colors hover:border-accent/60 hover:bg-accent-soft"
               >
-                Sign out
+                <SignOutIcon />
+                <span className="hidden sm:inline">Sign out</span>
               </button>
             </form>
           </div>
@@ -131,6 +185,24 @@ type IconButtonProps = {
   className?: string;
   children: ReactNode;
 };
+
+function SignOutIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 21H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4" />
+      <path d="M16 17l5-5-5-5M21 12H9" />
+    </svg>
+  );
+}
 
 function IconButton({ label, onClick, expanded, className = "", children }: IconButtonProps) {
   return (

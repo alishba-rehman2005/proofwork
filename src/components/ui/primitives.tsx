@@ -75,18 +75,19 @@ export function Breadcrumb({ items }: { items: { label: string; href?: string }[
 
 /* ----------------------------------------------------------------- Badge */
 
-export type BadgeTone = "neutral" | "solid" | "outline" | "success" | "warning" | "danger" | "info";
+export type BadgeTone =
+  "neutral" | "solid" | "outline" | "success" | "warning" | "danger" | "info" | "accent";
 
 const badgeTones: Record<BadgeTone, string> = {
   neutral: "bg-surface-muted text-muted",
-  // Solid ink is the strongest signal available in a monochrome system, so it
-  // is reserved for the one state the product exists to communicate.
   solid: "bg-primary text-primary-foreground",
-  outline: "border border-line text-muted",
+  outline: "border border-line-strong text-muted",
   success: "bg-success-soft text-success",
   warning: "bg-warning-soft text-warning",
   danger: "bg-danger-soft text-danger",
   info: "bg-info-soft text-info",
+  // Work in flight: assigned or under way, but not yet judged.
+  accent: "bg-accent-soft text-accent",
 };
 
 export function Badge({

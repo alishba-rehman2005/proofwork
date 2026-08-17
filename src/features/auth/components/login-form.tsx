@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 
+import { Alert, controlClassName } from "@/components/ui";
 import { loginAction, type LoginState } from "@/features/auth/actions/login";
+import { ArrowRightIcon } from "@/features/auth/components/auth-icons";
 
 const initialState: LoginState = {};
 
@@ -11,9 +14,9 @@ export function LoginForm() {
 
   return (
     <form action={action} className="space-y-5">
-      <div className="space-y-2">
-        <label htmlFor="email" className="text-sm font-medium">
-          Email address
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium">
+          Work email
         </label>
 
         <input
@@ -23,15 +26,24 @@ export function LoginForm() {
           autoComplete="email"
           required
           disabled={pending}
-          className="w-full rounded-lg border px-3 py-2"
-          placeholder="you@example.com"
+          placeholder="name@company.com"
+          className={`${controlClassName} mt-2 h-12`}
         />
       </div>
 
-      <div className="space-y-2">
-        <label htmlFor="password" className="text-sm font-medium">
-          Password
-        </label>
+      <div>
+        <div className="flex items-center justify-between gap-4">
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+
+          <Link
+            href="/forgot-password"
+            className="text-sm font-medium text-muted hover:text-foreground hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
 
         <input
           id="password"
@@ -40,26 +52,20 @@ export function LoginForm() {
           autoComplete="current-password"
           required
           disabled={pending}
-          className="w-full rounded-lg border px-3 py-2"
-          placeholder="Enter your password"
+          placeholder="••••••••"
+          className={`${controlClassName} mt-2 h-12`}
         />
       </div>
 
-      {state.error && (
-        <div
-          role="alert"
-          className="rounded-lg border border-danger/40 bg-danger-soft p-3 text-sm text-danger"
-        >
-          {state.error}
-        </div>
-      )}
+      {state.error && <Alert tone="danger">{state.error}</Alert>}
 
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-primary px-4 py-2.5 font-medium text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-lg bg-primary px-4 font-semibold text-primary-foreground transition-colors hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60"
       >
         {pending ? "Signing in..." : "Sign in"}
+        {!pending && <ArrowRightIcon className="h-5 w-5" />}
       </button>
     </form>
   );

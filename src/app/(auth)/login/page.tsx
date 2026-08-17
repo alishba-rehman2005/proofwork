@@ -1,40 +1,71 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Alert } from "@/components/ui";
 import { LoginForm } from "@/features/auth/components/login-form";
+import { SocialAuthButtons } from "@/features/auth/components/social-auth-buttons";
+import { isOAuthConfigured } from "@/features/auth/oauth-config";
 
-type LoginPageProps = {
-  searchParams: Promise<{
-    registered?: string;
-  }>;
+export const metadata: Metadata = {
+  title: "Sign in",
 };
 
-export default async function LoginPage({ searchParams }: LoginPageProps) {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ registered?: string }>;
+}) {
   const params = await searchParams;
+  const oauth = isOAuthConfigured();
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-12">
-      <section className="w-full max-w-md space-y-8">
-        <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
+    <main className="flex min-h-screen items-center justify-center p-4 lg:p-8">
+      <div className="w-full max-w-[540px] overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
+        <section className="w-full px-6 py-10 sm:px-12 lg:px-14 lg:py-14">
+          <div className="mx-auto flex h-full max-w-[420px] flex-col justify-center">
+            <div>
+              <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
 
-          <p className="text-sm text-muted">Sign in to continue to ProofWork.</p>
-        </div>
+              <p className="mt-2 text-muted">Sign in to your professional account.</p>
+            </div>
 
-        {params.registered === "true" && (
-          <div className="rounded-lg border border-success/40 bg-success-soft p-3 text-sm text-success">
-            Account created successfully. You can now sign in.
+            {params.registered === "true" && (
+              <div className="mt-6">
+                <Alert tone="success">Account created. You can sign in now.</Alert>
+              </div>
+            )}
+
+            <div className="mt-8">
+              <LoginForm />
+            </div>
+
+            {oauth.any && (
+              <>
+                <div className="my-7 flex items-center gap-5" aria-hidden="true">
+                  <span className="h-px flex-1 bg-line" />
+                  <span className="text-xs font-semibold tracking-[0.12em] text-muted">
+                    OR CONTINUE WITH
+                  </span>
+                  <span className="h-px flex-1 bg-line" />
+                </div>
+
+                <SocialAuthButtons
+                  googleEnabled={oauth.google}
+                  githubEnabled={oauth.github}
+                  compact
+                />
+              </>
+            )}
+
+            <p className="mt-10 text-center text-muted">
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="font-medium text-foreground hover:underline">
+                Create an account
+              </Link>
+            </p>
           </div>
-        )}
-
-        <LoginForm />
-
-        <p className="text-center text-sm text-muted">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="font-medium text-primary hover:underline">
-            Create account
-          </Link>
-        </p>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }
