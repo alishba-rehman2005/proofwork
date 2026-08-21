@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const oauth = isOAuthConfigured();
 
   return (
-    <main className="register-page-density flex min-h-screen items-center justify-center p-4 lg:p-8">
+    <main className="register-page-density flex min-h-screen items-center justify-center px-4 pt-20 pb-6 sm:pt-24 lg:p-8">
       <div className="w-full max-w-[1180px] overflow-hidden rounded-2xl border border-line bg-surface shadow-sm lg:flex">
         <section className="w-full px-6 py-10 sm:px-12 lg:px-14 lg:py-14">
           <div className="mx-auto max-w-[480px]">

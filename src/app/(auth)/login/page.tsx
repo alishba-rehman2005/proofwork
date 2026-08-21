@@ -19,7 +19,7 @@ export default async function LoginPage({
   const oauth = isOAuthConfigured();
 
   return (
-    <main className="flex min-h-screen items-center justify-center p-4 lg:p-8">
+    <main className="flex min-h-screen items-center justify-center px-4 pt-20 pb-6 sm:pt-24 lg:p-8">
       <div className="w-full max-w-[540px] overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
         <section className="w-full px-6 py-10 sm:px-12 lg:px-14 lg:py-14">
           <div className="mx-auto flex h-full max-w-[420px] flex-col justify-center">
