@@ -60,22 +60,22 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#000820]/85">
         <nav className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4 sm:h-[60px] sm:px-6">
           <Brand />
-          <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#f7f9fb]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
+          <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#fafafa]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
             <Link
               href="/how-it-works"
-              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#000820]"
+              className="rounded-md px-3 py-2 transition hover:bg-[#fafafa] hover:text-[#000820]"
             >
               How it works
             </Link>
             <Link
               href="/for-recruiters"
-              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#000820]"
+              className="rounded-md px-3 py-2 transition hover:bg-[#fafafa] hover:text-[#000820]"
             >
               For recruiters
             </Link>
             <Link
               href="/leaderboard"
-              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#000820]"
+              className="rounded-md px-3 py-2 transition hover:bg-[#fafafa] hover:text-[#000820]"
             >
               Verified talent
             </Link>
@@ -87,13 +87,13 @@ export default function LandingPage() {
       <main>
         <section className="relative flex items-center overflow-hidden bg-[#000820] text-white lg:min-h-[calc(100svh-60px)]">
           <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(140,166,199,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(140,166,199,.06)_1px,transparent_1px)] [background-size:56px_56px]" />
-          <div className="absolute -top-40 right-[-8%] h-[600px] w-[600px] rounded-full bg-[#19c99a]/10 blur-3xl" />
+          <div className="absolute -top-40 right-[-8%] h-[600px] w-[600px] rounded-full bg-[#003bfa]/10 blur-3xl" />
           <div className="relative mx-auto grid w-full max-w-[1120px] items-center gap-8 px-4 py-9 sm:gap-10 sm:px-6 sm:py-12 lg:grid-cols-[1.05fr_.95fr]">
             <div className="animate-rise max-w-[650px]">
               <h1 className="text-[32px] leading-[1.08] font-bold tracking-[-0.045em] sm:text-[50px]">
                 Your skills deserve
                 <br className="hidden sm:block" />{" "}
-                <span className="text-[#72e5c4]">credible proof.</span>
+                <span className="text-[#38bdf8]">credible proof.</span>
               </h1>
               <p className="mt-4 max-w-[560px] text-sm leading-6 text-[#b7c4d7] sm:mt-5 sm:text-[15px] sm:leading-7">
                 Complete real assessments, receive structured expert reviews, and build a
@@ -102,7 +102,7 @@ export default function LandingPage() {
               <div className="mt-6 grid gap-2.5 sm:mt-7 sm:flex sm:flex-wrap">
                 <Link
                   href="/register"
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#65e6c1] px-5 text-[13px] font-bold text-[#000820] shadow-[0_10px_28px_rgba(101,230,193,.16)] transition hover:-translate-y-0.5 hover:bg-[#87edcf] hover:shadow-[0_14px_32px_rgba(101,230,193,.22)]"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#38bdf8] px-5 text-[13px] font-bold text-[#000820] shadow-[0_10px_28px_rgba(56,189,248,.18)] transition hover:-translate-y-0.5 hover:bg-[#7dd3fc] hover:shadow-[0_14px_32px_rgba(56,189,248,.26)]"
                 >
                   Create your profile <Arrow />
                 </Link>
@@ -128,7 +128,7 @@ export default function LandingPage() {
 
         <section
           id="how-it-works"
-          className="scroll-mt-20 bg-[radial-gradient(circle_at_50%_20%,rgba(101,230,193,.08),transparent_35%)] px-4 py-12 sm:px-6 sm:py-16"
+          className="scroll-mt-20 bg-[radial-gradient(circle_at_50%_20%,rgba(56,189,248,.09),transparent_35%)] px-4 py-12 sm:px-6 sm:py-16"
         >
           <div className="mx-auto max-w-[1120px]">
             <Reveal className="lg:order-2">
@@ -143,7 +143,7 @@ export default function LandingPage() {
                 <Reveal key={number} delay={index * 70}>
                   <article className="landing-glass-card h-full rounded-xl p-5">
                     <div className="flex items-center">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#bde8dd] bg-[#edfaf6] text-[#13745f]">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#bfd4ff] bg-[#e8edff] text-[#003bfa]">
                         <ProcessIcon step={index} />
                       </span>
                     </div>
@@ -189,7 +189,7 @@ export default function LandingPage() {
               </div>
               <Link
                 href="/register"
-                className="mt-7 inline-flex h-10 items-center gap-2 rounded-md bg-[#65e6c1] px-5 text-[13px] font-bold text-[#000820]"
+                className="mt-7 inline-flex h-10 items-center gap-2 rounded-md bg-[#38bdf8] px-5 text-[13px] font-bold text-[#000820]"
               >
                 Create recruiter account <Arrow />
               </Link>
@@ -210,7 +210,7 @@ export default function LandingPage() {
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {features.map(([title, body], index) => (
                 <article key={title} className="landing-glass-card rounded-xl p-5">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#edf8f5] text-[#147861]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e8edff] text-[#003bfa]">
                     <FeatureIcon index={index} />
                   </span>
                   <h3 className="mt-4 text-[15px] font-bold">{title}</h3>
@@ -226,7 +226,7 @@ export default function LandingPage() {
             <div className="landing-cta-card relative mx-auto max-w-[1120px] overflow-hidden rounded-2xl px-6 py-12 text-center text-white sm:px-10">
               <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_50%_0%,#1c866e_0,transparent_42%)]" />
               <div className="relative">
-                <p className="text-xs font-bold tracking-[.16em] text-[#70e5c4]">
+                <p className="text-xs font-bold tracking-[.16em] text-[#38bdf8]">
                   START WITH ONE SKILL
                 </p>
                 <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-bold tracking-[-.035em] sm:text-[38px]">
@@ -239,7 +239,7 @@ export default function LandingPage() {
                 <div className="mt-6 flex flex-wrap justify-center gap-2.5">
                   <Link
                     href="/register"
-                    className="inline-flex h-10 items-center gap-2 rounded-md bg-[#65e6c1] px-5 text-[13px] font-bold text-[#000820]"
+                    className="inline-flex h-10 items-center gap-2 rounded-md bg-[#38bdf8] px-5 text-[13px] font-bold text-[#000820]"
                   >
                     Create your profile <Arrow />
                   </Link>
@@ -278,7 +278,7 @@ function Brand() {
 function Trust({ children }: { children: React.ReactNode }) {
   return (
     <span className="landing-glass-dark flex items-center gap-2 rounded-full px-3 py-1.5">
-      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#65e6c1]/15 text-[#65e6c1]">
+      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-[#38bdf8]/15 text-[#38bdf8]">
         <Check />
       </span>
       {children}
@@ -301,7 +301,7 @@ function Heading({
   return (
     <div className={center ? "mx-auto max-w-3xl text-center" : "max-w-2xl"}>
       <p
-        className={`text-xs font-bold tracking-[.16em] ${dark ? "text-[#6fe4c3]" : "text-[#147861]"}`}
+        className={`text-xs font-bold tracking-[.16em] ${dark ? "text-[#38bdf8]" : "text-[#003bfa]"}`}
       >
         {eyebrow}
       </p>
@@ -358,7 +358,7 @@ function Footer() {
       <div className="mx-auto grid max-w-[1120px] gap-8 px-5 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
         <div>
           <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/10 text-[#68e3c1]">
+            <span className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/10 text-[#38bdf8]">
               <Seal />
             </span>
             <span>
@@ -371,7 +371,7 @@ function Footer() {
           <p className="mt-5 max-w-xs text-sm leading-6 text-[#9cacc0]">
             Professional skill and work verification for candidates, reviewers, and recruiters.
           </p>
-          <p className="mt-3 text-sm font-semibold text-[#68e3c1]">Evidence over claims.</p>
+          <p className="mt-3 text-sm font-semibold text-[#38bdf8]">Evidence over claims.</p>
         </div>
         <Foot
           title="Platform"
@@ -415,7 +415,7 @@ function Foot({ title, links }: { title: string; links: string[][] }) {
       <ul className="mt-4 space-y-3">
         {links.map(([label, href]) => (
           <li key={label}>
-            <Link href={href} className="text-sm text-[#9cacc0] transition hover:text-[#68e3c1]">
+            <Link href={href} className="text-sm text-[#9cacc0] transition hover:text-[#38bdf8]">
               {label}
             </Link>
           </li>

@@ -31,7 +31,7 @@ const steps = [
 
 export default function HowItWorksPage() {
   return (
-    <main className="min-h-screen bg-[#f6f9fb] text-[#000820]">
+    <main className="min-h-screen bg-[#fafafa] text-[#000820]">
       <header className="border-b border-[#dce5ec] bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-5 sm:px-6">
           <Link href="/" className="text-base font-bold tracking-[-.03em]">
@@ -47,7 +47,7 @@ export default function HowItWorksPage() {
       </header>
 
       <section className="mx-auto max-w-[1120px] px-5 py-16 sm:px-6">
-        <p className="text-xs font-bold tracking-[.16em] text-[#147861]">HOW IT WORKS</p>
+        <p className="text-xs font-bold tracking-[.16em] text-[#003bfa]">HOW IT WORKS</p>
         <h1 className="mt-3 max-w-2xl text-4xl font-bold tracking-[-.04em] sm:text-[46px]">
           From claimed skill to credible evidence.
         </h1>
@@ -59,7 +59,7 @@ export default function HowItWorksPage() {
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {steps.map(([number, title, body]) => (
             <article key={number} className="landing-glass-card rounded-xl p-5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e9f8f3] font-mono text-xs font-bold text-[#147861]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e9f8f3] font-mono text-xs font-bold text-[#003bfa]">
                 {number}
               </span>
               <h2 className="mt-5 text-base font-bold">{title}</h2>
@@ -75,7 +75,7 @@ export default function HowItWorksPage() {
           </p>
           <Link
             href="/register"
-            className="mt-6 inline-flex rounded-lg bg-[#65e6c1] px-5 py-2.5 text-[13px] font-bold text-[#000820]"
+            className="mt-6 inline-flex rounded-lg bg-[#38bdf8] px-5 py-2.5 text-[13px] font-bold text-[#000820]"
           >
             Create your profile →
           </Link>
