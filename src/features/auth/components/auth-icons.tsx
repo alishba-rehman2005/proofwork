@@ -6,7 +6,7 @@ export function ProofWorkMark({ className }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`inline-flex items-center justify-center rounded-md bg-[#07152b] text-white ${className ?? "h-14 w-14"}`}
+      className={`inline-flex items-center justify-center rounded-md bg-[#000820] text-white ${className ?? "h-14 w-14"}`}
     >
       <svg viewBox="0 0 32 32" className="h-7 w-7" fill="none">
         <path

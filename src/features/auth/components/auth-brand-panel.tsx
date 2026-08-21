@@ -13,8 +13,8 @@ import type { ReactNode } from "react";
 | interactive surface next to it uses the theme tokens.
 */
 
-const PANEL_BG = "#07152b";
-const ACCENT = "#69e5c1";
+const PANEL_BG = "#000820";
+const ACCENT = "#38bdf8";
 
 type Benefit = { title: string; body: string; icon: ReactNode };
 

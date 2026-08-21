@@ -24,15 +24,15 @@ const benefits = [
 
 export default function ForRecruitersPage() {
   return (
-    <main className="min-h-screen bg-[#07152b] text-white">
-      <header className="border-b border-white/10 bg-[#07152b]/90 backdrop-blur-xl">
+    <main className="min-h-screen bg-[#000820] text-white">
+      <header className="border-b border-white/10 bg-[#000820]/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-5 sm:px-6">
           <Link href="/" className="text-base font-bold tracking-[-.03em]">
             ProofWork
           </Link>
           <Link
             href="/register"
-            className="rounded-lg bg-[#65e6c1] px-4 py-2 text-[13px] font-bold text-[#07152b]"
+            className="rounded-lg bg-[#65e6c1] px-4 py-2 text-[13px] font-bold text-[#000820]"
           >
             Recruiter account →
           </Link>
@@ -75,7 +75,7 @@ export default function ForRecruitersPage() {
             </Link>
             <Link
               href="/register"
-              className="rounded-lg bg-[#65e6c1] px-4 py-2.5 text-[13px] font-bold text-[#07152b]"
+              className="rounded-lg bg-[#65e6c1] px-4 py-2.5 text-[13px] font-bold text-[#000820]"
             >
               Get started →
             </Link>

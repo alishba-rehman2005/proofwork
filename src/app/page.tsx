@@ -57,25 +57,25 @@ const features = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen overflow-x-hidden bg-white text-[#0b1729] dark:bg-[#07111f] dark:text-white">
-      <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#07152b]/85">
+      <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#000820]/85">
         <nav className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4 sm:h-[60px] sm:px-6">
           <Brand />
           <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#f7f9fb]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
             <Link
               href="/how-it-works"
-              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#07152b]"
+              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#000820]"
             >
               How it works
             </Link>
             <Link
               href="/for-recruiters"
-              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#07152b]"
+              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#000820]"
             >
               For recruiters
             </Link>
             <Link
               href="/leaderboard"
-              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#07152b]"
+              className="rounded-md px-3 py-2 transition hover:bg-[#f1f5f7] hover:text-[#000820]"
             >
               Verified talent
             </Link>
@@ -85,7 +85,7 @@ export default function LandingPage() {
       </header>
 
       <main>
-        <section className="relative flex items-center overflow-hidden bg-[#07152b] text-white lg:min-h-[calc(100svh-60px)]">
+        <section className="relative flex items-center overflow-hidden bg-[#000820] text-white lg:min-h-[calc(100svh-60px)]">
           <div className="absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(140,166,199,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(140,166,199,.06)_1px,transparent_1px)] [background-size:56px_56px]" />
           <div className="absolute -top-40 right-[-8%] h-[600px] w-[600px] rounded-full bg-[#19c99a]/10 blur-3xl" />
           <div className="relative mx-auto grid w-full max-w-[1120px] items-center gap-8 px-4 py-9 sm:gap-10 sm:px-6 sm:py-12 lg:grid-cols-[1.05fr_.95fr]">
@@ -102,7 +102,7 @@ export default function LandingPage() {
               <div className="mt-6 grid gap-2.5 sm:mt-7 sm:flex sm:flex-wrap">
                 <Link
                   href="/register"
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#65e6c1] px-5 text-[13px] font-bold text-[#07152b] shadow-[0_10px_28px_rgba(101,230,193,.16)] transition hover:-translate-y-0.5 hover:bg-[#87edcf] hover:shadow-[0_14px_32px_rgba(101,230,193,.22)]"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#65e6c1] px-5 text-[13px] font-bold text-[#000820] shadow-[0_10px_28px_rgba(101,230,193,.16)] transition hover:-translate-y-0.5 hover:bg-[#87edcf] hover:shadow-[0_14px_32px_rgba(101,230,193,.22)]"
                 >
                   Create your profile <Arrow />
                 </Link>
@@ -158,7 +158,7 @@ export default function LandingPage() {
 
         <section
           id="recruiters"
-          className="scroll-mt-20 overflow-hidden bg-[#07152b] px-4 py-12 text-white sm:px-6 sm:py-16"
+          className="scroll-mt-20 overflow-hidden bg-[#000820] px-4 py-12 text-white sm:px-6 sm:py-16"
         >
           <div className="mx-auto grid max-w-[1120px] items-center gap-12 lg:grid-cols-2">
             <Reveal delay={80}>
@@ -189,7 +189,7 @@ export default function LandingPage() {
               </div>
               <Link
                 href="/register"
-                className="mt-7 inline-flex h-10 items-center gap-2 rounded-md bg-[#65e6c1] px-5 text-[13px] font-bold text-[#07152b]"
+                className="mt-7 inline-flex h-10 items-center gap-2 rounded-md bg-[#65e6c1] px-5 text-[13px] font-bold text-[#000820]"
               >
                 Create recruiter account <Arrow />
               </Link>
@@ -239,7 +239,7 @@ export default function LandingPage() {
                 <div className="mt-6 flex flex-wrap justify-center gap-2.5">
                   <Link
                     href="/register"
-                    className="inline-flex h-10 items-center gap-2 rounded-md bg-[#65e6c1] px-5 text-[13px] font-bold text-[#07152b]"
+                    className="inline-flex h-10 items-center gap-2 rounded-md bg-[#65e6c1] px-5 text-[13px] font-bold text-[#000820]"
                   >
                     Create your profile <Arrow />
                   </Link>
@@ -263,7 +263,7 @@ export default function LandingPage() {
 function Brand() {
   return (
     <Link href="/" className="flex items-center gap-2.5">
-      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#07152b] text-white">
+      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#000820] text-white">
         <Seal />
       </span>
       <span>
@@ -306,7 +306,7 @@ function Heading({
         {eyebrow}
       </p>
       <h2
-        className={`mt-3 text-3xl leading-tight font-bold tracking-[-.035em] sm:text-[34px] ${dark ? "text-white" : "text-[#07152b] dark:text-white"}`}
+        className={`mt-3 text-3xl leading-tight font-bold tracking-[-.035em] sm:text-[34px] ${dark ? "text-white" : "text-[#000820] dark:text-white"}`}
       >
         {title}
       </h2>

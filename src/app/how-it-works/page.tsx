@@ -31,7 +31,7 @@ const steps = [
 
 export default function HowItWorksPage() {
   return (
-    <main className="min-h-screen bg-[#f6f9fb] text-[#07152b]">
+    <main className="min-h-screen bg-[#f6f9fb] text-[#000820]">
       <header className="border-b border-[#dce5ec] bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-5 sm:px-6">
           <Link href="/" className="text-base font-bold tracking-[-.03em]">
@@ -39,7 +39,7 @@ export default function HowItWorksPage() {
           </Link>
           <Link
             href="/register"
-            className="rounded-lg bg-[#07152b] px-4 py-2 text-[13px] font-bold text-white"
+            className="rounded-lg bg-[#000820] px-4 py-2 text-[13px] font-bold text-white"
           >
             Get started →
           </Link>
@@ -68,14 +68,14 @@ export default function HowItWorksPage() {
           ))}
         </div>
 
-        <div className="mt-12 rounded-2xl bg-[#07152b] px-6 py-10 text-center text-white">
+        <div className="mt-12 rounded-2xl bg-[#000820] px-6 py-10 text-center text-white">
           <h2 className="text-2xl font-bold">Ready to turn your work into proof?</h2>
           <p className="mt-2 text-sm text-[#adbbce]">
             Start with one skill and build a profile backed by evidence.
           </p>
           <Link
             href="/register"
-            className="mt-6 inline-flex rounded-lg bg-[#65e6c1] px-5 py-2.5 text-[13px] font-bold text-[#07152b]"
+            className="mt-6 inline-flex rounded-lg bg-[#65e6c1] px-5 py-2.5 text-[13px] font-bold text-[#000820]"
           >
             Create your profile →
           </Link>
