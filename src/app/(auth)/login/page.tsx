@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Alert } from "@/components/ui";
+import { AuthBrandPanel } from "@/features/auth/components/auth-brand-panel";
 import { LoginForm } from "@/features/auth/components/login-form";
 import { SocialAuthButtons } from "@/features/auth/components/social-auth-buttons";
 import { isOAuthConfigured } from "@/features/auth/oauth-config";
@@ -20,11 +21,18 @@ export default async function LoginPage({
 
   return (
     <main className="flex min-h-screen items-center justify-center px-4 pt-20 pb-6 sm:pt-24 lg:p-8">
-      <div className="w-full max-w-[540px] overflow-hidden rounded-2xl border border-line bg-surface shadow-sm">
-        <section className="w-full px-6 py-10 sm:px-12 lg:px-14 lg:py-14">
+      {/*
+        Same split as register. Sign in used to be a bare white box with no
+        brand on it at all, so the two halves of the same flow looked like they
+        came from different products.
+      */}
+      <div className="w-full max-w-[1080px] overflow-hidden rounded-2xl border border-line bg-surface shadow-sm lg:flex">
+        <section className="w-full px-6 py-10 sm:px-12 lg:px-14 lg:py-16">
           <div className="mx-auto flex h-full max-w-[420px] flex-col justify-center">
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
+              <h1 className="text-[30px] leading-tight font-semibold tracking-tight">
+                Welcome back
+              </h1>
 
               <p className="mt-2 text-muted">Sign in to your professional account.</p>
             </div>
@@ -41,9 +49,9 @@ export default async function LoginPage({
 
             {oauth.any && (
               <>
-                <div className="my-7 flex items-center gap-5" aria-hidden="true">
+                <div className="my-7 flex items-center gap-4" aria-hidden="true">
                   <span className="h-px flex-1 bg-line" />
-                  <span className="text-xs font-semibold tracking-[0.12em] text-muted">
+                  <span className="text-xs font-semibold tracking-[0.08em] text-muted">
                     OR CONTINUE WITH
                   </span>
                   <span className="h-px flex-1 bg-line" />
@@ -65,6 +73,12 @@ export default async function LoginPage({
             </p>
           </div>
         </section>
+
+        <AuthBrandPanel
+          variant="sign-in"
+          heading="Pick up exactly where you left off."
+          body="Your assessments, reviews, and hiring activity are waiting in one place."
+        />
       </div>
     </main>
   );

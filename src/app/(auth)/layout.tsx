@@ -14,8 +14,10 @@ import { BackToSite } from "@/features/auth/components/back-to-site";
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen bg-surface-muted">
-      <div className="absolute top-4 left-4 z-20 sm:top-6 sm:left-6">
-        <BackToSite />
+      <div className="pointer-events-none absolute inset-x-0 top-4 z-20 px-4 sm:top-6 lg:px-8">
+        <div className="pointer-events-auto mx-auto max-w-[1080px]">
+          <BackToSite />
+        </div>
       </div>
 
       {children}
