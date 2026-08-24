@@ -54,7 +54,7 @@ export function AppShell({
           <Link href="/dashboard" className="flex items-center gap-2.5">
             <span
               aria-hidden="true"
-              className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand text-brand-foreground"
+              className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -69,7 +69,7 @@ export function AppShell({
               </svg>
             </span>
 
-            <span className="text-lg font-semibold tracking-tight">ProofWork</span>
+            <span className="text-[15px] font-bold tracking-tight">ProofWork</span>
           </Link>
 
           <IconButton label="Close navigation" onClick={() => setOpen(false)} className="lg:hidden">
@@ -80,7 +80,7 @@ export function AppShell({
         <nav className="space-y-6 p-4" aria-label="Main">
           {sections.map((section) => (
             <div key={section.heading}>
-              <p className="px-3 text-xs font-semibold tracking-wider text-accent/70 uppercase">
+              <p className="px-3 text-xs font-semibold tracking-wider text-primary uppercase">
                 {section.heading}
               </p>
 
@@ -98,14 +98,14 @@ export function AppShell({
                         aria-current={active ? "page" : undefined}
                         className={`relative block rounded-lg py-2 ps-4 pe-3 text-sm transition-colors ${
                           active
-                            ? "bg-accent-soft font-semibold text-accent"
+                            ? "bg-primary-soft font-semibold text-primary"
                             : "text-muted hover:bg-surface-muted hover:text-foreground"
                         }`}
                       >
                         {active && (
                           <span
                             aria-hidden="true"
-                            className="absolute inset-y-1.5 start-0 w-1 rounded-full bg-accent"
+                            className="absolute inset-y-1.5 start-0 w-1 rounded-full bg-primary"
                           />
                         )}
 
@@ -141,7 +141,7 @@ export function AppShell({
             >
               <span
                 aria-hidden="true"
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-accent-soft text-xs font-semibold text-accent"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-soft text-xs font-semibold text-primary"
               >
                 {(name ?? email).slice(0, 1).toUpperCase()}
               </span>
@@ -154,13 +154,13 @@ export function AppShell({
 
             <form action={logoutAction}>
               {/*
-                Themed to the accent so it belongs to the shell, but kept as an
+                Themed to the brand so it belongs to the shell, but kept as an
                 outline rather than a filled button: signing out should not look
                 like the primary thing to do on the page.
               */}
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent-soft/50 px-3 py-1.5 text-sm font-medium text-accent transition-colors hover:border-accent/60 hover:bg-accent-soft"
+                className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary-soft/60 px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:border-accent/60 hover:bg-accent-soft"
               >
                 <SignOutIcon />
                 <span className="hidden sm:inline">Sign out</span>

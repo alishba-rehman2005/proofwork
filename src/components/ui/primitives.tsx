@@ -273,7 +273,7 @@ export function Stat({
 
       <p className="tabular mt-1 text-2xl font-semibold">{value}</p>
 
-      {hint && <p className="mt-1 text-xs text-faint">{hint}</p>}
+      {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
     </div>
   );
 }

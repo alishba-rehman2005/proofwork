@@ -156,7 +156,7 @@ export default async function DashboardPage() {
         </Card>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid items-start gap-6 lg:grid-cols-3">
         <Card className="space-y-5 lg:col-span-2">
           <div className="flex items-center justify-between gap-3">
             <CardTitle>Verification overview</CardTitle>

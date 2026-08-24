@@ -20,7 +20,7 @@ export function PolicyPage({
         <p className="mt-10 text-xs font-bold tracking-[.16em] text-[#003bfa]">{eyebrow}</p>
         <h1 className="mt-3 text-4xl font-bold tracking-[-.04em]">{title}</h1>
         <p className="mt-5 leading-7 text-muted">{intro}</p>
-        <p className="mt-3 text-xs text-faint">Last updated: August 16, 2026</p>
+        <p className="mt-3 text-xs text-muted">Last updated: August 16, 2026</p>
         <div className="mt-10 space-y-8">
           {sections.map((section) => (
             <section key={section.title}>

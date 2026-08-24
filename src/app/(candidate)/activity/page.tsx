@@ -109,7 +109,7 @@ export default async function ActivityPage() {
                     {typeof meta?.score === "number" && <Badge tone="solid">{meta.score}%</Badge>}
                   </div>
 
-                  <p className="mt-1 text-xs text-faint">{formatDateTime(event.createdAt)}</p>
+                  <p className="mt-1 text-xs text-muted">{formatDateTime(event.createdAt)}</p>
                 </li>
               );
             })}

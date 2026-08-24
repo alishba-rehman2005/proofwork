@@ -181,7 +181,7 @@ export default async function ReviewerPage() {
 
                   <p className="mt-1 text-sm text-muted">{contribution.description}</p>
 
-                  <p className="mt-1 text-xs text-faint">
+                  <p className="mt-1 text-xs text-muted">
                     {contribution.memberName ?? contribution.memberEmail} · {contribution.teamName}{" "}
                     · {contribution.projectTitle}
                   </p>
