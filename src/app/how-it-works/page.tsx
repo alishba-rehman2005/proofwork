@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { auth } from "@/auth";
+import { SiteFooter } from "@/components/marketing/site-footer";
+import { SiteHeader } from "@/components/marketing/site-header";
+
 export const metadata: Metadata = {
   title: "How it works | ProofWork",
   description: "See how ProofWork turns practical work into verified professional evidence.",
@@ -29,22 +33,12 @@ const steps = [
   ],
 ] as const;
 
-export default function HowItWorksPage() {
+export default async function HowItWorksPage() {
+  const session = await auth();
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-line bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-5 sm:px-6">
-          <Link href="/" className="text-base font-bold tracking-[-.03em]">
-            ProofWork
-          </Link>
-          <Link
-            href="/register"
-            className="rounded-lg bg-[#000820] px-4 py-2 text-[13px] font-bold text-white"
-          >
-            Get started →
-          </Link>
-        </div>
-      </header>
+      <SiteHeader signedIn={Boolean(session?.user)} />
 
       <section className="mx-auto max-w-[1120px] px-5 py-16 sm:px-6">
         <p className="text-xs font-bold tracking-[.16em] text-[#003bfa]">HOW IT WORKS</p>
@@ -79,6 +73,7 @@ export default function HowItWorksPage() {
           >
             Create your profile →
           </Link>
+          <SiteFooter />
         </div>
       </section>
     </main>

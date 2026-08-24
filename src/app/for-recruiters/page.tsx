@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { auth } from "@/auth";
+import { SiteFooter } from "@/components/marketing/site-footer";
+import { SiteHeader } from "@/components/marketing/site-header";
+
 export const metadata: Metadata = {
   title: "For recruiters | ProofWork",
   description: "Discover and shortlist candidates using reviewed, verified evidence.",
@@ -22,22 +26,12 @@ const benefits = [
   ],
 ] as const;
 
-export default function ForRecruitersPage() {
+export default async function ForRecruitersPage() {
+  const session = await auth();
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <header className="border-b border-line bg-surface/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-5 sm:px-6">
-          <Link href="/" className="text-base font-bold tracking-[-.03em]">
-            ProofWork
-          </Link>
-          <Link
-            href="/register"
-            className="rounded-lg bg-primary px-4 py-2 text-[13px] font-bold text-primary-foreground"
-          >
-            Recruiter account →
-          </Link>
-        </div>
-      </header>
+      <SiteHeader signedIn={Boolean(session?.user)} />
 
       <section className="mx-auto max-w-[1120px] px-5 py-16 sm:px-6">
         <p className="text-xs font-bold tracking-[.16em] text-accent">FOR RECRUITERS</p>
@@ -80,6 +74,7 @@ export default function ForRecruitersPage() {
               Get started →
             </Link>
           </div>
+          <SiteFooter />
         </div>
       </section>
     </main>

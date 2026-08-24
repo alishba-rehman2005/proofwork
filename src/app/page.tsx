@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { auth } from "@/auth";
+import { SiteFooter } from "@/components/marketing/site-footer";
+import { SiteHeader } from "@/components/marketing/site-header";
+
 import { Reveal } from "@/components/motion/reveal";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 export const metadata: Metadata = {
   title: "ProofWork — skills backed by evidence",
@@ -54,35 +57,12 @@ const features = [
   ["Complete audit trail", "Appointments, submissions, scores, and decisions remain attributable."],
 ] as const;
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const session = await auth();
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-[#0b1729] dark:bg-[#07111f] dark:text-white">
-      <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#000820]/85">
-        <nav className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4 sm:h-[60px] sm:px-6">
-          <Brand />
-          <div className="hidden items-center gap-0.5 rounded-lg border border-line bg-background/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
-            <Link
-              href="/how-it-works"
-              className="rounded-md px-3 py-2 transition hover:bg-background hover:text-foreground"
-            >
-              How it works
-            </Link>
-            <Link
-              href="/for-recruiters"
-              className="rounded-md px-3 py-2 transition hover:bg-background hover:text-foreground"
-            >
-              For recruiters
-            </Link>
-            <Link
-              href="/leaderboard"
-              className="rounded-md px-3 py-2 transition hover:bg-background hover:text-foreground"
-            >
-              Verified talent
-            </Link>
-          </div>
-          <ThemeToggle />
-        </nav>
-      </header>
+    <div className="min-h-screen overflow-x-clip bg-background text-foreground">
+      <SiteHeader signedIn={Boolean(session?.user)} />
 
       <main>
         <section className="relative flex items-center overflow-hidden bg-[#000820] text-white lg:min-h-[calc(100svh-60px)]">
@@ -260,21 +240,6 @@ export default function LandingPage() {
   );
 }
 
-function Brand() {
-  return (
-    <Link href="/" className="flex items-center gap-2.5">
-      <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#000820] text-white">
-        <Seal />
-      </span>
-      <span>
-        <strong className="block text-base leading-none tracking-[-.035em]">ProofWork</strong>
-        <small className="mt-1 hidden text-[8px] font-bold tracking-[.14em] text-[#718096] sm:block">
-          PROFESSIONAL VERIFICATION
-        </small>
-      </span>
-    </Link>
-  );
-}
 function Trust({ children }: { children: React.ReactNode }) {
   return (
     <span className="landing-glass-dark flex items-center gap-2 rounded-full px-3 py-1.5">
@@ -353,76 +318,7 @@ function SearchPreview() {
 }
 
 function Footer() {
-  return (
-    <footer className="bg-[#061327] text-white">
-      <div className="mx-auto grid max-w-[1120px] gap-8 px-5 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
-        <div>
-          <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-md border border-white/10 bg-white/10 text-[#38bdf8]">
-              <Seal />
-            </span>
-            <span>
-              <strong className="block text-xl leading-none tracking-[-.035em]">ProofWork</strong>
-              <small className="mt-1.5 block text-[8px] font-bold tracking-[.16em] text-[#8fa2ba]">
-                PROFESSIONAL VERIFICATION
-              </small>
-            </span>
-          </Link>
-          <p className="mt-5 max-w-xs text-sm leading-6 text-muted">
-            Professional skill and work verification for candidates, reviewers, and recruiters.
-          </p>
-          <p className="mt-3 text-sm font-semibold text-[#38bdf8]">Evidence over claims.</p>
-        </div>
-        <Foot
-          title="Platform"
-          links={[
-            ["How it works", "/how-it-works"],
-            ["Verified talent", "/leaderboard"],
-            ["Assessments", "/assessments"],
-            ["Leaderboard", "/leaderboard"],
-          ]}
-        />
-        <Foot
-          title="For professionals"
-          links={[
-            ["For recruiters", "/for-recruiters"],
-            ["Create a profile", "/register"],
-            ["Reviewer sign in", "/login"],
-          ]}
-        />
-        <Foot
-          title="Company"
-          links={[
-            ["About ProofWork", "#how-it-works"],
-            ["Privacy policy", "/privacy"],
-            ["Terms of service", "/terms"],
-            ["Security", "/security"],
-          ]}
-        />
-      </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto max-w-[1120px] px-5 py-4 text-center text-xs text-[#7f91a9] sm:px-6">
-          <span>© 2026 ProofWork. All rights reserved. Developed by Alishba Rehman.</span>
-        </div>
-      </div>
-    </footer>
-  );
-}
-function Foot({ title, links }: { title: string; links: string[][] }) {
-  return (
-    <div>
-      <h3 className="text-sm font-bold text-white">{title}</h3>
-      <ul className="mt-4 space-y-3">
-        {links.map(([label, href]) => (
-          <li key={label}>
-            <Link href={href} className="text-sm text-muted transition hover:text-[#38bdf8]">
-              {label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  return <SiteFooter />;
 }
 
 function Arrow() {
@@ -448,20 +344,6 @@ function Check() {
       strokeWidth="2"
     >
       <path d="m4 10 3.5 3.5L16 5.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function Seal() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      className="h-5 w-5"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-    >
-      <path d="m12 2.8 2.2 1.6 2.8-.2.8 2.6 2.3 1.7-1 2.6 1 2.6-2.3 1.7-.8 2.6-2.8-.2-2.2 1.6-2.2-1.6-2.8.2-.8-2.6-2.3-1.7 1-2.6-1-2.6 2.3-1.7.8-2.6 2.8.2L12 2.8Z" />
-      <path d="m8.7 11.8 2.1 2.1 4.6-5" />
     </svg>
   );
 }
