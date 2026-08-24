@@ -57,6 +57,13 @@
 
   --ring: #003bfa;
   --overlay: rgb(0 8 32 / 0.55);
+
+  /* Elevation - soft, close, and layered rather than one heavy blur */
+  --shadow-xs: 0 1px 2px rgb(0 8 32 / 0.04);
+  --shadow-sm: 0 1px 3px rgb(0 8 32 / 0.06), 0 1px 2px rgb(0 8 32 / 0.04);
+  --shadow-md: 0 4px 12px rgb(0 8 32 / 0.07), 0 2px 4px rgb(0 8 32 / 0.04);
+  --shadow-lg: 0 12px 28px rgb(0 8 32 / 0.1), 0 4px 8px rgb(0 8 32 / 0.05);
+  --shadow-ring: 0 0 0 1px rgb(0 8 32 / 0.05);
 }
 
 .dark {
@@ -91,6 +98,14 @@
 
   --ring: #4c7dff;
   --overlay: rgb(0 5 16 / 0.75);
+
+  /* Dark elevation: a shadow cannot read on a dark ground, so depth comes
+     from the surface stepping lighter and a hairline catching the edge. */
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-sm: 0 1px 3px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.04);
+  --shadow-md: 0 4px 12px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.05);
+  --shadow-lg: 0 12px 28px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.06);
+  --shadow-ring: 0 0 0 1px rgb(255 255 255 / 0.06);
 }
 
 @theme inline {
@@ -122,6 +137,18 @@
 
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+
+  /* One radius rhythm instead of six ad-hoc values */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.125rem;
+  --radius-2xl: 1.5rem;
 
   --color-ring: var(--ring);
 

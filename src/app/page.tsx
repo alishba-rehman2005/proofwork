@@ -60,22 +60,22 @@ export default function LandingPage() {
       <header className="sticky top-0 z-50 border-b border-white/70 bg-white/80 shadow-[0_8px_30px_rgba(13,31,55,.06)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#000820]/85">
         <nav className="mx-auto flex h-14 max-w-[1120px] items-center justify-between px-4 sm:h-[60px] sm:px-6">
           <Brand />
-          <div className="hidden items-center gap-0.5 rounded-lg border border-[#e3e9ef] bg-[#fafafa]/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
+          <div className="hidden items-center gap-0.5 rounded-lg border border-line bg-background/90 p-0.5 text-[13px] font-semibold text-[#58677b] shadow-inner dark:border-white/10 dark:bg-white/[.06] dark:text-[#b9c6d8] md:flex">
             <Link
               href="/how-it-works"
-              className="rounded-md px-3 py-2 transition hover:bg-[#fafafa] hover:text-[#000820]"
+              className="rounded-md px-3 py-2 transition hover:bg-background hover:text-foreground"
             >
               How it works
             </Link>
             <Link
               href="/for-recruiters"
-              className="rounded-md px-3 py-2 transition hover:bg-[#fafafa] hover:text-[#000820]"
+              className="rounded-md px-3 py-2 transition hover:bg-background hover:text-foreground"
             >
               For recruiters
             </Link>
             <Link
               href="/leaderboard"
-              className="rounded-md px-3 py-2 transition hover:bg-[#fafafa] hover:text-[#000820]"
+              className="rounded-md px-3 py-2 transition hover:bg-background hover:text-foreground"
             >
               Verified talent
             </Link>
@@ -102,7 +102,7 @@ export default function LandingPage() {
               <div className="mt-6 grid gap-2.5 sm:mt-7 sm:flex sm:flex-wrap">
                 <Link
                   href="/register"
-                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#38bdf8] px-5 text-[13px] font-bold text-[#000820] shadow-[0_10px_28px_rgba(56,189,248,.18)] transition hover:-translate-y-0.5 hover:bg-[#7dd3fc] hover:shadow-[0_14px_32px_rgba(56,189,248,.26)]"
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-[#38bdf8] px-5 text-[13px] font-bold text-foreground shadow-[0_10px_28px_rgba(56,189,248,.18)] transition hover:-translate-y-0.5 hover:bg-[#7dd3fc] hover:shadow-[0_14px_32px_rgba(56,189,248,.26)]"
                 >
                   Create your profile <Arrow />
                 </Link>
@@ -114,7 +114,7 @@ export default function LandingPage() {
                   Explore verified talent
                 </Link>
               </div>
-              <div className="mt-6 grid gap-2 border-t border-white/10 pt-5 text-xs text-[#aebbd0] sm:flex sm:flex-wrap">
+              <div className="mt-6 grid gap-2 border-t border-white/10 pt-5 text-xs text-muted sm:flex sm:flex-wrap">
                 <Trust>Free candidate profiles</Trust>
                 <Trust>Transparent scoring</Trust>
                 <Trust>Human-reviewed work</Trust>
@@ -143,12 +143,12 @@ export default function LandingPage() {
                 <Reveal key={number} delay={index * 70}>
                   <article className="landing-glass-card h-full rounded-xl p-5">
                     <div className="flex items-center">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#bfd4ff] bg-[#e8edff] text-[#003bfa]">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#bfd4ff] bg-primary-soft text-[#003bfa]">
                         <ProcessIcon step={index} />
                       </span>
                     </div>
                     <h3 className="mt-5 text-base font-bold">{title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-[#647286]">{body}</p>
+                    <p className="mt-3 text-sm leading-6 text-muted">{body}</p>
                   </article>
                 </Reveal>
               ))}
@@ -189,7 +189,7 @@ export default function LandingPage() {
               </div>
               <Link
                 href="/register"
-                className="mt-7 inline-flex h-10 items-center gap-2 rounded-md bg-[#38bdf8] px-5 text-[13px] font-bold text-[#000820]"
+                className="mt-7 inline-flex h-10 items-center gap-2 rounded-md bg-[#38bdf8] px-5 text-[13px] font-bold text-foreground"
               >
                 Create recruiter account <Arrow />
               </Link>
@@ -210,7 +210,7 @@ export default function LandingPage() {
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {features.map(([title, body], index) => (
                 <article key={title} className="landing-glass-card rounded-xl p-5">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e8edff] text-[#003bfa]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-soft text-[#003bfa]">
                     <FeatureIcon index={index} />
                   </span>
                   <h3 className="mt-4 text-[15px] font-bold">{title}</h3>
@@ -232,14 +232,14 @@ export default function LandingPage() {
                 <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-bold tracking-[-.035em] sm:text-[38px]">
                   Your skills deserve more than a line on a CV.
                 </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-[#adbbce]">
+                <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-muted">
                   Turn real work into professional evidence that recruiters and reviewers can
                   understand.
                 </p>
                 <div className="mt-6 flex flex-wrap justify-center gap-2.5">
                   <Link
                     href="/register"
-                    className="inline-flex h-10 items-center gap-2 rounded-md bg-[#38bdf8] px-5 text-[13px] font-bold text-[#000820]"
+                    className="inline-flex h-10 items-center gap-2 rounded-md bg-[#38bdf8] px-5 text-[13px] font-bold text-foreground"
                   >
                     Create your profile <Arrow />
                   </Link>
@@ -306,12 +306,12 @@ function Heading({
         {eyebrow}
       </p>
       <h2
-        className={`mt-3 text-3xl leading-tight font-bold tracking-[-.035em] sm:text-[34px] ${dark ? "text-white" : "text-[#000820] dark:text-white"}`}
+        className={`mt-3 text-3xl leading-tight font-bold tracking-[-.035em] sm:text-[34px] ${dark ? "text-white" : "text-foreground dark:text-white"}`}
       >
         {title}
       </h2>
       <p
-        className={`mt-4 text-[14px] leading-6 ${dark ? "text-[#adbbce]" : "text-[#617084] dark:text-[#aebbd0]"}`}
+        className={`mt-4 text-[14px] leading-6 ${dark ? "text-muted" : "text-muted dark:text-muted"}`}
       >
         {body}
       </p>
@@ -368,7 +368,7 @@ function Footer() {
               </small>
             </span>
           </Link>
-          <p className="mt-5 max-w-xs text-sm leading-6 text-[#9cacc0]">
+          <p className="mt-5 max-w-xs text-sm leading-6 text-muted">
             Professional skill and work verification for candidates, reviewers, and recruiters.
           </p>
           <p className="mt-3 text-sm font-semibold text-[#38bdf8]">Evidence over claims.</p>
@@ -415,7 +415,7 @@ function Foot({ title, links }: { title: string; links: string[][] }) {
       <ul className="mt-4 space-y-3">
         {links.map(([label, href]) => (
           <li key={label}>
-            <Link href={href} className="text-sm text-[#9cacc0] transition hover:text-[#38bdf8]">
+            <Link href={href} className="text-sm text-muted transition hover:text-[#38bdf8]">
               {label}
             </Link>
           </li>

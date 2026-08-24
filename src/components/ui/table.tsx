@@ -10,7 +10,7 @@ import { cx } from "./primitives";
  */
 export function Table({ className, ...props }: ComponentProps<"table">) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-line">
+    <div className="overflow-x-auto rounded-xl border border-line bg-surface shadow-sm">
       <table {...props} className={cx("w-full min-w-full text-sm", className)} />
     </div>
   );
@@ -42,5 +42,5 @@ export function TH({ className, ...props }: ComponentProps<"th">) {
 }
 
 export function TD({ className, ...props }: ComponentProps<"td">) {
-  return <td {...props} className={cx("px-4 py-3 align-middle", className)} />;
+  return <td {...props} className={cx("px-4 py-3.5 align-middle", className)} />;
 }
