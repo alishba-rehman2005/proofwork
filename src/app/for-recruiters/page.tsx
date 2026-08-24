@@ -33,8 +33,8 @@ export default async function ForRecruitersPage() {
     <main className="min-h-screen bg-background text-foreground">
       <SiteHeader signedIn={Boolean(session?.user)} />
 
-      <section className="mx-auto max-w-[1120px] px-5 py-16 sm:px-6">
-        <p className="text-xs font-bold tracking-[.16em] text-accent">FOR RECRUITERS</p>
+      <section className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <p className="text-xs font-bold tracking-[.16em] text-primary">FOR RECRUITERS</p>
         <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-[-.04em] sm:text-[46px]">
           Shortlist candidates using proof, not keywords.
         </h1>
@@ -46,7 +46,7 @@ export default async function ForRecruitersPage() {
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           {benefits.map(([title, body], index) => (
             <article key={title} className="rounded-xl border border-line bg-surface p-5 shadow-sm">
-              <span className="font-mono text-xs font-bold text-accent">0{index + 1}</span>
+              <span className="font-mono text-xs font-bold text-primary">0{index + 1}</span>
               <h2 className="mt-3 text-lg font-bold">{title}</h2>
               <p className="mt-2 text-sm leading-6 text-muted">{body}</p>
             </article>
@@ -74,9 +74,10 @@ export default async function ForRecruitersPage() {
               Get started →
             </Link>
           </div>
-          <SiteFooter />
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

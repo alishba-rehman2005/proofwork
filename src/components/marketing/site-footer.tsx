@@ -67,7 +67,7 @@ export function SiteFooter() {
 
           {COLUMNS.map((column) => (
             <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="text-xs font-semibold tracking-wider text-faint uppercase">
+              <h2 className="text-xs font-semibold tracking-wider text-muted uppercase">
                 {column.heading}
               </h2>
 
@@ -92,7 +92,7 @@ export function SiteFooter() {
             &copy; {new Date().getFullYear()} ProofWork. Part of the CP Nexum ecosystem.
           </p>
 
-          <p className="text-xs text-faint">Built for evidence-based hiring.</p>
+          <p className="text-sm text-muted">Built for evidence-based hiring.</p>
         </div>
       </div>
     </footer>
