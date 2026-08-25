@@ -57,7 +57,11 @@ export function SiteHeader({ signedIn = false }: { signedIn?: boolean }) {
         aria-label="Main"
         className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
       >
-        <Link href="/" className="flex items-center gap-2.5 rounded-lg" aria-label="ProofWork home">
+        <Link
+          href="/"
+          className="flex min-h-11 items-center gap-2.5 rounded-lg"
+          aria-label="ProofWork home"
+        >
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <CheckMark />
           </span>
@@ -118,7 +122,7 @@ export function SiteHeader({ signedIn = false }: { signedIn?: boolean }) {
             aria-expanded={open}
             aria-controls="site-menu"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:bg-surface-muted hover:text-foreground md:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:bg-surface-muted hover:text-foreground md:hidden"
           >
             {open ? <CloseIcon /> : <MenuIcon />}
           </button>

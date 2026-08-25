@@ -48,7 +48,7 @@
   --warning-soft: #fef3c7;
   --danger: #b91c1c;
   --danger-soft: #fee2e2;
-  --info: #006ede;
+  --info: #0257b0;
   --info-soft: #e0f2fe;
 
   /* Accent: CP Nexum sky, for work in flight */
@@ -164,21 +164,6 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
-}
-
-/*
-|--------------------------------------------------------------------------
-| REGISTRATION PAGE DENSITY
-|--------------------------------------------------------------------------
-| The registration form contains more fields than other auth pages. Its compact
-| desktop density is scoped to that route only; every other screen retains the
-| browser's native 100% sizing.
-*/
-
-@media (min-width: 1024px) {
-  html:has(.register-page-density) {
-    font-size: 13.6px;
-  }
 }
 
 .auth-form-scroll {

@@ -1,6 +1,6 @@
 import type { ComponentProps, ReactNode } from "react";
 
-import { cx } from "./primitives";
+import { cx } from "./cx";
 
 export const controlClassName =
   "w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-sm shadow-xs outline-none transition-all duration-150 placeholder:text-faint focus:border-primary focus:ring-2 focus:ring-ring/25 disabled:bg-surface-muted disabled:text-muted";

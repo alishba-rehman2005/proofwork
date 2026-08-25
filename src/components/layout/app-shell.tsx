@@ -51,7 +51,7 @@ export function AppShell({
         }`}
       >
         <div className="flex h-16 items-center justify-between border-b border-line px-5">
-          <Link href="/dashboard" className="flex items-center gap-2.5">
+          <Link href="/dashboard" className="flex min-h-11 items-center gap-2.5">
             <span
               aria-hidden="true"
               className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"
@@ -96,7 +96,7 @@ export function AppShell({
                         // the click is what should dismiss the drawer.
                         onClick={() => setOpen(false)}
                         aria-current={active ? "page" : undefined}
-                        className={`relative block rounded-lg py-2 ps-4 pe-3 text-sm transition-colors ${
+                        className={`relative flex min-h-11 items-center rounded-lg py-2 ps-4 pe-3 text-sm transition-colors ${
                           active
                             ? "bg-primary-soft font-semibold text-primary"
                             : "text-muted hover:bg-surface-muted hover:text-foreground"
@@ -160,7 +160,7 @@ export function AppShell({
               */}
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-lg border border-primary/30 bg-primary-soft/60 px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:border-accent/60 hover:bg-accent-soft"
+                className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-primary/30 bg-primary-soft/60 px-3 py-1.5 text-sm font-medium text-primary transition-colors hover:border-accent/60 hover:bg-accent-soft"
               >
                 <SignOutIcon />
                 <span className="hidden sm:inline">Sign out</span>
@@ -208,7 +208,7 @@ function IconButton({ label, onClick, expanded, className = "", children }: Icon
       onClick={onClick}
       aria-label={label}
       aria-expanded={expanded}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:bg-surface-muted hover:text-foreground ${className}`}
+      className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:bg-surface-muted hover:text-foreground ${className}`}
     >
       <svg
         width="18"

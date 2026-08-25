@@ -213,7 +213,7 @@ export default async function RecruiterPage({ searchParams }: { searchParams: Se
                     {candidate.verifiedSkills.length > 0 && (
                       <div className="mt-2 flex flex-wrap gap-1.5">
                         {candidate.verifiedSkills.slice(0, 8).map((skill) => (
-                          <Badge key={skill.name} tone="solid">
+                          <Badge key={skill.name} tone="success">
                             <span aria-hidden="true">✓</span>
                             {skill.name}
                             {skill.score !== null && ` ${Math.round(skill.score)}%`}

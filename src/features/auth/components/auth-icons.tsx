@@ -2,31 +2,6 @@ import type { SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
-export function ProofWorkMark({ className }: { className?: string }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={`inline-flex items-center justify-center rounded-md bg-[#000820] text-white ${className ?? "h-14 w-14"}`}
-    >
-      <svg viewBox="0 0 32 32" className="h-7 w-7" fill="none">
-        <path
-          d="m16 3.5 3 2.1 3.7-.2 1.1 3.5 3 2.2-1.3 3.5 1.3 3.5-3 2.2-1.1 3.5-3.7-.2-3 2.1-3-2.1-3.7.2-1.1-3.5-3-2.2 1.3-3.5-1.3-3.5 3-2.2 1.1-3.5 3.7.2 3-2.1Z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-        <path
-          d="m11.4 15.7 3 3 6.4-7"
-          stroke="currentColor"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  );
-}
-
 export function GoogleIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...props}>

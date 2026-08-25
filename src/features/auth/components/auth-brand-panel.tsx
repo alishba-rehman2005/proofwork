@@ -68,7 +68,7 @@ export function AuthBrandPanel({
 
   return (
     <aside
-      className="relative hidden min-h-full w-full overflow-hidden px-10 py-10 text-white lg:flex lg:max-w-[480px] lg:flex-col lg:border-l lg:border-line"
+      className="brand-fixed relative hidden min-h-full w-full overflow-hidden px-10 py-10 text-white lg:flex lg:max-w-[480px] lg:flex-col lg:border-l lg:border-line"
       style={{ backgroundImage: PANEL_BG }}
     >
       <div
@@ -97,7 +97,7 @@ export function AuthBrandPanel({
 
       <div className="relative my-auto max-w-[440px] py-10">
         <span
-          className="mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-bold tracking-[0.12em]"
+          className="mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold tracking-[0.12em]"
           style={{ borderColor: `${ACCENT}33`, backgroundColor: `${ACCENT}1a`, color: ACCENT }}
         >
           <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />

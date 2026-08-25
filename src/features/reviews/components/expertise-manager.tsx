@@ -102,7 +102,7 @@ export function ExpertiseManager({
                             type="submit"
                             variant="ghost"
                             size="sm"
-                            className="h-5 w-5 rounded-full !px-0 text-accent hover:bg-accent/20"
+                            className="h-8 w-8 rounded-full !px-0 text-accent hover:bg-accent/20"
                             title={`Revoke ${grant.skillName}`}
                             aria-label={`Revoke ${grant.skillName}`}
                           >

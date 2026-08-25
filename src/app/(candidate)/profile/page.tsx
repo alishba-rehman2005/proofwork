@@ -102,7 +102,7 @@ export default async function ProfilePage() {
       <Card className="space-y-6">
         <CardTitle>How recruiters see you</CardTitle>
 
-        <ProfileView profile={profile} skills={skills} projects={projects} />
+        <ProfileView profile={profile} skills={skills} projects={projects} headingLevel="h2" />
       </Card>
     </div>
   );

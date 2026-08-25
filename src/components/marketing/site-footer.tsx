@@ -41,7 +41,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1fr]">
           <div>
-            <Link href="/" className="flex items-center gap-2.5">
+            <Link href="/" className="flex min-h-11 items-center gap-2.5">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                 <svg
                   viewBox="0 0 24 24"
@@ -71,12 +71,12 @@ export function SiteFooter() {
                 {column.heading}
               </h2>
 
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-2">
                 {column.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-muted transition-colors hover:text-foreground"
+                      className="-mx-2 inline-flex min-h-11 items-center rounded-md px-2 text-sm text-muted transition-colors hover:text-foreground"
                     >
                       {link.label}
                     </Link>

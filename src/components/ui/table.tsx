@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 
-import { cx } from "./primitives";
+import { cx } from "./cx";
 
 /**
  * Table primitives.

@@ -25,6 +25,8 @@ export type ProfileProject = {
 };
 
 type ProfileViewProps = {
+  /** `h1` when this view is the page, `h2` when it is embedded under one. */
+  headingLevel?: "h1" | "h2";
   profile: CandidateProfileWithRelations;
   skills?: ProfileSkill[];
   projects?: ProfileProject[];
@@ -37,7 +39,13 @@ type ProfileViewProps = {
  * page so both stay in step. Deliberately contains nothing private: the
  * account email and settings live on the owner page instead.
  */
-export function ProfileView({ profile, skills = [], projects = [] }: ProfileViewProps) {
+export function ProfileView({
+  profile,
+  skills = [],
+  projects = [],
+  headingLevel = "h1",
+}: ProfileViewProps) {
+  const Heading = headingLevel;
   const links = [
     { label: "GitHub", url: profile.githubUrl },
     { label: "Portfolio", url: profile.portfolioUrl },
@@ -63,7 +71,7 @@ export function ProfileView({ profile, skills = [], projects = [] }: ProfileView
         )}
 
         <div>
-          <h1 className="text-3xl font-semibold">{profile.fullName}</h1>
+          <Heading className="text-3xl font-semibold">{profile.fullName}</Heading>
 
           {profile.headline && <p className="mt-1 text-muted">{profile.headline}</p>}
 
@@ -233,7 +241,7 @@ export function ProfileView({ profile, skills = [], projects = [] }: ProfileView
                       href={project.githubUrl}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="underline"
+                      className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 underline"
                     >
                       Repository
                     </a>
@@ -244,7 +252,7 @@ export function ProfileView({ profile, skills = [], projects = [] }: ProfileView
                       href={project.liveUrl}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="underline"
+                      className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 underline"
                     >
                       Live demo
                     </a>

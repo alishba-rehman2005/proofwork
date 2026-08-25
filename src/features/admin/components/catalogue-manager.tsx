@@ -296,7 +296,7 @@ export function ProjectVerificationQueue({
                   href={project.githubUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="underline"
+                  className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 underline"
                 >
                   Repository
                 </a>
@@ -307,7 +307,7 @@ export function ProjectVerificationQueue({
                   href={project.liveUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="underline"
+                  className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 underline"
                 >
                   Live demo
                 </a>

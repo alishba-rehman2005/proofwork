@@ -52,7 +52,7 @@ export function ThemeToggle() {
       onClick={() => applyTheme(isDark ? "light" : "dark")}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-line text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
       suppressHydrationWarning
     >
       <span suppressHydrationWarning>{isDark ? <SunIcon /> : <MoonIcon />}</span>

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cx } from "./primitives";
+import { cx } from "./cx";
 
 /*
 |--------------------------------------------------------------------------

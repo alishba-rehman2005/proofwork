@@ -1,9 +1,9 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { cx } from "./cx";
+import { StatCard } from "./metrics";
 
-export function cx(...classes: (string | false | null | undefined)[]): string {
-  return classes.filter(Boolean).join(" ");
-}
+export { cx };
 
 /* ------------------------------------------------------------------ Card */
 
@@ -126,7 +126,7 @@ const buttonVariants: Record<ButtonVariant, string> = {
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
-  sm: "h-8 px-3 text-xs",
+  sm: "h-9 px-3 text-xs",
   md: "h-10 px-4 text-sm",
 };
 
@@ -258,6 +258,11 @@ export function ProgressBar({
 
 /* ------------------------------------------------------------------ Stat */
 
+/**
+ * The plain form of {@link StatCard}, for pages that show a metric without an
+ * icon or a trend. It delegates rather than reimplementing, so the recruiter
+ * and admin figures cannot drift away from the candidate dashboard's.
+ */
 export function Stat({
   label,
   value,
@@ -267,15 +272,7 @@ export function Stat({
   value: string | number;
   hint?: string;
 }) {
-  return (
-    <div className="rounded-xl border border-line bg-surface p-5 shadow-sm">
-      <p className="text-sm text-muted">{label}</p>
-
-      <p className="tabular mt-1 text-2xl font-semibold">{value}</p>
-
-      {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}
-    </div>
-  );
+  return <StatCard label={label} value={value} hint={hint} />;
 }
 
 /* ------------------------------------------------------------- Separator */
@@ -304,15 +301,15 @@ export function Avatar({
 
   return (
     <span
-      className="inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-surface-muted text-sm font-medium text-muted"
+      className="relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-surface-muted text-sm font-medium text-muted"
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
-      {src ? (
+      <span className="absolute">{initials || "?"}</span>
+
+      {src && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt="" className="h-full w-full object-cover" />
-      ) : (
-        initials || "?"
+        <img src={src} alt="" className="relative h-full w-full object-cover" />
       )}
     </span>
   );

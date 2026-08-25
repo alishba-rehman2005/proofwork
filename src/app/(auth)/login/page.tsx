@@ -67,7 +67,10 @@ export default async function LoginPage({
 
             <p className="mt-10 text-center text-muted">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="font-medium text-foreground hover:underline">
+              <Link
+                href="/register"
+                className="-mx-1 inline-flex min-h-11 items-center rounded-md px-1 font-medium text-foreground hover:underline"
+              >
                 Create an account
               </Link>
             </p>
