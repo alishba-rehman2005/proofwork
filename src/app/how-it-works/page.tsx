@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { auth } from "@/auth";
+import { SiteFooter } from "@/components/marketing/site-footer";
+import { SiteHeader } from "@/components/marketing/site-header";
+
 export const metadata: Metadata = {
   title: "How it works | ProofWork",
   description: "See how ProofWork turns practical work into verified professional evidence.",
@@ -29,29 +33,19 @@ const steps = [
   ],
 ] as const;
 
-export default function HowItWorksPage() {
-  return (
-    <main className="min-h-screen bg-[#f6f9fb] text-[#07152b]">
-      <header className="border-b border-[#dce5ec] bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex h-[60px] max-w-[1120px] items-center justify-between px-5 sm:px-6">
-          <Link href="/" className="text-base font-bold tracking-[-.03em]">
-            ProofWork
-          </Link>
-          <Link
-            href="/register"
-            className="rounded-lg bg-[#07152b] px-4 py-2 text-[13px] font-bold text-white"
-          >
-            Get started →
-          </Link>
-        </div>
-      </header>
+export default async function HowItWorksPage() {
+  const session = await auth();
 
-      <section className="mx-auto max-w-[1120px] px-5 py-16 sm:px-6">
-        <p className="text-xs font-bold tracking-[.16em] text-[#147861]">HOW IT WORKS</p>
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      <SiteHeader signedIn={Boolean(session?.user)} />
+
+      <section className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+        <p className="text-xs font-bold tracking-[.16em] text-primary">HOW IT WORKS</p>
         <h1 className="mt-3 max-w-2xl text-4xl font-bold tracking-[-.04em] sm:text-[46px]">
           From claimed skill to credible evidence.
         </h1>
-        <p className="mt-4 max-w-2xl text-[15px] leading-7 text-[#617084]">
+        <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted">
           ProofWork creates a clear, auditable path from practical assessment to professional
           verification.
         </p>
@@ -59,28 +53,30 @@ export default function HowItWorksPage() {
         <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {steps.map(([number, title, body]) => (
             <article key={number} className="landing-glass-card rounded-xl p-5">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#e9f8f3] font-mono text-xs font-bold text-[#147861]">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-soft font-mono text-xs font-bold text-primary">
                 {number}
               </span>
               <h2 className="mt-5 text-base font-bold">{title}</h2>
-              <p className="mt-2 text-sm leading-6 text-[#647286]">{body}</p>
+              <p className="mt-2 text-sm leading-6 text-muted">{body}</p>
             </article>
           ))}
         </div>
 
-        <div className="mt-12 rounded-2xl bg-[#07152b] px-6 py-10 text-center text-white">
+        <div className="landing-cta-card mt-12 overflow-hidden rounded-2xl px-6 py-10 text-center text-white">
           <h2 className="text-2xl font-bold">Ready to turn your work into proof?</h2>
-          <p className="mt-2 text-sm text-[#adbbce]">
+          <p className="mt-2 text-base leading-7 text-[#c3cee4]">
             Start with one skill and build a profile backed by evidence.
           </p>
           <Link
             href="/register"
-            className="mt-6 inline-flex rounded-lg bg-[#65e6c1] px-5 py-2.5 text-[13px] font-bold text-[#07152b]"
+            className="mt-6 inline-flex h-12 items-center rounded-lg bg-primary px-6 text-[15px] font-semibold text-primary-foreground shadow-sm transition-all duration-200 hover:bg-primary-hover hover:shadow-md"
           >
             Create your profile →
           </Link>
         </div>
       </section>
+
+      <SiteFooter />
     </main>
   );
 }

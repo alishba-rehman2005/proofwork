@@ -44,7 +44,7 @@ export function PublicProfileLink({ path, description, isShareable }: PublicProf
           href={path}
           target="_blank"
           rel="noreferrer noopener"
-          className="text-sm text-primary underline"
+          className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 text-sm text-primary underline"
         >
           Preview
         </a>

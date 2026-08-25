@@ -13,8 +13,8 @@ import type { ReactNode } from "react";
 | interactive surface next to it uses the theme tokens.
 */
 
-const PANEL_BG = "#07152b";
-const ACCENT = "#69e5c1";
+const PANEL_BG = "linear-gradient(150deg, #001440 0%, #000820 55%, #000d2e 100%)";
+const ACCENT = "#4c7dff";
 
 type Benefit = { title: string; body: string; icon: ReactNode };
 
@@ -68,8 +68,8 @@ export function AuthBrandPanel({
 
   return (
     <aside
-      className="relative hidden min-h-full w-full overflow-hidden px-9 py-8 text-white lg:flex lg:max-w-[520px] lg:flex-col"
-      style={{ backgroundColor: PANEL_BG }}
+      className="brand-fixed relative hidden min-h-full w-full overflow-hidden px-10 py-10 text-white lg:flex lg:max-w-[480px] lg:flex-col lg:border-l lg:border-line"
+      style={{ backgroundImage: PANEL_BG }}
     >
       <div
         aria-hidden="true"
@@ -95,40 +95,44 @@ export function AuthBrandPanel({
         </span>
       </Link>
 
-      <div className="relative my-auto max-w-[440px]">
+      <div className="relative my-auto max-w-[440px] py-10">
         <span
-          className="mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-bold tracking-[0.12em]"
+          className="mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-bold tracking-[0.12em]"
           style={{ borderColor: `${ACCENT}33`, backgroundColor: `${ACCENT}1a`, color: ACCENT }}
         >
           <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ACCENT }} />
           {isSignIn ? "SECURE WORKSPACE" : "TRUST INFRASTRUCTURE"}
         </span>
 
-        <h2 className="text-[24px] leading-[1.25] font-semibold tracking-[-0.025em]">{heading}</h2>
+        <h2 className="text-[26px] leading-[1.25] font-semibold tracking-[-0.025em]">{heading}</h2>
 
-        <p className="mt-3 text-[13px] leading-5 text-[#aebdd1]">{body}</p>
+        <p className="mt-3 text-[15px] leading-6 text-[#a6b6cd]">{body}</p>
 
-        <ul className="mt-7 grid gap-4">
+        <ul className="mt-8 grid gap-5">
           {benefits.map((benefit) => (
-            <li key={benefit.title} className="flex items-center gap-3">
+            <li key={benefit.title} className="flex gap-3.5">
               <span
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md"
-                style={{ backgroundColor: `${ACCENT}1a`, color: ACCENT }}
+                className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: `${ACCENT}1f`, color: ACCENT }}
               >
                 {benefit.icon}
               </span>
 
               <span>
-                <strong className="block text-[13px] font-semibold text-[#f4f7fb]">
+                <strong className="block text-sm font-semibold text-[#f4f7fb]">
                   {benefit.title}
                 </strong>
+
+                <span className="mt-1 block text-[13px] leading-5 text-[#a6b6cd]">
+                  {benefit.body}
+                </span>
               </span>
             </li>
           ))}
         </ul>
       </div>
 
-      <div className="relative mt-auto border-t border-white/15 pt-5 text-[11px] font-semibold text-[#9fb0c8]">
+      <div className="relative mt-auto border-t border-white/15 pt-6 text-xs font-medium text-[#9fb0c8]">
         <div className="flex items-center justify-between">
           <span className="flex items-center gap-2.5">
             <span

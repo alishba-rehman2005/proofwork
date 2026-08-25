@@ -55,7 +55,7 @@ export default async function NotificationsPage() {
 
                     <p className="mt-1 text-sm text-muted">{item.message}</p>
 
-                    <p className="mt-1 text-xs text-faint">{formatDateTime(item.createdAt)}</p>
+                    <p className="mt-1 text-xs text-muted">{formatDateTime(item.createdAt)}</p>
                   </div>
 
                   {!item.isRead && (

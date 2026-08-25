@@ -101,7 +101,7 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-5" noValidate>
       <Field
         label="Full name"
         name="fullName"
@@ -121,7 +121,7 @@ export function RegisterForm() {
         error={errors.email?.[0]}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-5 sm:grid-cols-2">
         <Field
           label="Password"
           name="password"
@@ -166,7 +166,7 @@ export function RegisterForm() {
         </div>
 
         <p className="mt-2 flex items-start gap-1.5 text-xs text-muted">
-          <span aria-hidden="true" className="mt-0.5 text-accent">
+          <span aria-hidden="true" className="mt-0.5 text-primary">
             <ReviewerIcon />
           </span>
 
@@ -265,7 +265,7 @@ function Field({
         className={`${controlClassName} h-12`}
       />
 
-      {hint && !error && <p className="mt-1 text-xs text-muted">{hint}</p>}
+      {hint && !error && <p className="mt-1.5 text-xs text-muted">{hint}</p>}
 
       {error && (
         <p role="alert" className="mt-1 text-sm text-danger">

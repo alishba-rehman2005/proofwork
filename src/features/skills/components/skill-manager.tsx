@@ -139,7 +139,7 @@ function SkillRow({ row }: { row: CandidateSkillRow }) {
             <span className="min-w-0">
               <span className="block font-medium">{row.skillName}</span>
 
-              <span className="block text-xs text-faint">
+              <span className="block text-xs text-muted">
                 {row.verifiedAt
                   ? `Verified ${formatDate(row.verifiedAt)}`
                   : row.projectsCompleted > 0

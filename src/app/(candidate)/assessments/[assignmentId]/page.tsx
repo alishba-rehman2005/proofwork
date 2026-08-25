@@ -144,7 +144,7 @@ export default async function AssignmentPage({
                   href={resource.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-sm underline"
+                  className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 text-sm underline"
                 >
                   {resource.title}
                 </a>
@@ -215,7 +215,7 @@ export default async function AssignmentPage({
                           href={item.url ?? "#"}
                           target="_blank"
                           rel="noreferrer noopener"
-                          className="text-sm underline"
+                          className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 text-sm underline"
                         >
                           {item.title ?? item.type}
                         </a>

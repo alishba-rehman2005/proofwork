@@ -1,20 +1,25 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
+import { cx } from "./cx";
+import { StatCard } from "./metrics";
 
-export function cx(...classes: (string | false | null | undefined)[]): string {
-  return classes.filter(Boolean).join(" ");
-}
+export { cx };
 
 /* ------------------------------------------------------------------ Card */
 
 export function Card({ className, ...props }: ComponentProps<"section">) {
   return (
-    <section {...props} className={cx("rounded-xl border border-line bg-surface p-5", className)} />
+    <section
+      {...props}
+      className={cx("rounded-xl border border-line bg-surface p-5 shadow-sm sm:p-6", className)}
+    />
   );
 }
 
 export function CardTitle({ className, ...props }: ComponentProps<"h2">) {
-  return <h2 {...props} className={cx("text-lg font-semibold", className)} />;
+  return (
+    <h2 {...props} className={cx("text-base font-semibold tracking-tight sm:text-lg", className)} />
+  );
 }
 
 export function CardDescription({ className, ...props }: ComponentProps<"p">) {
@@ -113,19 +118,20 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "danger";
 export type ButtonSize = "sm" | "md";
 
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-primary-foreground hover:bg-primary-hover",
-  secondary: "border border-line bg-surface text-foreground hover:bg-surface-muted",
+  primary: "bg-primary text-primary-foreground shadow-xs hover:bg-primary-hover hover:shadow-sm",
+  secondary:
+    "border border-line bg-surface text-foreground shadow-xs hover:border-line-strong hover:bg-surface-muted",
   ghost: "text-muted hover:bg-surface-muted hover:text-foreground",
   danger: "border border-danger/40 text-danger hover:bg-danger-soft",
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
-  sm: "px-2.5 py-1.5 text-xs",
-  md: "px-4 py-2 text-sm",
+  sm: "h-9 px-3 text-xs",
+  md: "h-10 px-4 text-sm",
 };
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50";
 
 export function Button({
   variant = "primary",
@@ -252,6 +258,11 @@ export function ProgressBar({
 
 /* ------------------------------------------------------------------ Stat */
 
+/**
+ * The plain form of {@link StatCard}, for pages that show a metric without an
+ * icon or a trend. It delegates rather than reimplementing, so the recruiter
+ * and admin figures cannot drift away from the candidate dashboard's.
+ */
 export function Stat({
   label,
   value,
@@ -261,15 +272,7 @@ export function Stat({
   value: string | number;
   hint?: string;
 }) {
-  return (
-    <div className="rounded-xl border border-line bg-surface p-4">
-      <p className="text-sm text-muted">{label}</p>
-
-      <p className="tabular mt-1 text-2xl font-semibold">{value}</p>
-
-      {hint && <p className="mt-1 text-xs text-faint">{hint}</p>}
-    </div>
-  );
+  return <StatCard label={label} value={value} hint={hint} />;
 }
 
 /* ------------------------------------------------------------- Separator */
@@ -298,15 +301,15 @@ export function Avatar({
 
   return (
     <span
-      className="inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-surface-muted text-sm font-medium text-muted"
+      className="relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full border border-line bg-surface-muted text-sm font-medium text-muted"
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
-      {src ? (
+      <span className="absolute">{initials || "?"}</span>
+
+      {src && (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt="" className="h-full w-full object-cover" />
-      ) : (
-        initials || "?"
+        <img src={src} alt="" className="relative h-full w-full object-cover" />
       )}
     </span>
   );

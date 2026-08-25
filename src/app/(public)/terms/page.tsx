@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
+
 import { PolicyPage } from "@/components/marketing/policy-page";
 
-export default function TermsPage() {
+export const metadata: Metadata = {
+  title: "Terms of service",
+};
+
+export default async function TermsPage() {
   return (
     <PolicyPage
       eyebrow="LEGAL"

@@ -1,9 +1,9 @@
 import type { ComponentProps, ReactNode } from "react";
 
-import { cx } from "./primitives";
+import { cx } from "./cx";
 
 export const controlClassName =
-  "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none transition-colors placeholder:text-faint focus:border-line-strong disabled:bg-surface-muted disabled:text-muted";
+  "w-full rounded-lg border border-line bg-surface px-3 py-2.5 text-sm shadow-xs outline-none transition-all duration-150 placeholder:text-faint focus:border-primary focus:ring-2 focus:ring-ring/25 disabled:bg-surface-muted disabled:text-muted";
 
 /* ------------------------------------------------------------ FieldShell */
 
@@ -33,7 +33,7 @@ export function FieldShell({
         )}
       </label>
 
-      <div className="mt-2">{children}</div>
+      <div className="mt-1.5">{children}</div>
 
       {hint && !error && <p className="mt-1 text-xs text-muted">{hint}</p>}
 
@@ -176,15 +176,15 @@ export function SubmitButton({
 }) {
   const styles =
     variant === "primary"
-      ? "bg-primary text-primary-foreground hover:bg-primary-hover"
-      : "border border-line bg-surface hover:bg-surface-muted";
+      ? "bg-primary text-primary-foreground shadow-xs hover:bg-primary-hover hover:shadow-sm"
+      : "border border-line bg-surface shadow-xs hover:border-line-strong hover:bg-surface-muted";
 
   return (
     <button
       type="submit"
       disabled={pending}
       className={cx(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-all duration-150 focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-50",
         styles,
       )}
     >

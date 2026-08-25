@@ -34,7 +34,7 @@ export default function GlobalError({
         </p>
 
         {error.digest && (
-          <p className="mt-4 font-mono text-xs text-faint">Reference: {error.digest}</p>
+          <p className="mt-4 font-mono text-xs text-muted">Reference: {error.digest}</p>
         )}
 
         <div className="mt-6 flex flex-wrap justify-center gap-3">

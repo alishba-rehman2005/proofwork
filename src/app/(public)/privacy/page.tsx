@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
+
 import { PolicyPage } from "@/components/marketing/policy-page";
 
-export default function PrivacyPage() {
+export const metadata: Metadata = {
+  title: "Privacy policy",
+};
+
+export default async function PrivacyPage() {
   return (
     <PolicyPage
       eyebrow="LEGAL"

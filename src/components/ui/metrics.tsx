@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cx } from "./primitives";
+import { cx } from "./cx";
 
 /*
 |--------------------------------------------------------------------------
@@ -249,7 +249,7 @@ export function TimelineList({
             )}
           />
 
-          <p className="text-xs text-faint">{item.timestamp}</p>
+          <p className="text-xs text-muted">{item.timestamp}</p>
 
           <p className="mt-0.5 text-sm font-medium">{item.title}</p>
 

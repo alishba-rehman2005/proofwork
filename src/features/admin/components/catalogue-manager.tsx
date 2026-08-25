@@ -138,7 +138,7 @@ export function SkillRequests({ requests }: { requests: SkillRequestRow[] }) {
               <p className="mt-1 text-sm text-muted">{request.description}</p>
             )}
 
-            <p className="mt-1 text-xs text-faint">
+            <p className="mt-1 text-xs text-muted">
               Suggested by {request.requestedBy} · {formatDate(request.createdAt)}
             </p>
           </div>
@@ -195,7 +195,7 @@ export function UserTable({
               <TD>
                 <p className="font-medium">{user.email}</p>
 
-                <p className="text-xs text-faint">Joined {formatDate(user.createdAt)}</p>
+                <p className="text-xs text-muted">Joined {formatDate(user.createdAt)}</p>
               </TD>
 
               <TD>
@@ -225,7 +225,7 @@ export function UserTable({
               <TD>
                 <div className="flex justify-end gap-2">
                   {isSelf ? (
-                    <span className="text-xs text-faint">Your account</span>
+                    <span className="text-xs text-muted">Your account</span>
                   ) : user.accountStatus === "ACTIVE" ? (
                     <form action={setAccountStatusAction}>
                       <input type="hidden" name="userId" value={user.id} />
@@ -296,7 +296,7 @@ export function ProjectVerificationQueue({
                   href={project.githubUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="underline"
+                  className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 underline"
                 >
                   Repository
                 </a>
@@ -307,7 +307,7 @@ export function ProjectVerificationQueue({
                   href={project.liveUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="underline"
+                  className="-mx-1.5 inline-flex min-h-11 items-center rounded-md px-1.5 underline"
                 >
                   Live demo
                 </a>
