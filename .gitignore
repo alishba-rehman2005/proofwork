@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local credential notes - this repo is public, so anything holding demo
+# logins stays out of it. The file itself is kept on disk.
+*.pdf
+Credentials*
